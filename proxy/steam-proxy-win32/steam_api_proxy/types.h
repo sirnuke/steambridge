@@ -2,6 +2,8 @@
 
 #pragma once
 
+#define APP_NAME "SteamRedirect"
+
 typedef unsigned char uint8;
 typedef signed char int8;
 

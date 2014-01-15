@@ -3,13 +3,7 @@
 
 #include "stdafx.h"
 
-#include <cstdlib>
-#include <cstdio>
-
-#include <iostream>
-#include <sstream>
-#include <string>
-
+#include "logging.h"
 #include "steam_api_proxy.h"
 
 const char *steamredirect_version = "0";
@@ -18,26 +12,6 @@ const char *steamredirect_info = "[Add built information, web address, etc here]
 // TODO: This file is going to get well out of hand if it isn't split
 //       until subfiles soon.
 
-// Would be nice if this could take a message+vargs, so we can print
-// the function arguments.  Also, turn this into a macro to handle the
-// __FUNCSIG__ automagically.
-__declspec(noreturn) static void __stub(const char *function)
-{
-  printf("Function %s is not implemented!\n", function);
-  // TODO: Make this into a popup message box?
-  exit(0);
-}
-
-#define __STUB__ { __stub(__FUNCSIG__); }
-
-__declspec(noreturn) static void __cant_implement(const char *function)
-{
-  printf("Function %s cannot be implemented!\n", function);
-  // TODO: Make this into a popup message box?
-  exit(0);
-}
-
-#define __CANT_IMPLEMENT__ { __cant_implement(__FUNCSIG__); }
 
 // TODO: Reorder these by a more logical order.  As it turns out, header
 //       order isn't important, so reorder those as well.
@@ -88,7 +62,7 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallbac
 //
 STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
 {
-  printf("SteamRedirect: steam_api_proxy.dll: " __FUNCSIG__ "(%u): overriding to FALSE\n", unOwnAppID);
+  __LOG_MSG__("(%u): overriding to FALSE", unOwnAppID);
   return false;
 }
 
