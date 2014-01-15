@@ -18,9 +18,9 @@
 extern "C"
 {
 
-// Test API call
-STEAM_API_BRIDGE_API int steam_bridge_say_hello();
+STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
 
+//STEAM_API_BRIDGE_API 
 } // extern "C"
 
 #endif //___STEAM_API_BRIDGE_API_H___

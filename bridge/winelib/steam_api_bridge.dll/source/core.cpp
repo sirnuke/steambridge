@@ -2,16 +2,17 @@
 
 #include <cstdio>
 
+#include <steam_api.h>
+
 #include "api.h"
 
 
 extern "C"
 {
 
-int steam_bridge_say_hello()
+bool steam_bridge_SteamAPI_InitSafe()
 {
-  printf("Hello world!\n");
-  return 24;
+  return SteamAPI_InitSafe();
 }
 
 }
