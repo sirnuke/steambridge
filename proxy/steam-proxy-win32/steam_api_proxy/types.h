@@ -85,3 +85,11 @@ typedef int32 HSteamUser;
 
 typedef void (*PFNPreMinidumpCallback)(void *context);
 
+// TODO: Would we ever want an import?  Should we explictly say __cdecl
+//       somewhere/somehow?
+#ifdef STEAM_API_PROXY_EXPORTS
+#define STEAM_API_PROXY_API __declspec(dllexport)
+#else
+#define STEAM_API_PROXY_API __declspec(dllimport)
+#endif
+

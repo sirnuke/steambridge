@@ -81,8 +81,16 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallbac
 
 // Returns TRUE if the app should quit, as Steam will restart it through
 // Steam.  This may or may not be considered 'DRM' in some sense.
+//
+// Discovered case in Da Wild that calls this function before any sort
+// of init calls.  Not sure whether this is the 'correct' behavior'.  Also,
+// unOwnAppID doesn't correspond to the value in steam_appid.txt (?).
+//
 STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
-  __STUB__
+{
+  printf("SteamRedirect: steam_api_proxy.dll: " __FUNCSIG__ "(%u): overriding to FALSE\n", unOwnAppID);
+  return false;
+}
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
   __STUB__
