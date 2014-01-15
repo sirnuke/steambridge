@@ -12,6 +12,9 @@
 
 #include "steam_api_proxy.h"
 
+const char *steamredirect_version = "0";
+const char *steamredirect_info = "[Add built information, web address, etc here]";
+
 // TODO: This file is going to get well out of hand if it isn't split
 //       until subfiles soon.
 
@@ -36,9 +39,9 @@ __declspec(noreturn) static void __cant_implement(const char *function)
 
 #define __CANT_IMPLEMENT__ { __cant_implement(__FUNCSIG__); }
 
-// TODO: Reorder these by a more logical order.  They are defined in
-//       the header to match the steam_api.dll order (as close as possible).
-//       That's not necessary here though.
+// TODO: Reorder these by a more logical order.  As it turns out, header
+//       order isn't important, so reorder those as well.
+
 extern "C"
 {
 
@@ -157,8 +160,9 @@ STEAM_API_PROXY_API HSteamPipe SteamGameServer_GetHSteamPipe()
 STEAM_API_PROXY_API HSteamUser SteamGameServer_GetHSteamUser()
   __STUB__
 
-// Can probably return 0, or even straight return the results from the
-// mothership library.
+// Can probably just return 0, though it'll be easy to return the results
+// from the mothership library if we have the function definition correct.
+// Set as CANT_IMPLEMENT for now.
 STEAM_API_PROXY_API uint32 SteamGameServer_GetIPCCallCount()
   __CANT_IMPLEMENT__
 
@@ -211,6 +215,29 @@ STEAM_API_PROXY_API void *SteamUserStats()
 STEAM_API_PROXY_API void *SteamUtils()
   __STUB__
 
+STEAM_API_PROXY_API HSteamUser Steam_GetHSteamUserCurrent()
+  __STUB__
+
+// Strong suspicion that we won't be able to implement this one correctly,
+// but leave as STUB for now.
+STEAM_API_PROXY_API void Steam_RegisterInterfaceFuncs(void *hModule)
+  __STUB__
+
+STEAM_API_PROXY_API void Steam_RunCallbacks(HSteamPipe hSteamPipe, bool bGameServerCallbacks)
+  __STUB__
+
+// This is a variable, not a function.  Usage, however, might be ...problematic.
+STEAM_API_PROXY_API void *g_pSteamClientGameServer;
+
+STEAM_API_PROXY_API const char *SteamRedirect_version_string()
+{
+  return steamredirect_version;
+}
+
+STEAM_API_PROXY_API const char *SteamRedirect_info_string()
+{
+  return steamredirect_info;
+}
 
 } // extern "C"
 

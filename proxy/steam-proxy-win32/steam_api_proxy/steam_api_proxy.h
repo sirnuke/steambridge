@@ -162,13 +162,16 @@ STEAM_API_PROXY_API void *SteamUserStats();
 // ISteamUtils * ... ()
 STEAM_API_PROXY_API void *SteamUtils();
 
-//STEAM_API_PROXY_API 
-//STEAM_API_PROXY_API int fnsteam_api_proxy(void);
-/*
-56 stub Steam_GetHSteamUserCurrent
-57 stub Steam_RegisterInterfaceFuncs
-58 stub Steam_RunCallbacks
-59 stub g_pSteamClientGameServer
-*/
+STEAM_API_PROXY_API HSteamUser Steam_GetHSteamUserCurrent();
+STEAM_API_PROXY_API void Steam_RegisterInterfaceFuncs(void *hModule);
+STEAM_API_PROXY_API void Steam_RunCallbacks(HSteamPipe hSteamPipe, bool bGameServerCallbacks);
+
+// This is a variable, not a function.  Usage, however, might be ...problematic.
+// ISteamClient *
+STEAM_API_PROXY_API extern void *g_pSteamClientGameServer;
+
+// This won't cause problems, right?
+STEAM_API_PROXY_API const char *SteamRedirect_version_string();
+STEAM_API_PROXY_API const char *SteamRedirect_info_string();
 
 } // extern "C"
