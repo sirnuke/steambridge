@@ -1,23 +1,34 @@
+// steam_api_proxy.h - Defines all the exposed API calls (+variable).
 
 #include "types.h"
 
+// TODO: Reorder these in a more logical order.  Header order has no
+//       impact on DLL symbol ordinals, which is their current order.
 extern "C"
 {
 
+//// 'Core' functions:
+
 STEAM_API_PROXY_API HSteamPipe GetHSteamPipe();
 STEAM_API_PROXY_API HSteamUser GetHSteamUser();
-STEAM_API_PROXY_API HSteamPipe SteamAPI_GetHSteamPipe();
 STEAM_API_PROXY_API HSteamUser SteamAPI_GetHSteamUser();
+STEAM_API_PROXY_API HSteamPipe SteamAPI_GetHSteamPipe();
 
-STEAM_API_PROXY_API const char *SteamAPI_GetSteamInstallPath();
+// Note: *HSteamPipe are considered private wrapper functions.
+
+
+STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID);
+STEAM_API_PROXY_API bool SteamAPI_IsSteamRunning();
 
 // SteamAPI_Init takes a parameter if _PS3 is defined.  As this isn't
 // enabled by default, I think it's reasonably safe that this is only for
 // PS3 builds.
 STEAM_API_PROXY_API bool SteamAPI_Init();
 STEAM_API_PROXY_API bool SteamAPI_InitSafe();
+STEAM_API_PROXY_API void SteamAPI_Shutdown();
 
-STEAM_API_PROXY_API bool SteamAPI_IsSteamRunning();
+
+//// Callback functions:
 
 // void ... ( class CCallbackBase *pCallback, SteamAPICall_t hAPICall )
 STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICall_t hAPICall);
@@ -25,16 +36,8 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICa
 // void ... ( class CCallbackBase *pCallback, int iCallback )
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallback);
 
-STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID);
-
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks();
 
-STEAM_API_PROXY_API void SteamAPI_SetBreakpadAppID(uint32 unAppID);
-STEAM_API_PROXY_API void SteamAPI_SetMiniDumpComment(const char *pchMsg);
-
-STEAM_API_PROXY_API void SteamAPI_SetTryCatchCallbacks(bool bTryCatchCallbacks);
-
-STEAM_API_PROXY_API void SteamAPI_Shutdown();
 
 // void ... ( class CCallbackBase *pCallback, SteamAPICall_t hAPICall )
 STEAM_API_PROXY_API void SteamAPI_UnregisterCallResult(void *pCallback, SteamAPICall_t hAPICall);
@@ -42,11 +45,20 @@ STEAM_API_PROXY_API void SteamAPI_UnregisterCallResult(void *pCallback, SteamAPI
 // void ... ( class CCallbackBase *pCallback )
 STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(void *pCallback);
 
+
+//// Memory dump related functions?
+// Probably won't ever be correctly implemented
+
+STEAM_API_PROXY_API void SteamAPI_SetBreakpadAppID(uint32 unAppID);
+STEAM_API_PROXY_API void SteamAPI_SetMiniDumpComment(const char *pchMsg);
 // void ... ( char const *pchVersion, char const *pchDate, char const *pchTime, bool bFullMemoryDumps, void *pvContext, PFNPreMinidumpCallback m_pfnPreMinidumpCallback )
 STEAM_API_PROXY_API void SteamAPI_UseBreakpadCrashHandler(char const *pchVersion, char const *pchDate, char const *pchTime, bool bFullMemoryDumps, void *pvContext, PFNPreMinidumpCallback m_pfnPreMinidumpCallback);
 
 // void ... ( uint32 uStructuredExceptionCode, void* pvExceptionInfo, uint32 uBuildID )
 STEAM_API_PROXY_API void SteamAPI_WriteMiniDump(uint32 uStructuredExceptionCode, void* pvExceptionInfo, uint32 uBuildID);
+
+
+//// Unsorted Functions
 
 // ISteamApps *SteamApps()
 STEAM_API_PROXY_API void *SteamApps();
@@ -139,7 +151,9 @@ STEAM_API_PROXY_API void *SteamRemoteStorage();
 // ISteamScreenshots * ... ()
 STEAM_API_PROXY_API void *SteamScreenshots();
 
-// This function does not appear in the public headers, nor the public libsteam_api.so.  Judging by the name and location in the DLL, it likely returns a pointer.
+// This function does not appear in the public headers, nor the public
+// libsteam_api.so.  Judging by the name and location in the DLL, it likely
+// returns a pointer.
 STEAM_API_PROXY_API void *SteamUGC();
 
 // ISteamUnifiedMessages * ... ()
@@ -151,9 +165,13 @@ STEAM_API_PROXY_API void *SteamUserStats();
 // ISteamUtils * ... ()
 STEAM_API_PROXY_API void *SteamUtils();
 
-STEAM_API_PROXY_API HSteamUser Steam_GetHSteamUserCurrent();
+// Note that the following are direct interfaces to SteamClient, and
+// are considered at least semi 'internal' according to Steam documentation
 STEAM_API_PROXY_API void Steam_RegisterInterfaceFuncs(void *hModule);
 STEAM_API_PROXY_API void Steam_RunCallbacks(HSteamPipe hSteamPipe, bool bGameServerCallbacks);
+STEAM_API_PROXY_API HSteamUser Steam_GetHSteamUserCurrent();
+STEAM_API_PROXY_API const char *SteamAPI_GetSteamInstallPath();
+STEAM_API_PROXY_API void SteamAPI_SetTryCatchCallbacks(bool bTryCatchCallbacks);
 
 // This is a variable, not a function.  Usage, however, might be ...problematic.
 // ISteamClient *

@@ -1,33 +1,18 @@
-// steam_api_proxy.cpp : Defines the exported functions for the DLL application.
-//
+// steam_api_proxy.cpp - Defines the exported functions for the DLL application.
 
 #include "stdafx.h"
 
 #include "logging.h"
 #include "steam_api_proxy.h"
 
+// TODO: Send this off to a separate CPP file!
+// TODO: Also, wrap it in a define of some sort, justincase we want to
+//       build a version w/o it.
 const char *steamredirect_version = "0";
 const char *steamredirect_info = "[Add built information, web address, etc here]";
 
-// TODO: This file is going to get well out of hand if it isn't split
-//       until subfiles soon.
-
-
-// TODO: Reorder these by a more logical order.  As it turns out, header
-//       order isn't important, so reorder those as well.
-
 extern "C"
 {
-
-STEAM_API_PROXY_API HSteamPipe GetHSteamPipe()
-{
-  return SteamAPI_GetHSteamPipe();
-}
-
-STEAM_API_PROXY_API HSteamUser GetHSteamUser()
-{
-  return SteamAPI_GetHSteamUser();
-}
 
 STEAM_API_PROXY_API HSteamPipe SteamAPI_GetHSteamPipe()
   __STUB__
@@ -38,12 +23,6 @@ STEAM_API_PROXY_API HSteamUser SteamAPI_GetHSteamUser()
 STEAM_API_PROXY_API const char *SteamAPI_GetSteamInstallPath()
   __STUB__
 
-STEAM_API_PROXY_API bool SteamAPI_Init()
-  __STUB__
-
-STEAM_API_PROXY_API bool SteamAPI_InitSafe()
-  __STUB__
-
 STEAM_API_PROXY_API bool SteamAPI_IsSteamRunning()
   __STUB__
 
@@ -52,19 +31,6 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICa
 
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallback)
   __STUB__
-
-// Returns TRUE if the app should quit, as Steam will restart it through
-// Steam.  This may or may not be considered 'DRM' in some sense.
-//
-// Discovered case in Da Wild that calls this function before any sort
-// of init calls.  Not sure whether this is the 'correct' behavior'.  Also,
-// unOwnAppID doesn't correspond to the value in steam_appid.txt (?).
-//
-STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
-{
-  __LOG_MSG__("(%u): overriding to FALSE", unOwnAppID);
-  return false;
-}
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
   __STUB__
@@ -211,6 +177,7 @@ STEAM_API_PROXY_API void Steam_RunCallbacks(HSteamPipe hSteamPipe, bool bGameSer
 // This is a variable, not a function.  Usage, however, might be ...problematic.
 STEAM_API_PROXY_API void *g_pSteamClientGameServer;
 
+// TODO: Off with your heads!  To a new file!
 STEAM_API_PROXY_API const char *SteamRedirect_version_string()
 {
   return steamredirect_version;

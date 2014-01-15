@@ -1,4 +1,6 @@
-// Heavily based off of steamtypes.h
+// types.h - Defines various types used project wide.
+// Note that this is heavily based off of steamtypes.h, plus including
+// various relevant typedefs and whatnot from other Steam headers.
 
 #pragma once
 
