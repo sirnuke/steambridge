@@ -45,11 +45,12 @@ __declspec(noreturn) void __cant_implement__(const char *func, const char *msg, 
   exit(1);
 }
 
-void __log_message__(const char *func, const char *msg, ...)
+void __log_message__(const char *func, const char *msg, const char *args, ...)
 {
   printf("%s ", func);
   va_list va;
-  va_start(va, msg);
-  vprintf(msg, va);
-  printf("\n");
+  va_start(va, args);
+  vprintf(args, va);
+  printf(": %s\n", msg);
 }
+

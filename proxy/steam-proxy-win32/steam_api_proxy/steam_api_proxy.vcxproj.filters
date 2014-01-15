@@ -33,6 +33,9 @@
     <ClInclude Include="logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

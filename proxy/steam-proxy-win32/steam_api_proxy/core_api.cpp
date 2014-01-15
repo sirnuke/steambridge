@@ -3,7 +3,15 @@
 #include "stdafx.h"
 
 #include "logging.h"
+#include "state.h"
 #include "steam_api_proxy.h"
+
+static bool SteamAPI_InitReal(bool safeMode)
+{
+  state.setSafeMode(safeMode);
+  // TODO: Call bridge, return results
+  return false;
+}
 
 extern "C"
 {
@@ -17,7 +25,7 @@ extern "C"
 //
 STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
 {
-  __LOG_MSG__("(%u): overriding to FALSE", unOwnAppID);
+  __LOG_ARGS_MSG__("overriding to FALSE", "(%u)", unOwnAppID);
   return false;
 }
 
@@ -31,15 +39,12 @@ STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
 // that defeats the purpose of using this project.
 STEAM_API_PROXY_API bool SteamAPI_Init()
 {
-  // TODO: Need to lookup the application, and probably record somewhere
-  //       that we aren't actually using the SAFE API.
-  return SteamAPI_InitSafe();
+  return SteamAPI_InitReal(false);
 }
 
 STEAM_API_PROXY_API bool SteamAPI_InitSafe()
 {
-  __LOG_MSG__(": Overriding to failure (FALSE)");
-  return false;
+  return SteamAPI_InitReal(true);
 }
 
 
