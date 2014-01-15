@@ -10,13 +10,20 @@
 #define STEAM_API_PROXY_API __declspec(dllimport)
 #endif
 
+#include "types.h"
+
+extern "C"
+{
+
+STEAM_API_PROXY_API HSteamPipe GetHSteamPipe();
+STEAM_API_PROXY_API HSteamUser GetHSteamUser();
+STEAM_API_PROXY_API HSteamPipe SteamAPI_GetHSteamPipe();
+STEAM_API_PROXY_API HSteamUser SteamAPI_GetHSteamUser();
+
+STEAM_API_PROXY_API const char *SteamAPI_GetSteamInstallPath();
+
 //STEAM_API_PROXY_API int fnsteam_api_proxy(void);
 /*
-1 stub GetHSteamPipe
-2 stub GetHSteamUser
-3 stub SteamAPI_GetHSteamPipe
-4 stub SteamAPI_GetHSteamUser
-5 stub SteamAPI_GetSteamInstallPath
 6 stub SteamAPI_Init
 7 stub SteamAPI_InitSafe
 8 stub SteamAPI_IsSteamRunning
@@ -72,3 +79,5 @@
 58 stub Steam_RunCallbacks
 59 stub g_pSteamClientGameServer
 */
+
+} // extern "C"

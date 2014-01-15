@@ -78,6 +78,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="steam_api_proxy.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
