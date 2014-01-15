@@ -1,22 +1,19 @@
-// steam_api_bridge.cpp : Defines the exported functions for the DLL application.
+// steam_api_bridge.cpp - Stub's the public bridge API
 //
 
 #include "stdafx.h"
+
+#include <cstdlib>
+
 #include "steam_api_bridge.h"
 
+#define __STUB__ { __stub__(); }
+ __declspec(noreturn) void __stub__()
+ {
+   exit(1);
+ }
 
-// This is an example of an exported variable
-STEAM_API_BRIDGE_API int nsteam_api_bridge=0;
-
-// This is an example of an exported function.
-STEAM_API_BRIDGE_API int fnsteam_api_bridge(void)
+extern "C"
 {
-	return 42;
-}
-
-// This is the constructor of a class that has been exported.
-// see steam_api_bridge.h for the class definition
-Csteam_api_bridge::Csteam_api_bridge()
-{
-	return;
+  STEAM_API_BRIDGE_API int steam_bridge_say_hello() __STUB__
 }

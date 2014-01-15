@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "steam_api_proxy", "steam_api_proxy\steam_api_proxy.vcxproj", "{1ED5D9C9-DEA9-4930-B202-9FF4F5223919}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06} = {AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "steam_api_bridge", "..\..\bridge\steam_api_proxy_win32\steam_api_bridge\steam_api_bridge.vcxproj", "{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{1ED5D9C9-DEA9-4930-B202-9FF4F5223919}.Debug|Win32.Build.0 = Debug|Win32
 		{1ED5D9C9-DEA9-4930-B202-9FF4F5223919}.Release|Win32.ActiveCfg = Release|Win32
 		{1ED5D9C9-DEA9-4930-B202-9FF4F5223919}.Release|Win32.Build.0 = Release|Win32
+		{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}.Debug|Win32.Build.0 = Debug|Win32
+		{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}.Release|Win32.ActiveCfg = Release|Win32
+		{AAD69738-C34B-41CA-B10B-4CBAEA7F3D06}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

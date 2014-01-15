@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 
+#include <steam_api_bridge.h>
+
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
@@ -10,6 +12,7 @@ static bool SteamAPI_InitReal(bool safeMode)
 {
   state.setSafeMode(safeMode);
   // TODO: Call bridge, return results
+  steam_bridge_say_hello();
   return false;
 }
 
