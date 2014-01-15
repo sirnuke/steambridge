@@ -15,5 +15,5 @@
 
 extern "C"
 {
-  STEAM_API_BRIDGE_API int steam_bridge_say_hello() __STUB__
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe() __STUB__
 }
