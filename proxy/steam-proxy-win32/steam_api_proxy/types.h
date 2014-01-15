@@ -83,3 +83,5 @@ const PartnerId_t k_uPartnerIdInvalid = 0;
 typedef int32 HSteamPipe;
 typedef int32 HSteamUser;
 
+typedef void (*PFNPreMinidumpCallback)(void *context);
+
