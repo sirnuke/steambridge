@@ -181,5 +181,36 @@ STEAM_API_PROXY_API void SteamGameServer_Shutdown()
 STEAM_API_PROXY_API void *SteamHTTP()
   __STUB__
 
+STEAM_API_PROXY_API void *SteamMatchmaking()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamMatchmakingServers()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamNetworking()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamRemoteStorage()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamScreenshots()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamUGC()
+  __CANT_IMPLEMENT__
+
+STEAM_API_PROXY_API void *SteamUnifiedMessages()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamUser()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamUserStats()
+  __STUB__
+
+STEAM_API_PROXY_API void *SteamUtils()
+  __STUB__
+
+
 } // extern "C"
 
