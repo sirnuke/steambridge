@@ -56,5 +56,8 @@
     <ClCompile Include="state.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="callback_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

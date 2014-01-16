@@ -34,7 +34,7 @@ STEAM_API_PROXY_API void SteamAPI_Shutdown();
 STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICall_t hAPICall);
 
 // void ... ( class CCallbackBase *pCallback, int iCallback )
-STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallback);
+STEAM_API_PROXY_API void SteamAPI_RegisterCallback(class CCallbackBase *pCallback, int iCallback);
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks();
 

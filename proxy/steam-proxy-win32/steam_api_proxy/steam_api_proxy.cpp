@@ -29,9 +29,6 @@ STEAM_API_PROXY_API bool SteamAPI_IsSteamRunning()
 STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICall_t hAPICall)
   __STUB__
 
-STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallback)
-  __STUB_ARGS__("(0x%p, %i)", pCallback, iCallback)
-
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
   __STUB__
 
