@@ -30,7 +30,7 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICa
   __STUB__
 
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(void *pCallback, int iCallback)
-  __STUB__
+  __STUB_ARGS__("(0x%p, %i)", pCallback, iCallback)
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
   __STUB__
