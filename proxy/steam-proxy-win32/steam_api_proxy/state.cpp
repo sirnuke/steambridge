@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 
-
 #include "logging.h"
 #include "state.h"
 
