@@ -50,7 +50,9 @@ static void SteamAPI_RegisterCallbackReal(CCallbackBase *pCallback, int iCallbac
   // Create new CallbackWrapper if one doesn't already exist 
   // Set wrapper->callback to iCallback?
   // Pass stuff onto the bridge
-  __STUB__
+  CallbackWrapper *wrapper = new CallbackWrapper(pCallback);
+  state.addCallbackWrapper(wrapper);
+  steam_bridge_SteamAPI_RegisterCallback(wrapper, iCallback, pCallback->GetCallbackSizeBytes());
 }
 
 extern "C"
