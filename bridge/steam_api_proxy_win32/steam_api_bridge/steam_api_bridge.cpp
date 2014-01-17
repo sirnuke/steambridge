@@ -15,5 +15,6 @@
 
 extern "C"
 {
-  STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe() __STUB__
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe() __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(void *, int, int) __STUB__;
 }
