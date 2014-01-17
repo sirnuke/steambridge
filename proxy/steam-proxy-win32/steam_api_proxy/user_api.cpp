@@ -74,7 +74,11 @@ class SteamUserWrapper
 };
 
 SteamUserWrapper::SteamUserWrapper()
-  __STUB__
+{
+  // TODO: This wraps around a hardcoded SteamUser version for the
+  //       AudioSurf demo
+  isteamuser = (void *)(steam_bridge_SteamUser("SteamUser016"));
+}
 
 HSteamUser SteamUserWrapper::GetHSteamUser()
   __STUB__
