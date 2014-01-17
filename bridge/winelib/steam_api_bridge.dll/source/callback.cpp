@@ -65,8 +65,9 @@ extern "C"
 void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int size)
 {
   // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
-  WINE_TRACE("(0x%p,%i)", wrapper, callback);
+  WINE_TRACE("(0x%p,%i,%i)", wrapper, callback, size);
   CallbackImpl *c = new CallbackImpl(wrapper, size);
+  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p)(0x%p,%i,%i)", c, wrapper, callback, size);
   SteamAPI_RegisterCallback(c, callback);
   // TODO: We should probabllly store the object.  Memory leaks and all
   //       that.  However, it's probably a safe guess that apps rarely (if ever).
