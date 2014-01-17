@@ -19,6 +19,12 @@ typedef unsigned __int64 uint64;
 typedef __int32 intp;
 typedef unsigned __int32 uintp;
 
+struct CGameID
+{
+  uint64 a;
+  uint64 b;
+};
+
 
 const int k_cubSaltSize   = 8;
 typedef	uint8 Salt_t[ k_cubSaltSize ];
@@ -88,6 +94,8 @@ typedef int32 HSteamPipe;
 typedef int32 HSteamUser;
 
 typedef void (*PFNPreMinidumpCallback)(void *context);
+
+typedef uint32 HAuthTicket;
 
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?

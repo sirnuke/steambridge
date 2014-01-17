@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <deque>
+
 class AppState
 {
   public:
@@ -13,8 +15,11 @@ class AppState
     void setSafeMode(bool safe);
     bool getSafeMode();
 
+    void addCallbackWrapper(class CallbackWrapper *wrapper);
+
   private:
     bool safeMode;
+    std::deque<class CallbackWrapper *> callbackWrappers;
 };
 
 extern AppState state;
