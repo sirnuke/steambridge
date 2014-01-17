@@ -18,6 +18,12 @@ AppState::AppState() : safeMode(false)
 AppState::~AppState()
 {
   __LOG_MSG__("Destructing...");
+  // TODO: Delete all wrappers on destruction?  Maybe?
+}
+
+void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
+{
+  callbackWrappers.push_back(wrapper);
 }
 
 void AppState::setSafeMode(bool safe) { safeMode = safe; }
