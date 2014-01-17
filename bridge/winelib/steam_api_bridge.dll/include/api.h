@@ -22,6 +22,8 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
 
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int size);
 
+STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser(const char *version);
+
 //STEAM_API_BRIDGE_API 
 } // extern "C"
 
