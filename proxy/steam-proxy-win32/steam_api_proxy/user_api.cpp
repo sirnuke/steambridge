@@ -151,7 +151,6 @@ extern "C"
 
 STEAM_API_PROXY_API void *SteamUser()
 {
-  __LOG_MSG__("Force overriding SteamUser() to return NULL (0x1)...");
   SteamUserWrapper *user = new SteamUserWrapper();
   return user;
 }
