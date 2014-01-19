@@ -31,6 +31,8 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *ste
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends();
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
     class ISteamFriends *steamFriends);
+STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
+    class ISteamFriends *steamFriends, int iFriendFlags);
 
 //STEAM_API_BRIDGE_API 
 } // extern "C"

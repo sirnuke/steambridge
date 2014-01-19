@@ -20,9 +20,17 @@ extern "C"
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
     class ISteamFriends *steamFriends)
 {
-  if (!context)
-    __ABORT_ARGS__("No context created!", "(0x%p)", steamFriends);
+  if (!steamFriends)
+    __ABORT_ARGS__("Null steamFriends pointer!", "(0x%p)", steamFriends);
   return steamFriends->GetPersonaName();
+}
+
+STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
+    class ISteamFriends *steamFriends, int iFriendFlags)
+{
+  if (!steamFriends)
+    __ABORT_ARGS__("Null steamFriends pointer!", "(0x%p)", steamFriends);
+  return steamFriends->GetFriendCount(iFriendFlags);
 }
 
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
