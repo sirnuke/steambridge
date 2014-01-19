@@ -16,7 +16,9 @@ SteamUserStatsWrapper::SteamUserStatsWrapper() : steamUserStats(NULL)
 }
 
 bool SteamUserStatsWrapper::RequestCurrentStats()
-  __STUB__
+{
+  return steam_bridge_SteamUserStats_RequestCurrentStats(steamUserStats);
+}
 
 bool SteamUserStatsWrapper::GetStat(const char *pchName, int32 *pData)
   __STUB__
