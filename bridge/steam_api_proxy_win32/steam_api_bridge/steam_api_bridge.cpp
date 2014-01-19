@@ -24,5 +24,6 @@ extern "C"
 
   STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends() __STUB__;
   STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(class ISteamFriends *) __STUB__;
+  STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(class ISteamFriends *, int) __STUB__;
 
 }

@@ -27,7 +27,9 @@ int SteamFriendsWrapper::GetPersonaState()
   __STUB__
 
 int SteamFriendsWrapper::GetFriendCount(int iFriendFlags)
-  __STUB__
+{
+  return steam_bridge_SteamFriends_GetFriendCount(isteamfriends, iFriendFlags);
+}
 
 uint64 SteamFriendsWrapper::GetFriendByIndex(int iFriend, int iFriendFlags)
   __STUB__
