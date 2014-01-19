@@ -1,3 +1,4 @@
+// user.cpp - Implements various functions related to the ISteamUser class.
 
 #include <cstdio>
 

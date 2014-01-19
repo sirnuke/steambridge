@@ -22,9 +22,12 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe(int appid);
 
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int size);
 
+// SteamUser API calls
 STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser();
-
 STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *steamUser);
+
+// SteamFriends API calls
+STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends();
 
 //STEAM_API_BRIDGE_API 
 } // extern "C"
