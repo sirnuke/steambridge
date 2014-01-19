@@ -19,11 +19,13 @@ HSteamUser SteamUserWrapper::GetHSteamUser()
   __STUB__
 
 bool SteamUserWrapper::BLoggedOn()
-  __STUB__
+{
+  return steam_bridge_SteamUser_BLoggedOn(isteamuser);
+}
 
 uint64 SteamUserWrapper::GetSteamID()
 {
-  return steam_bridge_SteamUser_GetSteamID(this->isteamuser);
+  return steam_bridge_SteamUser_GetSteamID(isteamuser);
 }
 
 int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob, uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer, bool bSecure)
