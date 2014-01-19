@@ -1,0 +1,15 @@
+proxy/steam-proxy-win32/ipch
+proxy/steam-proxy-win32/steam-proxy-win32.sdf
+proxy/steam-proxy-win32/steam-proxy-win32.opensdf
+proxy/steam-proxy-win32/steam-proxy-win32.suo
+proxy/steam-proxy-win32/Debug
+proxy/steam-proxy-win32/steam_api_proxy/Debug
+proxy/steam-proxy-win32/Release
+proxy/steam-proxy-win32/steam_api_proxy/Release
+bridge/steam_api_proxy_win32/steam_api_bridge/Release
+bridge/winelib/steam_api_bridge.dll/include/.*.swp
+bridge/winelib/steam_api_bridge.dll/source/.*.swp
+bridge/winelib/steam_api_bridge.dll/source/*.o
+bridge/winelib/steam_api_bridge.dll/*.so
+steam/.*.swp
+proxy/steam-proxy-win32/steam_api_proxy/.*.swp
