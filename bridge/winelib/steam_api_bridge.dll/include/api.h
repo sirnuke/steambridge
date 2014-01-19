@@ -34,7 +34,9 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
     class ISteamFriends *steamFriends, int iFriendFlags);
 
-//STEAM_API_BRIDGE_API 
+// SteamApps API Calls
+STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps();
+
 } // extern "C"
 
 #endif //___STEAM_API_BRIDGE_API_H___
