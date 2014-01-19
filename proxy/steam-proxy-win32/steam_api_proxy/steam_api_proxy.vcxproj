@@ -99,6 +99,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="logging.cpp" />
+    <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="state.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

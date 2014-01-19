@@ -4,6 +4,7 @@
 
 // TODO: Reorder these in a more logical order.  Header order has no
 //       impact on DLL symbol ordinals, which is their current order.
+#define ___STEAMBRIDGE_META_API___
 extern "C"
 {
 
@@ -177,8 +178,10 @@ STEAM_API_PROXY_API void SteamAPI_SetTryCatchCallbacks(bool bTryCatchCallbacks);
 // ISteamClient *
 STEAM_API_PROXY_API extern void *g_pSteamClientGameServer;
 
+#ifdef  ___STEAMBRIDGE_META_API___
 // This won't cause problems, right?
-STEAM_API_PROXY_API const char *SteamRedirect_version_string();
-STEAM_API_PROXY_API const char *SteamRedirect_info_string();
+STEAM_API_PROXY_API const char *SteamBridge_version_string();
+STEAM_API_PROXY_API const char *SteamBridge_info_string();
+#endif //___STEAMBRIDGE_META_API___
 
 } // extern "C"

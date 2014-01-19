@@ -11,7 +11,7 @@
 static bool SteamAPI_InitReal(bool safeMode)
 {
   state.setSafeMode(safeMode);
-  return steam_bridge_SteamAPI_InitSafe();
+  return steam_bridge_SteamAPI_InitSafe(12900);
 }
 
 extern "C"

@@ -10,9 +10,9 @@
 #include "user_api.h"
 
 
-SteamUserWrapper::SteamUserWrapper(const std::string &version) : version(version), isteamuser(NULL)
+SteamUserWrapper::SteamUserWrapper() : isteamuser(NULL)
 {
-  isteamuser = (void *)(steam_bridge_SteamUser(version.c_str()));
+  isteamuser = (void *)(steam_bridge_SteamUser());
 }
 
 HSteamUser SteamUserWrapper::GetHSteamUser()
@@ -86,9 +86,7 @@ extern "C"
 
 STEAM_API_PROXY_API void *SteamUser()
 {
-  // TODO: This is hardcoded to the Audiosurf demo version
-  SteamUserWrapper *user = new SteamUserWrapper("SteamUser016");
-  return user;
+  return state.getSteamUser();
 }
 
 } // extern "C"

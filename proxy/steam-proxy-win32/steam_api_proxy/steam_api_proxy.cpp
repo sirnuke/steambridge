@@ -5,12 +5,6 @@
 #include "logging.h"
 #include "steam_api_proxy.h"
 
-// TODO: Send this off to a separate CPP file!
-// TODO: Also, wrap it in a define of some sort, justincase we want to
-//       build a version w/o it.
-const char *steamredirect_version = "0";
-const char *steamredirect_info = "[Add built information, web address, etc here]";
-
 extern "C"
 {
 
@@ -173,17 +167,6 @@ STEAM_API_PROXY_API void Steam_RunCallbacks(HSteamPipe hSteamPipe, bool bGameSer
 
 // This is a variable, not a function.  Usage, however, might be ...problematic.
 STEAM_API_PROXY_API void *g_pSteamClientGameServer;
-
-// TODO: Off with your heads!  To a new file!
-STEAM_API_PROXY_API const char *SteamRedirect_version_string()
-{
-  return steamredirect_version;
-}
-
-STEAM_API_PROXY_API const char *SteamRedirect_info_string()
-{
-  return steamredirect_info;
-}
 
 } // extern "C"
 

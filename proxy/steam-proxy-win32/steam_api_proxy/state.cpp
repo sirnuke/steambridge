@@ -6,6 +6,7 @@
 
 #include "logging.h"
 #include "state.h"
+#include "user_api.h"
 
 AppState state;
 
@@ -18,7 +19,8 @@ AppState::AppState() : safeMode(false), steamUser(NULL)
 AppState::~AppState()
 {
   __LOG_MSG__("Destructing...");
-  // TODO: Delete all wrappers on destruction?  Maybe?
+  if (steamUser)
+    delete steamUser;
 }
 
 void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
@@ -26,8 +28,16 @@ void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
   callbackWrappers.push_back(wrapper);
 }
 
+SteamUserWrapper *AppState::getSteamUser()
+{ 
+  if (!steamUser)
+    steamUser = new SteamUserWrapper();
+  return steamUser; 
+}
+
+void AppState::setAppId(int appid) { this->appid = appid; }
+int  AppState::getAppId() { return appid; }
 void AppState::setSafeMode(bool safe) { safeMode = safe; }
 bool AppState::getSafeMode() { return safeMode; }
 
-class SteamUserWrapper *AppState::getSteamUser() { return steamUser; }
 

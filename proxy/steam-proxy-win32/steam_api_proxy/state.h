@@ -6,25 +6,32 @@
 
 #include <deque>
 
+class SteamUserWrapper;
+
 class AppState
 {
   public:
     AppState();
     ~AppState();
 
+    void setAppId(int appid);
+    int getAppId();
+
     void setSafeMode(bool safe);
     bool getSafeMode();
 
     void addCallbackWrapper(class CallbackWrapper *wrapper);
 
-    class SteamUserWrapper *getSteamUser();
+    SteamUserWrapper *getSteamUser();
 
   private:
+    int appid;
+
     bool safeMode;
 
     std::deque<class CallbackWrapper *> callbackWrappers;
 
-    class SteamUserWrapper *steamUser;
+    SteamUserWrapper *steamUser;
 };
 
 extern AppState state;

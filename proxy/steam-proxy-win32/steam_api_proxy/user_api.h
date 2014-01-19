@@ -9,7 +9,7 @@
 class SteamUserWrapper
 {
   public:
-    SteamUserWrapper(const std::string &version);
+    SteamUserWrapper();
 
     virtual HSteamUser GetHSteamUser();
     virtual bool BLoggedOn();
@@ -68,7 +68,9 @@ class SteamUserWrapper
     virtual bool GetEncryptedAppTicket(void *pTicket, int cbMaxTicket, uint32 *pcbTicket);
 
   private:
-    std::string version;
-
+    // TODO: This function technically changes the size/composition of
+    //       this class from ISteamUser reference that is expected.
+    //       If client code isn't really checking the sizes of everything,
+    //       it's not really an issue.
     void *isteamuser;
 };
