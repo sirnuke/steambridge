@@ -69,12 +69,6 @@ STEAM_API_PROXY_API void SteamContentServer_Shutdown()
 STEAM_API_PROXY_API void *SteamController()
   __CANT_IMPLEMENT__
 
-STEAM_API_PROXY_API void *SteamFriends()
-{
-  __LOG_MSG__("Force overriding SteamFriends to return (NULL)...");
-  return NULL;
-}
-
 STEAM_API_PROXY_API void *SteamGameServer()
   __STUB__
 

@@ -204,3 +204,13 @@ uint64 SteamFriendsWrapper::IsFollowing(uint64 steamID)
 uint64 SteamFriendsWrapper::EnumerateFollowingList(uint32 unStartIndex)
   __STUB__
 
+extern "C"
+{
+
+STEAM_API_BRIDGE_API void *SteamFriends()
+{
+  return state.getSteamFriends();
+}
+
+} // extern "C"
+

@@ -19,4 +19,5 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(void *, int, int) __STUB__;
   STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser() __STUB__;
   STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends() __STUB__;
 }
