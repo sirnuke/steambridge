@@ -45,10 +45,10 @@ CallbackImpl::CallbackImpl(void *wrapper, int size) : CCallbackBase(), wrapper(w
 }
 
 void CallbackImpl::Run(void *pvParam)
-  __STUB_ARGS__("(0x%p)", pvParam)
+  __STUB_ARGS__("(0x%p,0x%p)", this, pvParam)
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
-  __STUB_ARGS__("(0x%p,%i,%llu)", pvParam, bIOFailure, hSteamAPICall)
+  __STUB_ARGS__("(0x%p, 0x%p,%i,%llu)", this, pvParam, bIOFailure, hSteamAPICall)
 
 int CallbackImpl::GetCallbackSizeBytes()
 {
@@ -73,10 +73,11 @@ void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int siz
   // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
   WINE_TRACE("(0x%p,%i,%i)", wrapper, callback, size);
   CallbackImpl *c = new CallbackImpl(wrapper, size);
-  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p)(0x%p,%i,%i)", c, wrapper, callback, size);
+  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p,%i,%i)->(0x%p)", wrapper, callback, size, c);
   SteamAPI_RegisterCallback(c, callback);
   // TODO: We should probabllly store the object.  Memory leaks and all
-  //       that.  However, it's probably a safe guess that apps rarely (if ever).
+  //       that.  However, it's probably a safe guess that apps rarely
+  //       (if ever) change their callbacks.
 }
 
 } // extern "C"
