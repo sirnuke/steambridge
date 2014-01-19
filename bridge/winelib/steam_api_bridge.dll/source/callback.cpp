@@ -23,7 +23,8 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 class CallbackImpl : public CCallbackBase
 {
   public:
-    CallbackImpl(void *wrapper, int size);
+    CallbackImpl(steam_bridge_CallbackRunFunc run, 
+        steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int size);
     //CCallbackBase() { m_nCallbackFlags = 0; m_iCallback = 0; }
     // don't add a virtual destructor because we export this binary interface across dll's
     virtual void Run(void *pvParam);
@@ -31,8 +32,11 @@ class CallbackImpl : public CCallbackBase
     //int GetICallback() { return m_iCallback; }
     virtual int GetCallbackSizeBytes();
   private:
-    void *wrapper __attribute__ ((unused));
+    void *wrapper;
     int size;
+
+    steam_bridge_CallbackRunFunc run;
+    steam_bridge_CallbackRunArgsFunc runargs __attribute__((unused));
   //protected:
     //enum { k_ECallbackFlagsRegistered = 0x01, k_ECallbackFlagsGameServer = 0x02 };
     //uint8 m_nCallbackFlags;
@@ -40,15 +44,66 @@ class CallbackImpl : public CCallbackBase
     //friend class CCallbackMgr;
 };
 
-CallbackImpl::CallbackImpl(void *wrapper, int size) : CCallbackBase(), wrapper(wrapper), size(size)
+// typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags, void *data);
+// typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags, void *data, bool ioFailure, SteamAPICall_t steamAPICall);
+
+// A now for a word or two on the Callback function pointers:
+// 
+// Real steam_api.dll uses a simple virtual function for the callbacks.
+// This doesn't work across the Wine->Linux boundary.  Interestingly enough,
+// the Win32 code running in Wine calls the correct Linux virtual function,
+// but thiscall is considerably different between GCC and Visual Studio.
+// Noticeably, Visual Studio uses callee and LTR (!) arguments, and GCC uses
+// C-style caller and RTL arguments.  While the right function executes,
+// the arguments are messed up and it's unlikely you'd be able to get the
+// function to return correctly.
+//
+// This necessitates the two different SteamBridge DLLs, as the proxy
+// DLL is compiled under Visual Studio and offers the wrapping C++ functions
+// compiled in the same form as the real DLL, versus this bridge library that
+// compiles classes in the GCC/Linux fashion for the Linux steam_api.so.
+// For most functions, a wrapping C interface is fine, if slightly painful
+// to write all the glue code.  However, there's isn't a super logical way
+// to call functions on the Wine side from the Winelib DLL.  Winelib DLLs
+// are effectively entirely Linux code, and cannot link against Win32 DLLs.
+// Fortunately, C-style calls are nearly identical on GCC/Linux and VS/Win32.
+// At a glance of various Internet documents, it seems like returning
+// values would be trouble, but arguments are handled in the same way.
+// Note that GCC has a 16-byte stack alignment behavior that Visual Studio
+// may or may not have.  Thanks to caller cleanup and the simple nature of
+// the callback arguments (pointers, ints, and int64) this shouldn't cause
+// any trouble either way.
+//
+// So in short, this callback method is an ugly, ugly, ugly, ugly method
+// that depends heavily on somewhat coincidental behavior between Linux
+// and Windows.  It's extremely brittle, and liable to break into a
+// million pieces if you so much look at it the wrong way, or really think
+// about it.
+//
+// On a side note, despite the "this is as clean of a break from x86 as
+// we'll get so lets fix a few annoying things like the lack of general
+// purpose registers" nature of x86-64, the default conventions are still
+// different in the magical 64-bit land.  Microsoft went with a stdcall
+// style LTR argument order, but cdecl style caller cleanup.  GCC still
+// uses cdecl.  Wheee...
+
+CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
+    steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int size) 
+  : CCallbackBase(), wrapper(wrapper), size(size), run(run), runargs(runargs)
 {
 }
 
 void CallbackImpl::Run(void *pvParam)
-  __STUB_ARGS__("(0x%p,0x%p)", this, pvParam)
+{
+  WINE_TRACE("(this=0x%p,pvParam=0x%p)", this, pvParam);
+  //(*run)(wrapper, m_nCallbackFlags, pvParam);
+}
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
-  __STUB_ARGS__("(0x%p, 0x%p,%i,%llu)", this, pvParam, bIOFailure, hSteamAPICall)
+{
+  WINE_TRACE("(this=0x%p,pvParam=0x%p,bIOFailure=%i,hSteamAPICall=%llu)", this, pvParam, bIOFailure, hSteamAPICall);
+  //(*runargs)(wrapper, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
+}
 
 int CallbackImpl::GetCallbackSizeBytes()
 {
@@ -65,19 +120,25 @@ extern "C"
 void steam_bridge_SteamAPI_RunCallbacks()
 {
   WINE_TRACE("()");
+  __LOG_MSG__("Right before RunCallbacks");
   SteamAPI_RunCallbacks();
+  __LOG_MSG__("Right after RunCallbacks");
 }
 
-void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int size)
+void steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run, 
+    steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int callback, 
+    int size)
 {
   // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
-  WINE_TRACE("(0x%p,%i,%i)", wrapper, callback, size);
-  CallbackImpl *c = new CallbackImpl(wrapper, size);
+  WINE_TRACE("(0x%p,0x%p,0x%p,%i,%i)", run, runargs, wrapper, callback, size);
+  CallbackImpl *c = new CallbackImpl(run, runargs, wrapper, size);
   __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p,%i,%i)->(0x%p)", wrapper, callback, size, c);
   SteamAPI_RegisterCallback(c, callback);
   // TODO: We should probabllly store the object.  Memory leaks and all
   //       that.  However, it's probably a safe guess that apps rarely
   //       (if ever) change their callbacks.
+  // TODO: Flags are probably being set after RegisterCallback.
+  //       Should update the win32 side proxy (return it as a value?)
 }
 
 } // extern "C"

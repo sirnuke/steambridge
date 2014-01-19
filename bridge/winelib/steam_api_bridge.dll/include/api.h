@@ -15,11 +15,19 @@
 #define  STEAM_API_BRIDGE_API 
 #endif //STEAM_API_BRIDGE_API 
 
+// Callback function pointer types
+// See documentation in callback.cpp for more information about this
+typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags,
+    void *data);
+typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags,
+    void *data, bool ioFailure, SteamAPICall_t steamAPICall);
+
 extern "C"
 {
 
 STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe(int appid);
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(
+    steam_bridge_CallbackRunFunc run, steam_bridge_CallbackRunArgsFunc runargs,
     void *wrapper, int callback, int size);
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
 
