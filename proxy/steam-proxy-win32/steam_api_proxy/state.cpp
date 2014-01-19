@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 
+#include "apps_api.h"
 #include "friends_api.h"
 #include "logging.h"
 #include "state.h"
@@ -12,7 +13,8 @@
 AppState state;
 
 
-AppState::AppState() : safeMode(false), steamUser(NULL), steamFriends(NULL)
+AppState::AppState() 
+  : safeMode(false), steamUser(NULL), steamFriends(NULL), steamApps(NULL)
 {
   __LOG_MSG__("Constructing...");
 }
@@ -24,6 +26,8 @@ AppState::~AppState()
     delete steamUser;
   if (steamFriends)
     delete steamFriends;
+  if (steamApps)
+    delete steamApps;
 }
 
 void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
@@ -43,6 +47,13 @@ SteamFriendsWrapper *AppState::getSteamFriends()
   if (!steamFriends)
     steamFriends = new SteamFriendsWrapper();
   return steamFriends;
+}
+
+SteamAppsWrapper *AppState::getSteamApps()
+{
+  if (!steamApps)
+    steamApps = new SteamAppsWrapper();
+  return steamApps;
 }
 
 void AppState::setAppId(int appid) { this->appid = appid; }

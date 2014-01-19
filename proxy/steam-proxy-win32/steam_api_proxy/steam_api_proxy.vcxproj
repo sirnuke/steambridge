@@ -80,6 +80,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="apps_api.h" />
     <ClInclude Include="friends_api.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="state.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="user_api.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="apps_api.cpp" />
     <ClCompile Include="callback_api.cpp" />
     <ClCompile Include="core_api.cpp" />
     <ClCompile Include="dllmain.cpp">

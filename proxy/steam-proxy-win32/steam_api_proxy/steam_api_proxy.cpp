@@ -50,9 +50,6 @@ STEAM_API_PROXY_API void SteamAPI_UseBreakpadCrashHandler(char const *pchVersion
 STEAM_API_PROXY_API void SteamAPI_WriteMiniDump(uint32 uStructuredExceptionCode, void* pvExceptionInfo, uint32 uBuildID)
   __STUB__
 
-STEAM_API_PROXY_API void *SteamApps()
-  __STUB__
-
 STEAM_API_PROXY_API void *SteamClient()
   __STUB__
 

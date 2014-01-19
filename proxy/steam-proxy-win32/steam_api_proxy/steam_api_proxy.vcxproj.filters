@@ -42,6 +42,9 @@
     <ClInclude Include="friends_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="apps_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="friends_api.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="apps_api.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
