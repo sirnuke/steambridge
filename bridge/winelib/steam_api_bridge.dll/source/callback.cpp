@@ -62,6 +62,12 @@ int CallbackImpl::GetCallbackSizeBytes()
 extern "C"
 {
 
+void steam_bridge_SteamAPI_RunCallbacks()
+{
+  WINE_TRACE("()");
+  SteamAPI_RunCallbacks();
+}
+
 void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, int callback, int size)
 {
   // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
