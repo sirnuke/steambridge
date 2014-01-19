@@ -36,6 +36,9 @@
     <ClInclude Include="state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="user_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -72,5 +72,5 @@ class SteamUserWrapper
     //       this class from ISteamUser reference that is expected.
     //       If client code isn't really checking the sizes of everything,
     //       it's not really an issue.
-    void *isteamuser;
+    class ISteamUser *isteamuser;
 };

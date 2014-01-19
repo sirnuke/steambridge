@@ -86,6 +86,7 @@
     <ClInclude Include="steam_api_proxy.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="types.h" />
+    <ClInclude Include="user_api.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="callback_api.cpp" />
