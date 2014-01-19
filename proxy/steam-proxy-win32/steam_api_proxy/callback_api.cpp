@@ -45,16 +45,6 @@ class CallbackWrapper
     int callback;
 };
 
-static void SteamAPI_RegisterCallbackReal(CCallbackBase *pCallback, int iCallback)
-{
-  // Create new CallbackWrapper if one doesn't already exist 
-  // Set wrapper->callback to iCallback?
-  // Pass stuff onto the bridge
-  CallbackWrapper *wrapper = new CallbackWrapper(pCallback);
-  state.addCallbackWrapper(wrapper);
-  steam_bridge_SteamAPI_RegisterCallback(wrapper, iCallback, pCallback->GetCallbackSizeBytes());
-}
-
 extern "C"
 {
 
@@ -66,8 +56,12 @@ STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(class CCallbackBase *pCallback, int iCallback)
 {
-  __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i)", pCallback, iCallback);
-  SteamAPI_RegisterCallbackReal(pCallback, iCallback);
+  CallbackWrapper *wrapper = new CallbackWrapper(pCallback);
+  __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i,%i)->(0x%p)", pCallback,
+      iCallback, pCallback->GetCallbackSizeBytes(), wrapper);
+  state.addCallbackWrapper(wrapper);
+  steam_bridge_SteamAPI_RegisterCallback(wrapper, iCallback,
+      pCallback->GetCallbackSizeBytes());
 }
 
 }
