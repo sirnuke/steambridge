@@ -45,6 +45,8 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
 
 // SteamUserStats API Calls
 STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats();
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
+    class ISteamUserStats *steamUserStats);
 
 } // extern "C"
 

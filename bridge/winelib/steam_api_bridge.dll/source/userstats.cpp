@@ -17,6 +17,17 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
+    class ISteamUserStats *steamUserStats)
+{
+  WINE_TRACE("(0x%p)", steamUserStats);
+
+  if (!steamUserStats)
+    __ABORT__("NULL steamUserStats pointer!");
+
+  return steamUserStats->RequestCurrentStats();
+}
+
 STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats()
 {
   WINE_TRACE("()");
