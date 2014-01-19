@@ -17,9 +17,14 @@ class AppState
 
     void addCallbackWrapper(class CallbackWrapper *wrapper);
 
+    class SteamUserWrapper *getSteamUser();
+
   private:
     bool safeMode;
+
     std::deque<class CallbackWrapper *> callbackWrappers;
+
+    class SteamUserWrapper *steamUser;
 };
 
 extern AppState state;

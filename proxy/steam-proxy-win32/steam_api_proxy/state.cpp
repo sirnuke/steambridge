@@ -10,7 +10,7 @@
 AppState state;
 
 
-AppState::AppState() : safeMode(false)
+AppState::AppState() : safeMode(false), steamUser(NULL)
 {
   __LOG_MSG__("Constructing...");
 }
@@ -28,4 +28,6 @@ void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
 
 void AppState::setSafeMode(bool safe) { safeMode = safe; }
 bool AppState::getSafeMode() { return safeMode; }
+
+class SteamUserWrapper *AppState::getSteamUser() { return steamUser; }
 
