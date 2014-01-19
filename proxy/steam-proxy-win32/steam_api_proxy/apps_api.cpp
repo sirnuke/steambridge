@@ -33,10 +33,12 @@ const char *SteamAppsWrapper::GetCurrentGameLanguage()
 const char *SteamAppsWrapper::GetAvailableGameLanguages()
   __STUB__
 
-bool SteamAppsWrapper::BIsSubscribedApp(AppId_t appID)
-  __STUB__
+bool SteamAppsWrapper::BIsSubscribedApp(AppId_t appId)
+{
+  return steam_bridge_SteamApps_BIsSubscribedApp(steamApps, appId);
+}
 
-bool SteamAppsWrapper::BIsDlcInstalled(AppId_t appID)
+bool SteamAppsWrapper::BIsDlcInstalled(AppId_t appId)
   __STUB__
 
 uint32 SteamAppsWrapper::GetEarliestPurchaseUnixTime(AppId_t nAppID)

@@ -20,5 +20,7 @@ typedef unsigned __int64 uint64;
 typedef __int32 intp;
 typedef unsigned __int32 uintp;
 
+typedef uint32 AppId_t;
+
 
 #include "../../winelib/steam_api_bridge.dll/include/api.h"

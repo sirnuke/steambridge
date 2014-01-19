@@ -27,5 +27,5 @@ extern "C"
   STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(class ISteamFriends *, int) __STUB__;
 
   STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps() __STUB__;
-
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(class ISteamApps *, AppId_t) __STUB__;
 }

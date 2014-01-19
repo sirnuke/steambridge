@@ -19,11 +19,10 @@ class SteamAppsWrapper
     virtual const char *GetCurrentGameLanguage();
     virtual const char *GetAvailableGameLanguages();
 
-    virtual bool BIsSubscribedApp(AppId_t appID);
+    virtual bool BIsSubscribedApp(AppId_t appId);
+    virtual bool BIsDlcInstalled(AppId_t appId);
 
-    virtual bool BIsDlcInstalled(AppId_t appID);
-
-    virtual uint32 GetEarliestPurchaseUnixTime(AppId_t nAppID);
+    virtual uint32 GetEarliestPurchaseUnixTime(AppId_t nAppId);
 
     virtual bool BIsSubscribedFromFreeWeekend();
 
