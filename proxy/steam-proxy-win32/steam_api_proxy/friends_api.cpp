@@ -1,4 +1,5 @@
-// friendsl_api.cpp - Implements the friends wrapper and various related APIs.
+// friends_api.cpp - Implements the friends wrapper and various related APIs.
+
 #include "stdafx.h"
 
 #include <steam_api_bridge.h>
