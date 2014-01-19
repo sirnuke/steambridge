@@ -101,5 +101,7 @@ class SteamUserStatsWrapper
     virtual int32 GetGlobalStatHistory(const char *pchStatName, int64 *pData, uint32 cubData);
     virtual int32 GetGlobalStatHistory(const char *pchStatName, double *pData, uint32 cubData);
 
+  private:
+    class ISteamUserStats *steamUserStats;
 };
 

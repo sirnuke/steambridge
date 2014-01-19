@@ -9,12 +9,14 @@
 #include "logging.h"
 #include "state.h"
 #include "user_api.h"
+#include "userstats_api.h"
 
 AppState state;
 
 
 AppState::AppState() 
-  : safeMode(false), steamUser(NULL), steamFriends(NULL), steamApps(NULL)
+  : safeMode(false), steamUser(NULL), steamFriends(NULL), steamApps(NULL),
+    steamUserStats(NULL)
 {
   __LOG_MSG__("Constructing...");
 }
@@ -28,6 +30,8 @@ AppState::~AppState()
     delete steamFriends;
   if (steamApps)
     delete steamApps;
+  if (steamUserStats)
+    delete steamUserStats;
 }
 
 void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
@@ -54,6 +58,13 @@ SteamAppsWrapper *AppState::getSteamApps()
   if (!steamApps)
     steamApps = new SteamAppsWrapper();
   return steamApps;
+}
+
+SteamUserStatsWrapper *AppState::getSteamUserStats()
+{
+  if (!steamUserStats)
+    steamUserStats = new SteamUserStatsWrapper();
+  return steamUserStats;
 }
 
 void AppState::setAppId(int appid) { this->appid = appid; }

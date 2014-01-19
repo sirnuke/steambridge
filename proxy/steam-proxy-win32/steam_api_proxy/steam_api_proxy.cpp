@@ -139,9 +139,6 @@ STEAM_API_PROXY_API void *SteamUGC()
 STEAM_API_PROXY_API void *SteamUnifiedMessages()
   __STUB__
 
-STEAM_API_PROXY_API void *SteamUserStats()
-  __STUB__
-
 STEAM_API_PROXY_API void *SteamUtils()
   __STUB__
 

@@ -10,8 +10,10 @@
 #include "userstats_api.h"
 #include "types.h"
 
-SteamUserStatsWrapper::SteamUserStatsWrapper()
-  __STUB__
+SteamUserStatsWrapper::SteamUserStatsWrapper() : steamUserStats(NULL)
+{
+    steamUserStats = steam_bridge_SteamUserStats();
+}
 
 bool SteamUserStatsWrapper::RequestCurrentStats()
   __STUB__
@@ -135,4 +137,12 @@ int32 SteamUserStatsWrapper::GetGlobalStatHistory(const char *pchStatName, int64
 
 int32 SteamUserStatsWrapper::GetGlobalStatHistory(const char *pchStatName, double *pData, uint32 cubData)
   __STUB__
+
+extern "C"
+{
+  STEAM_API_PROXY_API void *SteamUserStats()
+  {
+    return state.getSteamUserStats();
+  }
+}
 
