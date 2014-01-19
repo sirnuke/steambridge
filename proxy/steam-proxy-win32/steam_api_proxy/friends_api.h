@@ -26,10 +26,9 @@ class SteamFriendsWrapper
 
     virtual const char *GetPersonaName();
 
-    // SteamAPICall_t ... (const char *)
-    virtual uint64 SetPersonaName(const char *pchPersonaName);
+    virtual SteamAPICall_t SetPersonaName(const char *pchPersonaName);
 
-    // int ... ()
+    // EPersonaState ... ()
     virtual int GetPersonaState();
 
     virtual int GetFriendCount(int iFriendFlags);
@@ -72,7 +71,7 @@ class SteamFriendsWrapper
     virtual bool GetClanActivityCounts(uint64 steamIDClan, int *pnOnline, int *pnInGame, int *pnChatting);
 
     // virtual SteamAPICall_t ... (CSteamID *psteamIDClans, int cClansToRequest)
-    virtual uint64 DownloadClanActivityCounts(uint64 *psteamIDClans, int cClansToRequest);
+    virtual SteamAPICall_t DownloadClanActivityCounts(uint64 *psteamIDClans, int cClansToRequest);
 
     // int ... (CSteamID)
     virtual int GetFriendCountFromSource(uint64 steamIDSource);
@@ -94,7 +93,7 @@ class SteamFriendsWrapper
     virtual void ActivateGameOverlayToWebPage(const char *pchURL);
 
     // void ... (AppId_t, EOverlayToStoreFlag)
-    virtual void ActivateGameOverlayToStore(uint32 nAppID, int eFlag);
+    virtual void ActivateGameOverlayToStore(AppId_t nAppID, int eFlag);
 
     // void ... (CSteamID)
     virtual void SetPlayedWith(uint64 steamIDUserPlayedWith);
@@ -105,17 +104,17 @@ class SteamFriendsWrapper
     // int ... (CSteamID)
     virtual int GetSmallFriendAvatar(uint64 steamIDFriend);
 
-    // int ... (CSteamID);
+    // int ... (CSteamID)
     virtual int GetMediumFriendAvatar(uint64 steamIDFriend);
 
-    // int ... (CSteamID);
+    // int ... (CSteamID)
     virtual int GetLargeFriendAvatar(uint64 steamIDFriend);
 
     // bool ... (CSteamID, bool)
     virtual bool RequestUserInformation(uint64 steamIDUser, bool bRequireNameOnly);
 
     // SteamAPICall_t ... (CSteamID)
-    virtual uint64 RequestClanOfficerList(uint64 steamIDClan);
+    virtual SteamAPICall_t RequestClanOfficerList(uint64 steamIDClan);
 
     // CSteamID ... (CSteamID)
     virtual uint64 GetClanOwner(uint64 steamIDClan);
@@ -156,10 +155,10 @@ class SteamFriendsWrapper
     virtual int GetFriendCoplayTime(uint64 steamIDFriend);
 
     // AppId_t ... (CSteamID)
-    virtual uint32 GetFriendCoplayGame(uint64 steamIDFriend);
+    virtual AppId_t GetFriendCoplayGame(uint64 steamIDFriend);
 
     // SteamAPICall_t ... (CSteamID)
-    virtual uint64 JoinClanChatRoom(uint64 steamIDClan);
+    virtual SteamAPICall_t JoinClanChatRoom(uint64 steamIDClan);
 
     // bool ... (CSteamID)
     virtual bool LeaveClanChatRoom(uint64 steamIDClan);
@@ -173,8 +172,10 @@ class SteamFriendsWrapper
     // bool ... (CSteamID, const char *)
     virtual bool SendClanChatMessage(uint64 steamIDClanChat, const char *pchText);
 
+    // The last two parameters aren't named in the isteamfriends.h header.
+    // Persumably just an oversight.
     // int ... (CSteamID, int, void *, int, EChatEntryType *, CSteamID *)
-    virtual int GetClanChatMessage(uint64 steamIDClanChat, int iMessage, void *prgchText, int cchTextMax, int *, uint64 * );
+    virtual int GetClanChatMessage(uint64 steamIDClanChat, int iMessage, void *prgchText, int cchTextMax, int *, uint64 *);
 
     // bool ... (CSteamID, CSteamID)
     virtual bool IsClanChatAdmin(uint64 steamIDClanChat, uint64 steamIDUser);
@@ -194,19 +195,18 @@ class SteamFriendsWrapper
     // bool ... (CSteamID, const char *)
     virtual bool ReplyToFriendMessage(uint64 steamIDFriend, const char *pchMsgToSend);
 
-    // int ... ( CSteamID, int, void *, int, EChatEntryType *)
+    // int ... (CSteamID, int, void *, int, EChatEntryType *)
     virtual int GetFriendMessage(uint64 steamIDFriend, int iMessageID, void *pvData, int cubData, int *peChatEntryType);
 
     // SteamAPICall_t ... (CSteamID)
-    virtual uint64 GetFollowerCount(uint64 steamID);
+    virtual SteamAPICall_t GetFollowerCount(uint64 steamID);
 
     // SteamAPICall_t ... (CSteamID)
-    virtual uint64 IsFollowing(uint64 steamID);
+    virtual SteamAPICall_t IsFollowing(uint64 steamID);
 
-    // SteamAPICall_t ... (uint32)
-    virtual uint64 EnumerateFollowingList(uint32 unStartIndex);
+    virtual SteamAPICall_t EnumerateFollowingList(uint32 unStartIndex);
 
   private:
-    class ISteamFriends *isteamfriends;
+    class ISteamFriends *steamFriends;
 };
 

@@ -11,17 +11,17 @@
 #include "types.h"
 
 
-SteamFriendsWrapper::SteamFriendsWrapper()
+SteamFriendsWrapper::SteamFriendsWrapper() : steamFriends(NULL)
 {
-  isteamfriends = steam_bridge_SteamFriends();
+  steamFriends = steam_bridge_SteamFriends();
 }
 
 const char *SteamFriendsWrapper::GetPersonaName()
 {
-  return steam_bridge_SteamFriends_GetPersonaName(isteamfriends);
+  return steam_bridge_SteamFriends_GetPersonaName(steamFriends);
 }
 
-uint64 SteamFriendsWrapper::SetPersonaName(const char *pchPersonaName)
+SteamAPICall_t SteamFriendsWrapper::SetPersonaName(const char *pchPersonaName)
   __STUB__
 
 int SteamFriendsWrapper::GetPersonaState()
@@ -29,7 +29,7 @@ int SteamFriendsWrapper::GetPersonaState()
 
 int SteamFriendsWrapper::GetFriendCount(int iFriendFlags)
 {
-  return steam_bridge_SteamFriends_GetFriendCount(isteamfriends, iFriendFlags);
+  return steam_bridge_SteamFriends_GetFriendCount(steamFriends, iFriendFlags);
 }
 
 uint64 SteamFriendsWrapper::GetFriendByIndex(int iFriend, int iFriendFlags)
@@ -44,7 +44,7 @@ int SteamFriendsWrapper::GetFriendPersonaState(uint64 steamIDFriend)
 const char *SteamFriendsWrapper::GetFriendPersonaName(uint64 steamIDFriend)
   __STUB__
 
-bool SteamFriendsWrapper::GetFriendGamePlayed(uint64 steamIDFriend, FriendGameInfo_t *pFriendGameInfo )
+bool SteamFriendsWrapper::GetFriendGamePlayed(uint64 steamIDFriend, FriendGameInfo_t *pFriendGameInfo)
   __STUB__
 
 const char *SteamFriendsWrapper::GetFriendPersonaNameHistory(uint64 steamIDFriend, int iPersonaName)
@@ -68,7 +68,7 @@ const char *SteamFriendsWrapper::GetClanTag(uint64 steamIDClan)
 bool SteamFriendsWrapper::GetClanActivityCounts(uint64 steamIDClan, int *pnOnline, int *pnInGame, int *pnChatting)
   __STUB__
 
-uint64 SteamFriendsWrapper::DownloadClanActivityCounts(uint64 *psteamIDClans, int cClansToRequest)
+SteamAPICall_t SteamFriendsWrapper::DownloadClanActivityCounts(uint64 *psteamIDClans, int cClansToRequest)
   __STUB__
 
 int SteamFriendsWrapper::GetFriendCountFromSource(uint64 steamIDSource)
@@ -92,7 +92,7 @@ void SteamFriendsWrapper::ActivateGameOverlayToUser(const char *pchDialog, uint6
 void SteamFriendsWrapper::ActivateGameOverlayToWebPage(const char *pchURL)
   __STUB__
 
-void SteamFriendsWrapper::ActivateGameOverlayToStore(uint32 nAppID, int eFlag)
+void SteamFriendsWrapper::ActivateGameOverlayToStore(AppId_t nAppID, int eFlag)
   __STUB__
 
 void SteamFriendsWrapper::SetPlayedWith(uint64 steamIDUserPlayedWith)
@@ -113,7 +113,7 @@ int SteamFriendsWrapper::GetLargeFriendAvatar(uint64 steamIDFriend)
 bool SteamFriendsWrapper::RequestUserInformation(uint64 steamIDUser, bool bRequireNameOnly)
   __STUB__
 
-uint64 SteamFriendsWrapper::RequestClanOfficerList(uint64 steamIDClan)
+SteamAPICall_t SteamFriendsWrapper::RequestClanOfficerList(uint64 steamIDClan)
   __STUB__
 
 uint64 SteamFriendsWrapper::GetClanOwner(uint64 steamIDClan)
@@ -158,10 +158,10 @@ uint64 SteamFriendsWrapper::GetCoplayFriend(int iCoplayFriend)
 int SteamFriendsWrapper::GetFriendCoplayTime(uint64 steamIDFriend)
   __STUB__
 
-uint32 SteamFriendsWrapper::GetFriendCoplayGame(uint64 steamIDFriend)
+AppId_t SteamFriendsWrapper::GetFriendCoplayGame(uint64 steamIDFriend)
   __STUB__
 
-uint64 SteamFriendsWrapper::JoinClanChatRoom(uint64 steamIDClan)
+SteamAPICall_t SteamFriendsWrapper::JoinClanChatRoom(uint64 steamIDClan)
   __STUB__
 
 bool SteamFriendsWrapper::LeaveClanChatRoom(uint64 steamIDClan)
@@ -176,7 +176,7 @@ uint64 SteamFriendsWrapper::GetChatMemberByIndex(uint64 steamIDClan, int iUser)
 bool SteamFriendsWrapper::SendClanChatMessage(uint64 steamIDClanChat, const char *pchText)
   __STUB__
 
-int SteamFriendsWrapper::GetClanChatMessage(uint64 steamIDClanChat, int iMessage, void *prgchText, int cchTextMax, int *, uint64 * )
+int SteamFriendsWrapper::GetClanChatMessage(uint64 steamIDClanChat, int iMessage, void *prgchText, int cchTextMax, int *, uint64 *)
   __STUB__
 
 bool SteamFriendsWrapper::IsClanChatAdmin(uint64 steamIDClanChat, uint64 steamIDUser)
@@ -200,13 +200,13 @@ bool SteamFriendsWrapper::ReplyToFriendMessage(uint64 steamIDFriend, const char 
 int SteamFriendsWrapper::GetFriendMessage(uint64 steamIDFriend, int iMessageID, void *pvData, int cubData, int *peChatEntryType)
   __STUB__
 
-uint64 SteamFriendsWrapper::GetFollowerCount(uint64 steamID)
+SteamAPICall_t SteamFriendsWrapper::GetFollowerCount(uint64 steamID)
   __STUB__
 
-uint64 SteamFriendsWrapper::IsFollowing(uint64 steamID)
+SteamAPICall_t SteamFriendsWrapper::IsFollowing(uint64 steamID)
   __STUB__
 
-uint64 SteamFriendsWrapper::EnumerateFollowingList(uint32 unStartIndex)
+SteamAPICall_t SteamFriendsWrapper::EnumerateFollowingList(uint32 unStartIndex)
   __STUB__
 
 extern "C"
