@@ -35,7 +35,6 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *ste
   return steamUser->BLoggedOn();
 }
 
-
 STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser()
 {
   // TODO: Should we print out a message in this case?  This should only
