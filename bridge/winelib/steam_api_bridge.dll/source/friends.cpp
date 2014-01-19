@@ -17,6 +17,13 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
+    class ISteamFriends *steamFriends)
+{
+  if (!context)
+    __ABORT_ARGS__("No context created!", "(0x%p)", steamFriends);
+  return steamFriends->GetPersonaName();
+}
 
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
 {

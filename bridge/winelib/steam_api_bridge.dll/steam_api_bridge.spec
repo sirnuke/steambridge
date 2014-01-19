@@ -4,4 +4,5 @@
 @ cdecl steam_bridge_SteamUser(str)
 @ cdecl steam_bridge_SteamUser_GetSteamID(ptr)
 @ cdecl steam_bridge_SteamFriends()
+@ cdecl steam_bridge_SteamFriends_GetPersonaName(ptr)
 

@@ -28,6 +28,8 @@ STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *
 
 // SteamFriends API calls
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends();
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
+    class ISteamFriends *steamFriends);
 
 //STEAM_API_BRIDGE_API 
 } // extern "C"
