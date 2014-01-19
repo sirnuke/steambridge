@@ -8,6 +8,11 @@
 // FYI: Thou shall not include newlines inside of __STUB__/etc macro
 //      string arguments (if possible, as it'll screw up formatting).
 
+#define __ABORT__(MSG) __abort__(__PRETTY_FUNCTION__, MSG, "")
+#define __ABORT_ARGS__(MSG, ARGS, ...) __abort__(__PRETTY_FUNCTION__, MSG, ARGS, __VA_ARGS__)
+void __abort__(const char *func, const char *msg, const char *args, ...) 
+  __attribute__ ((noreturn));
+
 #define __STUB__ { __stub__(__PRETTY_FUNCTION__ , ""); }
 #define __STUB_ARGS__(ARGS, ...) { __stub__(__PRETTY_FUNCTION__ , ARGS, __VA_ARGS__); }
 void __stub__(const char *func, const char *args, ...) __attribute__ ((noreturn));

@@ -24,6 +24,8 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(void *wrapper, 
 
 STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser();
 
+STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *steamUser);
+
 //STEAM_API_BRIDGE_API 
 } // extern "C"
 

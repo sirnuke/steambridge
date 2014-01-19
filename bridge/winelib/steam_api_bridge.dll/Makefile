@@ -36,7 +36,7 @@ steam_api_bridge_dll_C_SRCS=
 steam_api_bridge_dll_CXX_SRCS= source/callback.cpp \
 			source/core.cpp \
 			source/logging.cpp \
-			source/steamclient.cpp
+			source/user.cpp
 steam_api_bridge_dll_RC_SRCS=
 steam_api_bridge_dll_LDFLAGS= -shared \
 			$(steam_api_bridge_dll_MODULE:.dll=.spec) \
