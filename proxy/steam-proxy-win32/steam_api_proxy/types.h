@@ -97,6 +97,14 @@ typedef void (*PFNPreMinidumpCallback)(void *context);
 
 typedef uint32 HAuthTicket;
 
+typedef uint64 SteamLeaderboard_t;
+typedef uint64 SteamLeaderboardEntries_t;
+
+// This is a work around for the LeaderboardEntry_t, as it's only used as a pointer (void*)
+typedef void LeaderboardEntry_t;
+
+typedef uint64 UGCHandle_t;
+
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?
 #ifdef STEAM_API_PROXY_EXPORTS
