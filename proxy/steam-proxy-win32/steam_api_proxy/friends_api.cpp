@@ -12,11 +12,13 @@
 
 SteamFriendsWrapper::SteamFriendsWrapper()
 {
-  //isteamfriends = steam_bridge_SteamFriends();
+  isteamfriends = steam_bridge_SteamFriends();
 }
 
 const char *SteamFriendsWrapper::GetPersonaName()
-  __STUB__
+{
+  return steam_bridge_SteamFriends_GetPersonaName(isteamfriends);
+}
 
 uint64 SteamFriendsWrapper::SetPersonaName(const char *pchPersonaName)
   __STUB__
