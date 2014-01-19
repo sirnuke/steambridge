@@ -28,7 +28,9 @@ bool SteamAppsWrapper::BIsVACBanned()
   __STUB__
 
 const char *SteamAppsWrapper::GetCurrentGameLanguage()
-  __STUB__
+{
+  return steam_bridge_SteamApps_GetCurrentGameLanguage(steamApps);
+}
 
 const char *SteamAppsWrapper::GetAvailableGameLanguages()
   __STUB__
