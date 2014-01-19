@@ -16,4 +16,5 @@
 
 # SteamApps API Calls
 @ cdecl steam_bridge_SteamApps()
+@ cdecl steam_bridge_SteamApps_BIsSubscribedApp(ptr long)
 
