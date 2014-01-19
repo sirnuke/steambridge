@@ -25,7 +25,7 @@ STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *
   // Confirm the size is 8bytes, which is required per the headers
   if (sizeof(CSteamID) != 8)
     __ABORT_ARGS__("CSteamID doesn't match the expected size! (Should be 64bits/8bytes)", "(%lu/8)", sizeof(CSteamID));
-  return context->getSteamUser()->GetSteamID().ConvertToUint64();
+  return steamUser->GetSteamID().ConvertToUint64();
 }
 
 STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser()
