@@ -13,6 +13,7 @@
 
 // Local headers
 #include "api.h"
+#include "core.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -20,15 +21,12 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
-STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser(const char *version)
+STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser()
 {
-  // TODO: It might be easier/safer to just reimplement the
-  //       CSteamAPIContext.  Calling this function multiple types probably
-  //       create multiple copies of ISteamUser, while just one exists in 
-  //       the real API.  Note that this is handled by the Proxy API at 
-  //       the moment.
-  ISteamUser *user = SteamClient()->GetISteamUser(SteamAPI_GetHSteamUser(), SteamAPI_GetHSteamUser(), version);
-  return user;
+  // TODO: Should we print out a message in this case?  This should only
+  //       happen if SteamAPI_Init isn't called, or if it fails.
+  if (!context) return NULL;
+  return context->getSteamUser();
 }
 
 }
