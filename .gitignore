@@ -7,6 +7,7 @@ proxy/steam-proxy-win32/steam_api_proxy/Debug
 proxy/steam-proxy-win32/Release
 proxy/steam-proxy-win32/steam_api_proxy/Release
 bridge/steam_api_proxy_win32/steam_api_bridge/Release
+bridge/steam_api_proxy_win32/steam_api_bridge/Debug
 bridge/winelib/steam_api_bridge.dll/include/.*.swp
 bridge/winelib/steam_api_bridge.dll/source/.*.swp
 bridge/winelib/steam_api_bridge.dll/source/*.o
