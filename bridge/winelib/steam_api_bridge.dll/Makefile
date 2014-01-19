@@ -38,7 +38,8 @@ steam_api_bridge_dll_CXX_SRCS= source/apps.cpp \
 			source/core.cpp \
 			source/friends.cpp \
 			source/logging.cpp \
-			source/user.cpp
+			source/user.cpp \
+			source/userstats.cpp
 steam_api_bridge_dll_RC_SRCS=
 steam_api_bridge_dll_LDFLAGS= -shared \
 			$(steam_api_bridge_dll_MODULE:.dll=.spec) \

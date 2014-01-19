@@ -19,3 +19,6 @@
 @ cdecl steam_bridge_SteamApps_BIsSubscribedApp(ptr long)
 @ cdecl steam_bridge_SteamApps_GetCurrentGameLanguage()
 
+# SteamUserStats API Calls
+@ cdecl steam_bridge_SteamUserStats()
+

@@ -43,6 +43,9 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
     class ISteamApps *steamApps);
 
+// SteamUserStats API Calls
+STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats();
+
 } // extern "C"
 
 #endif //___STEAM_API_BRIDGE_API_H___
