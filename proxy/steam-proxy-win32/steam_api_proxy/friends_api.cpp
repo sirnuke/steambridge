@@ -211,7 +211,7 @@ uint64 SteamFriendsWrapper::EnumerateFollowingList(uint32 unStartIndex)
 extern "C"
 {
 
-STEAM_API_BRIDGE_API void *SteamFriends()
+STEAM_API_PROXY_API void *SteamFriends()
 {
   return state.getSteamFriends();
 }
