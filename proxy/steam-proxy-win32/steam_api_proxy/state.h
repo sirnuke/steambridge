@@ -7,6 +7,7 @@
 #include <deque>
 
 class SteamUserWrapper;
+class SteamFriendsWrapper;
 
 class AppState
 {
@@ -23,6 +24,7 @@ class AppState
     void addCallbackWrapper(class CallbackWrapper *wrapper);
 
     SteamUserWrapper *getSteamUser();
+    SteamFriendsWrapper *getSteamFriends();
 
   private:
     int appid;
@@ -32,6 +34,7 @@ class AppState
     std::deque<class CallbackWrapper *> callbackWrappers;
 
     SteamUserWrapper *steamUser;
+    SteamFriendsWrapper *steamFriends;
 };
 
 extern AppState state;

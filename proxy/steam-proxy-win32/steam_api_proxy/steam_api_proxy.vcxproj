@@ -80,6 +80,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="friends_api.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdafx.h" />
@@ -99,6 +100,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="friends_api.cpp" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="state.cpp" />
