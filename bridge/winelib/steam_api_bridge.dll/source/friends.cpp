@@ -20,23 +20,35 @@ extern "C"
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
     class ISteamFriends *steamFriends)
 {
+  WINE_TRACE("(0x%p)", steamFriends);
+
   if (!steamFriends)
-    __ABORT_ARGS__("Null steamFriends pointer!", "(0x%p)", steamFriends);
+    __ABORT_ARGS__("NULL steamFriends pointer!", "(0x%p)", steamFriends);
+
   return steamFriends->GetPersonaName();
 }
 
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
     class ISteamFriends *steamFriends, int iFriendFlags)
 {
+  WINE_TRACE("(0x%p)", steamFriends);
+
   if (!steamFriends)
-    __ABORT_ARGS__("Null steamFriends pointer!", "(0x%p)", steamFriends);
+    __ABORT_ARGS__("NULL steamFriends pointer!", "(0x%p)", steamFriends);
+
   return steamFriends->GetFriendCount(iFriendFlags);
 }
 
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
 {
-  // TODO: Probably throw an assert here
-  if (!context) return NULL;
+  WINE_TRACE("()");
+
+  if (!context)
+  {
+    WINE_WARN("Context is NULL, Init either failed or wasn't called");
+    return NULL;
+  }
+
   return context->getSteamFriends();
 }
 
