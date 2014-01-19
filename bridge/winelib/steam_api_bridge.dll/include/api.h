@@ -40,6 +40,8 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
 STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
     class ISteamApps *steamApps, AppId_t appId);
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
+    class ISteamApps *steamApps);
 
 } // extern "C"
 

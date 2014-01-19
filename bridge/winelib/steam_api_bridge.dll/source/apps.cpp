@@ -28,6 +28,17 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
   return steamApps->BIsSubscribedApp(appId);
 }
 
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
+    class ISteamApps *steamApps)
+{
+  WINE_TRACE("(0x%p)", steamApps);
+
+  if (!steamApps)
+    __ABORT_ARGS__("NULL steamApps pointer!", "(0x%p)", steamApps);
+
+  return steamApps->GetCurrentGameLanguage();
+}
+
 STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps()
 {
   WINE_TRACE("()");
