@@ -23,9 +23,6 @@ STEAM_API_PROXY_API bool SteamAPI_IsSteamRunning()
 STEAM_API_PROXY_API void SteamAPI_RegisterCallResult(void *pCallback, SteamAPICall_t hAPICall)
   __STUB__
 
-STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
-  __STUB__
-
 STEAM_API_PROXY_API void SteamAPI_SetBreakpadAppID(uint32 unAppID)
   __STUB__
 

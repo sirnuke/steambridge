@@ -58,6 +58,12 @@ static void SteamAPI_RegisterCallbackReal(CCallbackBase *pCallback, int iCallbac
 extern "C"
 {
 
+STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
+{
+  __LOG_MSG__("Running callbacks...");
+  steam_bridge_SteamAPI_RunCallbacks();
+}
+
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(class CCallbackBase *pCallback, int iCallback)
 {
   __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i)", pCallback, iCallback);
