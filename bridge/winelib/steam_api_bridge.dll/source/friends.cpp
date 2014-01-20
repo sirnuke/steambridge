@@ -4,6 +4,7 @@
 
 #include <steam_api.h>
 
+#define NOMINMAX
 #include <windef.h>
 #include <winbase.h>
 #include <wine/debug.h>
