@@ -27,23 +27,20 @@ class CallbackImpl : protected CCallbackBase
   public:
     CallbackImpl(steam_bridge_CallbackRunFunc run, 
         steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size);
-    //CCallbackBase() { m_nCallbackFlags = 0; m_iCallback = 0; }
-    // don't add a virtual destructor because we export this binary interface across dll's
     virtual void Run(void *pvParam);
     virtual void Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall);
-    //int GetICallback() { return m_iCallback; }
     virtual int GetCallbackSizeBytes();
+
   private:
+    // Pointer to the win32 CCallbackBase object
     void *cCallbackBase;
+    // Size of the callback structure
     int size;
 
+    // Function pointers to the win32 location to run callbacks
     steam_bridge_CallbackRunFunc run;
     steam_bridge_CallbackRunArgsFunc runargs;
-  //protected:
-    //enum { k_ECallbackFlagsRegistered = 0x01, k_ECallbackFlagsGameServer = 0x02 };
-    //uint8 m_nCallbackFlags;
-    //int m_iCallback;
-    //friend class CCallbackMgr;
+
     friend int steam_bridge_SteamAPI_RegisterCallback(
         steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc,
         void *, int, int);
@@ -90,12 +87,11 @@ CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
 // million pieces if you so much look at it the wrong way, or really think
 // about it.
 //
-// On a side note, despite the "this is as clean of a break from x86 as
-// we'll get so lets fix a few annoying things like the lack of general
-// purpose registers" nature of x86-64, the default conventions are still
-// different in the magical 64-bit land.  Microsoft went with a stdcall
-// style LTR argument order, but cdecl style caller cleanup.  GCC still
-// uses cdecl.  Wheee...
+// On a side note, despite the "Let's take a moment and fix a few annoying
+// things, such as the lack of general purpose registers" nature of x86-64,
+// the default conventions are still different in the magical 64-bit land.
+// Microsoft went with a stdcall style LTR argument order, but cdecl style
+// caller cleanup.  GCC uses straight cdecl.  Wheee...
 
 
 void CallbackImpl::Run(void *pvParam)
@@ -131,6 +127,13 @@ extern "C"
 
 void steam_bridge_SteamAPI_RunCallbacks()
 {
+  // Note that this appears to be purely single threaded event checking.
+  // All Run(...) executions occur while SteamAPI_RunCallbacks()
+  // is executing.  It's possible (though unideal) to 'reque' all fired
+  // callbacks and return the data in some form from this bridge function.
+  // This may be necessary if calling the parent win32 proxy library via
+  // function pointers isn't possible (see above notes/implementation about
+  // cross-OS C-style function calls).
   WINE_TRACE("()");
   SteamAPI_RunCallbacks();
 }
@@ -140,11 +143,26 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
     int size)
 {
   WINE_TRACE("(0x%p,0x%p,0x%p,%i,%i)", run, runargs, cCallbackBase, callback, size);
-  // TODO: This should probably take flags as an arg and set the local
-  //       object before calling SteamAPI_RegisterCallback
+
+  // TODO: If this object has already been Registered, we should catch
+  //       and handle this.  If it's not unregistered, probably unregister
+  //       it.  Unregistering is the ideal place to delete the wrapper,
+  //       so we'll then recreate it here.
 
   if (!context)
     __ABORT__("No context (Init not called, or failed)!");
+
+  // To make the behavior clear, flags is bits settings that track the
+  // state of the callback.  There's only two: 0x1 records whether it's
+  // registered, 0x2 records whether it's a game server callback (the exact
+  // behavior of this isn't clear yet).  iCallback refers to the callback
+  // number, and it's set by SteamAPI_RegisterCallback.  This corresponds to
+  // one of the callback structs defined all over the place, which contain
+  // a field call k_iCallback (==iCallback).  This is template 'class P',
+  // and is passed as the first parameter in the two Run(...) functions.
+  // GetCallbackSizeBytes returns the size of this callback struct.
+  // Fortunately for us, as it's pure data there shouldn't be any need to
+  // do any converting between Linux and Wine.
 
   CallbackImpl *c = new CallbackImpl(run, runargs, cCallbackBase, size);
 
