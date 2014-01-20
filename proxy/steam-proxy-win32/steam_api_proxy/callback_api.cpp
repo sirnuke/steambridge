@@ -9,6 +9,13 @@
 #include "state.h"
 #include "steam_api_proxy.h"
 
+extern "C"
+{
+void callback_run(void *callback, int flags, void *data);
+void callback_run_args(void *callback, int flags, void *data, bool ioFailure, 
+    SteamAPICall_t steamAPICall);
+} // extern "C"
+
 
 class CCallbackBase
 {
@@ -27,26 +34,29 @@ protected:
 	uint8 m_nCallbackFlags;
 	int m_iCallback;
 	friend class CCallbackMgr;
-  friend class CallbackWrapper;
-};
-
-class CallbackWrapper
-{
-  public:
-    CallbackWrapper(CCallbackBase *parent) : parent(parent)
-    {
-      flags = parent->m_nCallbackFlags;
-      callback = parent->m_iCallback;
-    }
-
-  private:
-    CCallbackBase *parent;
-    uint8 flags;
-    int callback;
+  friend void callback_run(void *, int, void *);
+  friend void callback_run_args(void *, int, void *, bool, SteamAPICall_t);
 };
 
 extern "C"
 {
+
+
+void callback_run(void *callback, int flags, void *data)
+{
+  CCallbackBase *c = (CCallbackBase *)(callback);
+  // TODO: There HAS to be a better way to track the flags
+  c->m_nCallbackFlags = flags;
+  c->Run(data);
+}
+
+void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
+    SteamAPICall_t steamAPICall)
+{
+  CCallbackBase *c = (CCallbackBase *)(callback);
+  c->m_nCallbackFlags = flags;
+  c->Run(data, ioFailure, steamAPICall);
+}
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 {
@@ -54,14 +64,14 @@ STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
   steam_bridge_SteamAPI_RunCallbacks();
 }
 
-STEAM_API_PROXY_API void SteamAPI_RegisterCallback(class CCallbackBase *pCallback, int iCallback)
+STEAM_API_PROXY_API void SteamAPI_RegisterCallback(
+    class CCallbackBase *pCallback, int iCallback)
 {
-  CallbackWrapper *wrapper = new CallbackWrapper(pCallback);
-  __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i,%i)->(0x%p)", pCallback,
-      iCallback, pCallback->GetCallbackSizeBytes(), wrapper);
-  state.addCallbackWrapper(wrapper);
-  steam_bridge_SteamAPI_RegisterCallback(wrapper, iCallback,
-      pCallback->GetCallbackSizeBytes());
+  __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i,%i)", pCallback,
+      iCallback, pCallback->GetCallbackSizeBytes());
+  state.addCallback(pCallback);
+  steam_bridge_SteamAPI_RegisterCallback(&callback_run, &callback_run_args, 
+      pCallback, iCallback, pCallback->GetCallbackSizeBytes());
 }
 
 }

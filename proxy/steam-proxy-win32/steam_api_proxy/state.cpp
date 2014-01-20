@@ -24,6 +24,7 @@ AppState::AppState()
 AppState::~AppState()
 {
   __LOG_MSG__("Destructing...");
+  callbacks.clear();
   if (steamUser)
     delete steamUser;
   if (steamFriends)
@@ -34,9 +35,9 @@ AppState::~AppState()
     delete steamUserStats;
 }
 
-void AppState::addCallbackWrapper(class CallbackWrapper *wrapper)
+void AppState::addCallback(class CCallbackBase *callback)
 {
-  callbackWrappers.push_back(wrapper);
+  callbacks.push_back(callback);
 }
 
 SteamUserWrapper *AppState::getSteamUser()

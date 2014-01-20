@@ -23,7 +23,7 @@ class AppState
     void setSafeMode(bool safe);
     bool getSafeMode();
 
-    void addCallbackWrapper(class CallbackWrapper *wrapper);
+    void addCallback(class CCallbackBase *callback);
 
     SteamUserWrapper *getSteamUser();
     SteamFriendsWrapper *getSteamFriends();
@@ -35,7 +35,7 @@ class AppState
 
     bool safeMode;
 
-    std::deque<class CallbackWrapper *> callbackWrappers;
+    std::deque<class CCallbackBase *> callbacks;
 
     SteamUserWrapper *steamUser;
     SteamFriendsWrapper *steamFriends;
