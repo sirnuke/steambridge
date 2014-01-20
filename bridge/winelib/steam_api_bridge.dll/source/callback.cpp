@@ -96,13 +96,13 @@ CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
 void CallbackImpl::Run(void *pvParam)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p)", this, pvParam);
-  //(*run)(wrapper, m_nCallbackFlags, pvParam);
+  (*run)(wrapper, m_nCallbackFlags, pvParam);
 }
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p,bIOFailure=%i,hSteamAPICall=%llu)", this, pvParam, bIOFailure, hSteamAPICall);
-  //(*runargs)(wrapper, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
+  (*runargs)(wrapper, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
 }
 
 int CallbackImpl::GetCallbackSizeBytes()
