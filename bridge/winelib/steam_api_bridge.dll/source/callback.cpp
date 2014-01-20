@@ -22,7 +22,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 //       or protected in the steam headers) has any impact.  At the moment,
 //       it doesn't seem like it should from libsteam_api.so's perspective.
 //
-class CallbackImpl : public CCallbackBase
+class CallbackImpl : protected CCallbackBase
 {
   public:
     CallbackImpl(steam_bridge_CallbackRunFunc run, 
@@ -48,6 +48,14 @@ class CallbackImpl : public CCallbackBase
         steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc,
         void *, int, int);
 };
+
+CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
+    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size) 
+  : CCallbackBase(), cCallbackBase(cCallbackBase), size(size), run(run), runargs(runargs)
+{
+  m_iCallback = 0;
+  m_nCallbackFlags = 0;
+}
 
 // A now for a word or two on the Callback function pointers:
 // 
@@ -89,11 +97,6 @@ class CallbackImpl : public CCallbackBase
 // style LTR argument order, but cdecl style caller cleanup.  GCC still
 // uses cdecl.  Wheee...
 
-CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
-    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size) 
-  : CCallbackBase(), cCallbackBase(cCallbackBase), size(size), run(run), runargs(runargs)
-{
-}
 
 void CallbackImpl::Run(void *pvParam)
 {
@@ -113,6 +116,13 @@ int CallbackImpl::GetCallbackSizeBytes()
   //       of CCallbackBase, though as a wild guess this isn't used in pratice.
   //       The two (technically three) implementations in steam_api.h return
   //       sizeof on a class - which will be constant.
+  //
+  // TODO: Update, said class is one of the many callback structs that
+  //       are used.  It's possible, but unlikely, that if a client
+  //       reused a CCallbackBase object this could change.  Said
+  //       developers should probably be slapped.  Nonetheless, it's
+  //       worth at least catching and aborting in this behavior.
+  //
   return size;
 }
 
@@ -129,23 +139,31 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
     steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int callback, 
     int size)
 {
-  // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
   WINE_TRACE("(0x%p,0x%p,0x%p,%i,%i)", run, runargs, cCallbackBase, callback, size);
+  // TODO: This should probably take flags as an arg and set the local
+  //       object before calling SteamAPI_RegisterCallback
 
   if (!context)
     __ABORT__("No context (Init not called, or failed)!");
 
   CallbackImpl *c = new CallbackImpl(run, runargs, cCallbackBase, size);
-  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p,%i,%i)->(0x%p)", cCallbackBase, callback, size, c);
-  // TODO: Is this right?  Maybe?
-  c->m_iCallback = callback;
+
+  __LOG_ARGS_MSG__("Logging wrapper for callback", 
+      "(0x%p,%i,%i)->(0x%p,callback=%i,flags=%i)", cCallbackBase, callback,
+      size, c, c->m_iCallback, c->m_nCallbackFlags);
+
   context->addCallback(c);
   SteamAPI_RegisterCallback(c, callback);
-  // TODO: We should probabllly store the object.  Memory leaks and all
-  //       that.  However, it's probably a safe guess that apps rarely
-  //       (if ever) change their callbacks.
-  // TODO: Flags are probably being set after RegisterCallback.
-  //       Should update the win32 side proxy (return it as a value?)
+
+  __LOG_ARGS_MSG__("After SteamAPI_RegisterCallback",
+      "(wrapper=0x%p,base=0x%p,callback=%i,flags=%i)", c, cCallbackBase,
+      c->m_iCallback, c->m_nCallbackFlags);
+
+  if (c->m_iCallback != callback)
+    __ABORT_ARGS__("Callback doesn't match expected after RegisterCallback!",
+        "(wrapper=0x%p,base=0x%p,expected=%i,actual=%i)", c, cCallbackBase,
+        callback, c->m_iCallback);
+
   return c->m_nCallbackFlags;
 }
 
