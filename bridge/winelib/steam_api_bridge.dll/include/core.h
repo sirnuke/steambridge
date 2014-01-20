@@ -3,10 +3,13 @@
 #ifndef  ___STEAM_BRIDGE_CORE_H__
 #define  ___STEAM_BRIDGE_CORE_H__
 
+#include <deque>
+
 class SteamAPIContext
 {
   public:
     SteamAPIContext(int appid);
+    ~SteamAPIContext();
 
     class ISteamUser                *getSteamUser()
       { return steamUser; }
@@ -33,8 +36,13 @@ class SteamAPIContext
     class ISteamUnifiedMessages     *getSteamUnifiedMessages() 
       { return steamUnifiedMessages; }
 
+
+    void addCallback(class CCallbackBase *callback);
+
   private:
     int appid __attribute__((unused));
+
+    std::deque<class CCallbackBase *> callbacks;
 
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;

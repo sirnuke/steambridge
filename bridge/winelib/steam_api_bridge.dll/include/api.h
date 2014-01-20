@@ -26,7 +26,7 @@ extern "C"
 {
 
 STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe(int appid);
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RegisterCallback(
+STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
     steam_bridge_CallbackRunFunc run, steam_bridge_CallbackRunArgsFunc runargs,
     void *wrapper, int callback, int size);
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();

@@ -3,10 +3,14 @@
 // C headers
 #include <cstdio>
 
+#include <deque>
+
 // Steam headers
 #include <steam_api.h>
 
 // Wine/Win32 headers
+#define NOMINMAX
+// TODO: We probably don't need either of these headers
 #include <windef.h>
 #include <winbase.h>
 #include <wine/debug.h>
@@ -75,9 +79,17 @@ SteamAPIContext::SteamAPIContext(int appid)
   //  "STEAMUNIFIEDMESSAGES_INTERFACE_VERSION001");
 }
 
-// TODO: This might need to be accessible by other parts of the bridge.
-SteamAPIContext *context = NULL;
+SteamAPIContext::~SteamAPIContext()
+{
+  // TODO: Delete all callbacks?
+}
 
+void SteamAPIContext::addCallback(class CCallbackBase *callback)
+{
+  callbacks.push_back(callback);
+}
+
+SteamAPIContext *context = NULL;
 
 extern "C"
 {

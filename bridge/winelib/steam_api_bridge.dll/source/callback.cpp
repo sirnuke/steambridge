@@ -5,11 +5,13 @@
 #include <steam_api.h>
 
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 
 #include <wine/debug.h>
 
 #include "api.h"
+#include "core.h"
 #include "logging.h"
 
 
@@ -24,7 +26,7 @@ class CallbackImpl : public CCallbackBase
 {
   public:
     CallbackImpl(steam_bridge_CallbackRunFunc run, 
-        steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int size);
+        steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size);
     //CCallbackBase() { m_nCallbackFlags = 0; m_iCallback = 0; }
     // don't add a virtual destructor because we export this binary interface across dll's
     virtual void Run(void *pvParam);
@@ -32,20 +34,20 @@ class CallbackImpl : public CCallbackBase
     //int GetICallback() { return m_iCallback; }
     virtual int GetCallbackSizeBytes();
   private:
-    void *wrapper;
+    void *cCallbackBase;
     int size;
 
     steam_bridge_CallbackRunFunc run;
-    steam_bridge_CallbackRunArgsFunc runargs __attribute__((unused));
+    steam_bridge_CallbackRunArgsFunc runargs;
   //protected:
     //enum { k_ECallbackFlagsRegistered = 0x01, k_ECallbackFlagsGameServer = 0x02 };
     //uint8 m_nCallbackFlags;
     //int m_iCallback;
     //friend class CCallbackMgr;
+    friend int steam_bridge_SteamAPI_RegisterCallback(
+        steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc,
+        void *, int, int);
 };
-
-// typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags, void *data);
-// typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags, void *data, bool ioFailure, SteamAPICall_t steamAPICall);
 
 // A now for a word or two on the Callback function pointers:
 // 
@@ -88,21 +90,21 @@ class CallbackImpl : public CCallbackBase
 // uses cdecl.  Wheee...
 
 CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
-    steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int size) 
-  : CCallbackBase(), wrapper(wrapper), size(size), run(run), runargs(runargs)
+    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size) 
+  : CCallbackBase(), cCallbackBase(cCallbackBase), size(size), run(run), runargs(runargs)
 {
 }
 
 void CallbackImpl::Run(void *pvParam)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p)", this, pvParam);
-  (*run)(wrapper, m_nCallbackFlags, pvParam);
+  (*run)(cCallbackBase, m_nCallbackFlags, pvParam);
 }
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p,bIOFailure=%i,hSteamAPICall=%llu)", this, pvParam, bIOFailure, hSteamAPICall);
-  (*runargs)(wrapper, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
+  (*runargs)(cCallbackBase, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
 }
 
 int CallbackImpl::GetCallbackSizeBytes()
@@ -120,25 +122,31 @@ extern "C"
 void steam_bridge_SteamAPI_RunCallbacks()
 {
   WINE_TRACE("()");
-  __LOG_MSG__("Right before RunCallbacks");
   SteamAPI_RunCallbacks();
-  __LOG_MSG__("Right after RunCallbacks");
 }
 
-void steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run, 
-    steam_bridge_CallbackRunArgsFunc runargs, void *wrapper, int callback, 
+int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run, 
+    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int callback, 
     int size)
 {
   // TODO: Populate CallbackImpl with data?  (flags, iCallback?)
-  WINE_TRACE("(0x%p,0x%p,0x%p,%i,%i)", run, runargs, wrapper, callback, size);
-  CallbackImpl *c = new CallbackImpl(run, runargs, wrapper, size);
-  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p,%i,%i)->(0x%p)", wrapper, callback, size, c);
+  WINE_TRACE("(0x%p,0x%p,0x%p,%i,%i)", run, runargs, cCallbackBase, callback, size);
+
+  if (!context)
+    __ABORT__("No context (Init not called, or failed)!");
+
+  CallbackImpl *c = new CallbackImpl(run, runargs, cCallbackBase, size);
+  __LOG_ARGS_MSG__("Logging wrapper for callback", "(0x%p,%i,%i)->(0x%p)", cCallbackBase, callback, size, c);
+  // TODO: Is this right?  Maybe?
+  c->m_iCallback = callback;
+  context->addCallback(c);
   SteamAPI_RegisterCallback(c, callback);
   // TODO: We should probabllly store the object.  Memory leaks and all
   //       that.  However, it's probably a safe guess that apps rarely
   //       (if ever) change their callbacks.
   // TODO: Flags are probably being set after RegisterCallback.
   //       Should update the win32 side proxy (return it as a value?)
+  return c->m_nCallbackFlags;
 }
 
 } // extern "C"
