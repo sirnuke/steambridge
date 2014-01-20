@@ -36,17 +36,22 @@ protected:
 	friend class CCallbackMgr;
   friend void callback_run(void *, int, void *);
   friend void callback_run_args(void *, int, void *, bool, SteamAPICall_t);
+  friend void SteamAPI_RegisterCallback(class CCallbackBase *, int);
 };
 
 extern "C"
 {
 
-
 void callback_run(void *callback, int flags, void *data)
 {
   CCallbackBase *c = (CCallbackBase *)(callback);
-  // TODO: There HAS to be a better way to track the flags
-  c->m_nCallbackFlags = flags;
+
+  // TODO: Probably not setting the flags via this function.
+  // c->m_nCallbackFlags = flags;
+
+  __LOG_ARGS_MSG__("callback_run!", "(callback=0x%p,data=0x%p)", callback,
+      data);
+
   c->Run(data);
 }
 
@@ -54,13 +59,22 @@ void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
     SteamAPICall_t steamAPICall)
 {
   CCallbackBase *c = (CCallbackBase *)(callback);
-  c->m_nCallbackFlags = flags;
+
+  // TODO: It's unlikely that the flags will just random change such
+  //       that we'll need to manually set them here.  It seems like
+  //       Registered is only set in the corresponding SteamAPI calls,
+  //       and the game server flag is entirely client controlled.
+  // c->m_nCallbackFlags = flags;
+
+  __LOG_ARGS_MSG__("callback_run_args!", 
+      "(callback=0x%p,data=0x%p,ioFailure=%i,SteamAPICall=%llu)", callback,
+      data, ioFailure, steamAPICall);
+
   c->Run(data, ioFailure, steamAPICall);
 }
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 {
-  __LOG_MSG__("Running callbacks...");
   steam_bridge_SteamAPI_RunCallbacks();
 }
 
@@ -69,9 +83,25 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallback(
 {
   __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i,%i)", pCallback,
       iCallback, pCallback->GetCallbackSizeBytes());
+
   state.addCallback(pCallback);
-  steam_bridge_SteamAPI_RegisterCallback(&callback_run, &callback_run_args, 
-      pCallback, iCallback, pCallback->GetCallbackSizeBytes());
+  int flags = steam_bridge_SteamAPI_RegisterCallback(&callback_run, 
+      &callback_run_args, pCallback, iCallback,
+      pCallback->GetCallbackSizeBytes());
+
+  __LOG_ARGS_MSG__("After RegisterCallback",
+      "(oflags=%i,nflags=%i,ocallback=%i,acallback=%i)",
+      pCallback->m_nCallbackFlags, flags, pCallback->m_iCallback, iCallback);
+  // Flags gets updated after RegisterCallback (and persumably other
+  // similar functions).
+  pCallback->m_nCallbackFlags = flags;
+  // Note that bridge asserts that it's CCallbackBase's iCallback matches
+  // the original parameter, so it's safe to forcibly set pCallback's
+  // iCallback.
+  pCallback->m_iCallback = iCallback;
+  // TODO: Any more parameters that we might need to set?  Don't seem
+  //       to be the case, as flags+iCallback are the only two exposed
+  //       to the SteamAPI library itself.
 }
 
 }
