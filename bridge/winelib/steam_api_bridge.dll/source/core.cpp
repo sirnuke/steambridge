@@ -60,6 +60,16 @@ SteamAPIContext::SteamAPIContext(int appid)
       steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
       steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
       break;
+    case 38730:
+      steamUserVersion = "SteamUser014";
+      steamFriendsVersion = "SteamFriends007";
+      steamUtilsVersion = "SteamUtils005";
+      steamMatchmakingVersion = "SteamMatchMaking008";
+      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
+      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
+      steamNetworkingVersion = "SteamNetworking004";
+      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
     default:
       __ABORT_ARGS__("Unknown application ID!", "(%i)", appid);
       break;
