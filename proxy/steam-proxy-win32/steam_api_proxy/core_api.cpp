@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 
+#include <fstream>
+
 #include <steam_api_bridge.h>
 
 #include "logging.h"
@@ -10,8 +12,20 @@
 
 static bool SteamAPI_InitReal(bool safeMode)
 {
+  int appid = 0;
+
   state.setSafeMode(safeMode);
-  return steam_bridge_SteamAPI_InitSafe(12900);
+  
+  std::ofstream file;
+  // TODO: we may want some sort of steam_appid_override.txt
+  file.open("steam_appid.txt");
+  if (file.fail())
+    __ABORT__("Unable to open 'steam_appid.txt'");
+  // TODO: Error checkin' and all that yo.
+  file << appid;
+  file.close();
+
+  return steam_bridge_SteamAPI_InitSafe(appid);
 }
 
 extern "C"
@@ -21,7 +35,7 @@ extern "C"
 // Steam.  This may or may not be considered 'DRM' in some sense.
 //
 // Discovered case in Da Wild that calls this function before any sort
-// of init calls.  Not sure whether this is the 'correct' behavior'.  Also,
+// of init calls.  Not sure whether this is the 'correct' behavior.  Also,
 // unOwnAppID doesn't correspond to the value in steam_appid.txt (?).
 //
 STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
