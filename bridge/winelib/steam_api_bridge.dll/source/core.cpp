@@ -60,7 +60,7 @@ SteamAPIContext::SteamAPIContext(int appid)
       steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
       steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
       break;
-    case 38730:
+    case 38730: // RUSH demo
       steamUserVersion = "SteamUser014";
       steamFriendsVersion = "SteamFriends007";
       steamUtilsVersion = "SteamUtils005";
@@ -70,6 +70,17 @@ SteamAPIContext::SteamAPIContext(int appid)
       steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
       steamNetworkingVersion = "SteamNetworking004";
       steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
+    case 1522: // Defcon demo
+      steamUserVersion = "SteamUser013";
+      steamFriendsVersion = "SteamFriends005";
+      steamUtilsVersion = "SteamUtils005";
+      steamMatchmakingVersion = "SteamMatchMaking008";
+      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
+      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
+      steamNetworkingVersion = "SteamNetworking003";
+      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
+      break;
     default:
       __ABORT_ARGS__("Unknown application ID!", "(%i)", appid);
       break;
