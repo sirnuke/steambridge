@@ -54,3 +54,21 @@ void __log_message__(const char *func, const char *msg, const char *args, ...)
   printf(": %s\n", msg);
 }
 
+__declspec(noreturn) void __abort__(const char *func, const char *msg,
+    const char *args, ...)
+{
+  printf("%s ", func);
+  va_list va;
+  va_start(va, msg);
+  vprintf(msg, va);
+  printf(": abort called\n");
+  printf("\tAn internal error of some sort has been detected, which "
+         "\tlikely signifies an internal error of some sort.");
+  MessageBoxA(NULL, 
+             "Abort called!\nCheck the command line output for more information",
+             APP_NAME " internal error",
+             MB_ICONERROR | MB_OK);
+  va_end(va);
+  exit(1);
+}
+
