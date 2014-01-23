@@ -4,6 +4,7 @@
 #include <cstdio>
 
 #include <deque>
+#include <string>
 
 // Steam headers
 #include <steam_api.h>
@@ -18,6 +19,7 @@
 // Local headers
 #include "api.h"
 #include "core.h"
+#include "logging.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -36,47 +38,108 @@ SteamAPIContext::SteamAPIContext(int appid)
   // TODO: The official API checks that each pointer doesn't return NULL.
   //       This is a Good Idea that should be used here.
 
-	HSteamUser steamUserHandle = SteamAPI_GetHSteamUser();
-	HSteamPipe steamPipeHandle = SteamAPI_GetHSteamPipe();
+  // TODO: Better way of caching versions
+  std::string steamUserVersion, steamFriendsVersion, steamUtilsVersion,
+    steamMatchmakingVersion, steamMatchmakingServersVersion,
+    steamUserStatsVersion, steamAppsVersion, steamNetworkingVersion,
+    steamRemoteStorageVersion, steamScreenshotsVersion, steamHTTPVersion,
+    steamUnifiedMessagesVersion;
 
-  steamUser = SteamClient()->GetISteamUser(steamUserHandle, steamPipeHandle,
-      "SteamUser016");
+  switch (appid)
+  {
+    case 12900: // Audiosurf
+      steamUserVersion = "SteamUser016";
+      steamFriendsVersion = "SteamFriends013";
+      steamUtilsVersion = "SteamUtils005";
+      steamMatchmakingVersion = "SteamMatchMaking009";
+      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION011";
+      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION005";
+      steamNetworkingVersion = "SteamNetworking005";
+      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION008";
+      steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
+      steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
+      break;
+    default:
+      __ABORT_ARGS__("Unknown application ID!", "(%i)", appid);
+      break;
+  }
 
-  steamFriends = SteamClient()->GetISteamFriends(steamUserHandle,
-      steamPipeHandle, "SteamFriends013");
+  HSteamUser steamUserHandle = SteamAPI_GetHSteamUser();
+  HSteamPipe steamPipeHandle = SteamAPI_GetHSteamPipe();
 
-  steamUtils = SteamClient()->GetISteamUtils(steamPipeHandle, "SteamUtils005");
+  if (steamUserVersion == "")
+    steamUser = NULL;
+  else
+    steamUser = SteamClient()->GetISteamUser(steamUserHandle, steamPipeHandle,
+        steamUserVersion.c_str());
 
-  steamMatchmaking = SteamClient()->GetISteamMatchmaking(steamUserHandle,
-      steamPipeHandle, "SteamMatchMaking009");
+  if (steamFriendsVersion == "")
+    steamFriends = NULL;
+  else
+    steamFriends = SteamClient()->GetISteamFriends(steamUserHandle,
+        steamPipeHandle, steamFriendsVersion.c_str());
 
-  steamMatchmakingServers = SteamClient()->GetISteamMatchmakingServers(
-      steamUserHandle, steamPipeHandle, "SteamMatchMakingServers002");
+  if (steamUtilsVersion == "")
+    steamUtils = NULL;
+  else
+    steamUtils = SteamClient()->GetISteamUtils(steamPipeHandle,
+        steamUtilsVersion.c_str());
 
-  steamUserStats = SteamClient()->GetISteamUserStats(steamUserHandle,
-      steamPipeHandle, "STEAMUSERSTATS_INTERFACE_VERSION011");
+  if (steamMatchmakingVersion == "")
+    steamMatchmaking = NULL;
+  else
+    steamMatchmaking = SteamClient()->GetISteamMatchmaking(steamUserHandle,
+        steamPipeHandle, steamMatchmakingVersion.c_str());
 
-  steamApps = SteamClient()->GetISteamApps(steamUserHandle, steamPipeHandle,
-      "STEAMAPPS_INTERFACE_VERSION005");
+  if (steamMatchmakingServersVersion == "")
+    steamMatchmakingServers = NULL;
+  else
+    steamMatchmakingServers = SteamClient()->GetISteamMatchmakingServers(
+        steamUserHandle, steamPipeHandle,
+        steamMatchmakingServersVersion.c_str());
 
-  steamNetworking = SteamClient()->GetISteamNetworking(steamUserHandle,
-      steamPipeHandle, "SteamNetworking005");
+  if (steamUserStatsVersion == "")
+    steamUserStats = NULL;
+  else
+    steamUserStats = SteamClient()->GetISteamUserStats(steamUserHandle,
+        steamPipeHandle, steamUserStatsVersion.c_str());
 
-  steamRemoteStorage = SteamClient()->GetISteamRemoteStorage(steamUserHandle,
-      steamPipeHandle, "STEAMREMOTESTORAGE_INTERFACE_VERSION008");
+  if (steamAppsVersion == "")
+    steamApps = NULL;
+  else
+    steamApps = SteamClient()->GetISteamApps(steamUserHandle, steamPipeHandle,
+        steamAppsVersion.c_str());
 
-  steamScreenshots = SteamClient()->GetISteamScreenshots(steamUserHandle,
-      steamPipeHandle, "STEAMSCREENSHOTS_INTERFACE_VERSION001");
+  if (steamNetworkingVersion == "")
+    steamNetworking = NULL;
+  else
+    steamNetworking = SteamClient()->GetISteamNetworking(steamUserHandle,
+        steamPipeHandle, steamNetworkingVersion.c_str());
 
-  steamHTTP = SteamClient()->GetISteamHTTP(steamUserHandle, steamPipeHandle,
-      "STEAMHTTP_INTERFACE_VERSION001");
+  if (steamRemoteStorageVersion == "")
+    steamRemoteStorage = NULL;
+  else
+    steamRemoteStorage = SteamClient()->GetISteamRemoteStorage(steamUserHandle,
+        steamPipeHandle, steamRemoteStorageVersion.c_str());
 
-  // TODO: Not all apps will support all interfaces, in this case
-  //       Audiosurf's demo doesn't have support for the UnifiedMessages
-  //       class.
-  steamUnifiedMessages = NULL;
-  //SteamClient()->GetISteamUnifiedMessages(steamUserHandle, steamPipeHandle,
-  //  "STEAMUNIFIEDMESSAGES_INTERFACE_VERSION001");
+  if (steamScreenshotsVersion == "")
+    steamScreenshots = NULL;
+  else
+    steamScreenshots = SteamClient()->GetISteamScreenshots(steamUserHandle,
+        steamPipeHandle, steamScreenshotsVersion.c_str());
+
+  if (steamHTTPVersion == "")
+    steamHTTP = NULL;
+  else
+    steamHTTP = SteamClient()->GetISteamHTTP(steamUserHandle, steamPipeHandle,
+      steamHTTPVersion.c_str());
+
+  if (steamUnifiedMessagesVersion == "")
+    steamUnifiedMessages = NULL;
+  else
+    SteamClient()->GetISteamUnifiedMessages(steamUserHandle, steamPipeHandle,
+        steamUnifiedMessagesVersion.c_str());
 }
 
 SteamAPIContext::~SteamAPIContext()
