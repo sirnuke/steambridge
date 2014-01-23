@@ -15,12 +15,12 @@ const char *steambridge_info = "TODO: Real information here of some sort!";
 extern "C"
 {
 
-STEAM_API_PROXY_API const char *SteamBridge_version_string()
+STEAM_API_PROXY_API const char *Steam_proxy_version_string()
 {
   return steambridge_version;
 }
 
-STEAM_API_PROXY_API const char *SteamBridge_info_string()
+STEAM_API_PROXY_API const char *Steam_proxy_info_string()
 {
   return steambridge_info;
 }

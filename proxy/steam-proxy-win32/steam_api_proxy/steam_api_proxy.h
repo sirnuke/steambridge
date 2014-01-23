@@ -180,8 +180,8 @@ STEAM_API_PROXY_API extern void *g_pSteamClientGameServer;
 
 #ifdef  ___STEAMBRIDGE_META_API___
 // This won't cause problems, right?
-STEAM_API_PROXY_API const char *SteamBridge_version_string();
-STEAM_API_PROXY_API const char *SteamBridge_info_string();
+STEAM_API_PROXY_API const char *Steam_proxy_version_string();
+STEAM_API_PROXY_API const char *Steam_proxy_info_string();
 #endif //___STEAMBRIDGE_META_API___
 
 } // extern "C"

@@ -33,4 +33,7 @@ extern "C"
 
   STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats() __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(class ISteamUserStats *) __STUB__;
+
+  STEAM_API_BRIDGE_API const char *steam_bridge_version_string() __STUB__;
+  STEAM_API_BRIDGE_API const char *steam_bridge_info_string() __STUB__;
 }
