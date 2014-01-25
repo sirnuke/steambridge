@@ -4,6 +4,7 @@
 #include <cstdio>
 
 #include <deque>
+#include <fstream>
 #include <string>
 
 // Steam headers
@@ -175,14 +176,34 @@ void SteamAPIContext::addCallback(class CCallbackBase *callback)
 
 SteamAPIContext *context = NULL;
 
+static int steam_bridge_get_appid()
+{
+  int appid = 0;
+  std::ofstream file;
+  // TODO: we may want some sort of steam_appid_override.txt
+  file.open("steam_appid.txt");
+  if (file.fail())
+    __ABORT__("Unable to open 'steam_appid.txt'");
+  // TODO: Error checkin' and all that yo.
+  file << appid;
+  file.close();
+
+  return appid;
+}
+
 extern "C"
 {
 
-bool steam_bridge_SteamAPI_InitSafe(int appid)
+// TODO: Would we want/need a wrapper for the straight Init() function?
+//       Maybe one that creates a context that uses the default ISteam*
+//       classes?
+bool steam_bridge_SteamAPI_InitSafe()
 {
-  WINE_TRACE("(%i)", appid);
+  WINE_TRACE("()");
+
   if (context == NULL)
   {
+    int appid = steam_bridge_get_appid();
     bool b = SteamAPI_InitSafe();
     if (!b) return b;
     context = new SteamAPIContext(appid);

@@ -25,7 +25,8 @@ typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags,
 extern "C"
 {
 
-STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe(int appid);
+// Core API Calls
+STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
 STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
     steam_bridge_CallbackRunFunc run, steam_bridge_CallbackRunArgsFunc runargs,
     void *wrapper, int callback, int size);
