@@ -2,8 +2,6 @@
 
 #include "stdafx.h"
 
-#include <fstream>
-
 #include <steam_api_bridge.h>
 
 #include "logging.h"
@@ -12,20 +10,8 @@
 
 static bool SteamAPI_InitReal(bool safeMode)
 {
-  int appid = 0;
-
   state.setSafeMode(safeMode);
-  
-  std::ofstream file;
-  // TODO: we may want some sort of steam_appid_override.txt
-  file.open("steam_appid.txt");
-  if (file.fail())
-    __ABORT__("Unable to open 'steam_appid.txt'");
-  // TODO: Error checkin' and all that yo.
-  file << appid;
-  file.close();
-
-  return steam_bridge_SteamAPI_InitSafe(appid);
+  return steam_bridge_SteamAPI_InitSafe();
 }
 
 extern "C"
