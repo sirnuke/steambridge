@@ -150,7 +150,11 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
   //       so we'll then recreate it here.
 
   if (!context)
-    __ABORT__("No context (Init not called, or failed)!");
+  {
+    WINE_WARN("Creating context in RegisterCallback for app, as init wasn't called");
+    if (steam_bridge_SteamAPI_InitSafe() == false)
+      __ABORT__("InitSafe failed when called from RegisterCallback!");
+  }
 
   // To make the behavior clear, flags is bits settings that track the
   // state of the callback.  There's only two: 0x1 records whether it's
