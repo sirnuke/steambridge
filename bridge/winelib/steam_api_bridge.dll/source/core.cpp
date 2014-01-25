@@ -179,13 +179,13 @@ SteamAPIContext *context = NULL;
 static int steam_bridge_get_appid()
 {
   int appid = 0;
-  std::ofstream file;
+  std::ifstream file;
   // TODO: we may want some sort of steam_appid_override.txt
   file.open("steam_appid.txt");
   if (file.fail())
     __ABORT__("Unable to open 'steam_appid.txt'");
   // TODO: Error checkin' and all that yo.
-  file << appid;
+  file >> appid;
   file.close();
 
   return appid;
