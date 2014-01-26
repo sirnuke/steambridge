@@ -97,7 +97,11 @@ CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
 void CallbackImpl::Run(void *pvParam)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p)", this, pvParam);
+  __LOG_ARGS_MSG__("Starting callback from bridge...",
+      "(this=0x%p,param=0x%p,func=0x%p)", this, pvParam, run);
   (*run)(cCallbackBase, m_nCallbackFlags, pvParam);
+  __LOG_ARGS_MSG__("Finished callback in bridge...",
+      "(this=0x%p,param=0x%p,func=0x%p)", this, pvParam, run);
 }
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
