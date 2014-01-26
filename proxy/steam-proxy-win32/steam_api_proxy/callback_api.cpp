@@ -49,10 +49,13 @@ void callback_run(void *callback, int flags, void *data)
   // TODO: Probably not setting the flags via this function.
   // c->m_nCallbackFlags = flags;
 
-  __LOG_ARGS_MSG__("callback_run!", "(callback=0x%p,data=0x%p)", callback,
-      data);
+  __LOG_ARGS_MSG__("callback_run executing!", "(self=0x%p,callback=0x%p,data=0x%p,size=%i)",
+      &callback_run, callback, data, c->GetCallbackSizeBytes());
 
   c->Run(data);
+
+  __LOG_ARGS_MSG__("callback_run complete!", "(self=0x%p,callback=0x%p,data=0x%p,size=%i)",
+      &callback_run, callback, data, c->GetCallbackSizeBytes());
 }
 
 void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
