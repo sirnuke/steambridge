@@ -12,11 +12,14 @@
 
 SteamFriendsWrapper::SteamFriendsWrapper() : steamFriends(NULL)
 {
+  __TRACE("(this=0x%p)", this);
   steamFriends = steam_bridge_SteamFriends();
+  __LOG("Wrapping ISteamFriends (0x%p) into (0x%p)", steamFriends, this);
 }
 
 const char *SteamFriendsWrapper::GetPersonaName()
 {
+  __TRACE("()");
   return steam_bridge_SteamFriends_GetPersonaName(steamFriends);
 }
 
@@ -28,6 +31,7 @@ int SteamFriendsWrapper::GetPersonaState()
 
 int SteamFriendsWrapper::GetFriendCount(int iFriendFlags)
 {
+  __TRACE("(%i)", iFriendFlags);
   return steam_bridge_SteamFriends_GetFriendCount(steamFriends, iFriendFlags);
 }
 
@@ -233,6 +237,7 @@ extern "C"
 
 STEAM_API_PROXY_API void *SteamFriends()
 {
+  __TRACE();
   return state.getSteamFriends();
 }
 
