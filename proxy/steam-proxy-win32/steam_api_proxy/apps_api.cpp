@@ -12,7 +12,9 @@
 
 SteamAppsWrapper::SteamAppsWrapper()
 {
+  __TRACE("(this=0x%p)", this);
   steamApps = steam_bridge_SteamApps();
+  __LOG("Wrapped steamApps (0x%p) in (0x%p)", steamApps, this);
 }
 
 bool SteamAppsWrapper::BIsSubscribed()
@@ -29,6 +31,7 @@ bool SteamAppsWrapper::BIsVACBanned()
 
 const char *SteamAppsWrapper::GetCurrentGameLanguage()
 {
+  __TRACE("()");
   return steam_bridge_SteamApps_GetCurrentGameLanguage(steamApps);
 }
 
@@ -37,6 +40,7 @@ const char *SteamAppsWrapper::GetAvailableGameLanguages()
 
 bool SteamAppsWrapper::BIsSubscribedApp(AppId_t appId)
 {
+  __TRACE("(%u)", appId);
   return steam_bridge_SteamApps_BIsSubscribedApp(steamApps, appId);
 }
 
@@ -85,6 +89,7 @@ extern "C"
 
 STEAM_API_PROXY_API void *SteamApps()
 { 
+  __TRACE("()");
   return state.getSteamApps();
 }
 

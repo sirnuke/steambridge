@@ -28,7 +28,8 @@ class SteamAppsWrapper
 
     virtual int GetDLCCount();
 
-    virtual bool BGetDLCDataByIndex(int iDLC, AppId_t *pAppID, bool *pbAvailable, char *pchName, int cchNameBufferSize);
+    virtual bool BGetDLCDataByIndex(int iDLC, AppId_t *pAppID,
+        bool *pbAvailable, char *pchName, int cchNameBufferSize);
 
     // These two functions, by nature, probably can't be support
     virtual void InstallDLC(AppId_t nAppID);
@@ -43,7 +44,8 @@ class SteamAppsWrapper
 
     virtual uint32 GetInstalledDepots(DepotId_t *pvecDepots, uint32 cMaxDepots);
 
-    virtual uint32 GetAppInstallDir(AppId_t appID, char *pchFolder, uint32 cchFolderBufferSize);
+    virtual uint32 GetAppInstallDir(AppId_t appID, char *pchFolder,
+        uint32 cchFolderBufferSize);
 
   private:
     class ISteamApps *steamApps;
