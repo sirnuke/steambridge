@@ -9,7 +9,7 @@
 #define __STUB(ARGS, ...) { __stub__(__FUNCSIG__, ARGS, __VA_ARGS__); }
 __declspec(noreturn) void __stub__(const char *func, const char *args, ...);
 
-#define __CANT_IMPLEMENT (ARGS, ...) { __cant_implement__(__FUNCSIG__, ARGS,\
+#define __CANT_IMPLEMENT(ARGS, ...) { __cant_implement__(__FUNCSIG__, ARGS, \
     __VA_ARGS__); }
 __declspec(noreturn) void __cant_implement__(const char *func,
     const char *args, ...);
@@ -18,10 +18,8 @@ __declspec(noreturn) void __cant_implement__(const char *func,
 #define __TRACE(ARGS, ...) __trace_message__(__FUNCSIG__, ARGS, __VA_ARGS__)
 void __trace__(const char *func, const char *args, ...);
 
-#define __LOG(MSG)  __log_message__(__FUNCSIG__, MSG, "")
-#define __LOG(MSG, ARGS, ...) __log_message__(__FUNCSIG__, MSG, ARGS, \
-    __VA_ARGS__)
-void __log__(const char *func, const char *msg, const char *args, ...);
+#define __LOG(MSG, ...) __log_message__(__FUNCSIG__, MSG, __VA_ARGS__)
+void __log__(const char *func, const char *msg, ...);
 
 #define __ABORT_(MSG, ARGS, ...)  __abort__(__FUNCSIG__, MSG, ARGS, __VA_ARGS__)
 __declspec(noreturn) void __abort__(const char *func, const char *msg,

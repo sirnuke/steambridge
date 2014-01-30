@@ -56,11 +56,11 @@ void __trace__(const char *func, const char *args, ...)
   vprintf(_STREAM, "\n");
 }
 
-void __log_message__(const char *func, const char *msg, const char *args, ...)
+void __log__(const char *func, const char *msg, ...)
 {
   fprintf(_STREAM, "LOG: %s ", func);
-  _VA_PRINT(args);
-  fprintf(STREAM, ": %s\n", msg);
+  _VA_PRINT(msg);
+  fprintf(_STREAM, "\n")
 }
 
 __declspec(noreturn) void __abort__(const char *func, const char *msg,
