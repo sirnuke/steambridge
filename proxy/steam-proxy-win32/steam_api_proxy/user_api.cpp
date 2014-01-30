@@ -10,86 +10,112 @@
 #include "user_api.h"
 
 
-SteamUserWrapper::SteamUserWrapper() : isteamuser(NULL)
+SteamUserWrapper::SteamUserWrapper() : steamUser(NULL)
 {
-  isteamuser = steam_bridge_SteamUser();
+  __TRACE("(0x%p)", this);
+  steamUser = steam_bridge_SteamUser();
+  __LOG("Wrapping ISteamUser (0x%p) in (0x%p)", steamUser, this);
 }
 
 HSteamUser SteamUserWrapper::GetHSteamUser()
-  __STUB__
+  __STUB("")
 
 bool SteamUserWrapper::BLoggedOn()
 {
+  __TRACE("()");
   return steam_bridge_SteamUser_BLoggedOn(isteamuser);
 }
 
 uint64 SteamUserWrapper::GetSteamID()
 {
+  __TRACE("()");
   return steam_bridge_SteamUser_GetSteamID(isteamuser);
 }
 
-int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob, uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer, bool bSecure)
-  __STUB__
+int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob,
+    int cbMaxAuthBlob, uint64 steamIDGameServer, uint32 unIPServer,
+    uint16 usPortServer, bool bSecure)
+  __STUB("(0x%p,%i,%lu,%u,%hu,%i)", pAuthBlob, cbMaxAuthBlob,
+      steamIDGameServer, unIPServer, usPortServer, bSecure)
 
-void SteamUserWrapper::TerminateGameConnection(uint32 unIPServer, uint16 usPortServer)
-  __STUB__
+void SteamUserWrapper::TerminateGameConnection(uint32 unIPServer,
+    uint16 usPortServer)
+  __STUB("(%u,%hu)", unIPServer, usPortServer)
 
-void SteamUserWrapper::TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent, const char *pchExtraInfo)
-  __STUB__
+void SteamUserWrapper::TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent,
+    const char *pchExtraInfo)
+  __STUB("(%llu,%i,\"%s\")", gameID, eAppUsageEvent, pchExtraInfo)
 
 bool SteamUserWrapper::GetUserDataFolder(char *pchBuffer, int cubBuffer)
-  __STUB__
+  __STUB("(\"%s\",%i)", pchBuffer, cubBuffer)
 
 void SteamUserWrapper::StartVoiceRecording()
-  __STUB__
+  __STUB("")
 
 void SteamUserWrapper::StopVoiceRecording()
-  __STUB__
+  __STUB("")
 
-int SteamUserWrapper::GetAvailableVoice(uint32 *pcbCompressed, uint32 *pcbUncompressed, uint32 nUncompressedVoiceDesiredSampleRate)
-  __STUB__
+int SteamUserWrapper::GetAvailableVoice(uint32 *pcbCompressed,
+    uint32 *pcbUncompressed, uint32 nUncompressedVoiceDesiredSampleRate)
+  __STUB("(0x%p,0x%p,%u)", pcbCompressed, pcbUncompressed,
+      uUncompressedVocieDesiredSampleRate)
 
-int SteamUserWrapper::GetVoice(bool bWantCompressed, void *pDestBuffer, uint32 cbDestBufferSize, uint32 *nBytesWritten, bool bWantUncompressed, void *pUncompressedDestBuffer, uint32 cbUncompressedDestBufferSize, uint32 *nUncompressBytesWritten, uint32 nUncompressedVoiceDesiredSampleRate)
-  __STUB__
+int SteamUserWrapper::GetVoice(bool bWantCompressed, void *pDestBuffer,
+    uint32 cbDestBufferSize, uint32 *nBytesWritten, bool bWantUncompressed,
+    void *pUncompressedDestBuffer, uint32 cbUncompressedDestBufferSize,
+    uint32 *nUncompressBytesWritten, uint32 nUncompressedVoiceDesiredSampleRate)
+  __STUB("(%i,0x%p,%u,0x%p,%i,0x%p,%u,0x%p,%u)", bWantCompressed, pDestBuffer,
+      cbDestBufferSize, nBytesWritten, bWantUncompressed,
+      pUncompressedDestBuffer, cbUncompressedDestBufferSize,
+      uUncompressBytesWritten, uUncompressedVoiceDesiredSampleRate)
 
-int SteamUserWrapper::DecompressVoice(const void *pCompressed, uint32 cbCompressed, void *pDestBuffer, uint32 cbDestBufferSize, uint32 *nBytesWritten, uint32 nDesiredSampleRate)
-  __STUB__
+int SteamUserWrapper::DecompressVoice(const void *pCompressed,
+    uint32 cbCompressed, void *pDestBuffer, uint32 cbDestBufferSize,
+    uint32 *nBytesWritten, uint32 nDesiredSampleRate)
+  __STUB("(0x%p,%u,0x%p,%u,0x%p,%u)", pCompressed, cbCompressed, pDestBuffer,
+      cbDestBufferSize, nBytesWritten, nDesiredSampleRate)
 
 uint32 SteamUserWrapper::GetVoiceOptimalSampleRate()
-  __STUB__
+  __STUB("")
 
-HAuthTicket SteamUserWrapper::GetAuthSessionTicket(void *pTicket, int cbMaxTicket, uint32 *pcbTicket)
-  __STUB__
+HAuthTicket SteamUserWrapper::GetAuthSessionTicket(void *pTicket,
+    int cbMaxTicket, uint32 *pcbTicket)
+  __STUB("(0x%p,%i,0x%p)", pTicket, cbMaxTicket, pcbTicket)
 
-int SteamUserWrapper::BeginAuthSession(const void *pAuthTicket, int cbAuthTicket, uint64 steamID)
-  __STUB__
+int SteamUserWrapper::BeginAuthSession(const void *pAuthTicket,
+    int cbAuthTicket, uint64 steamID)
+  __STUB("(0x%p,%i,%lu)", pAuthTicket, cbAuthTicket, steamID)
 
 void SteamUserWrapper::EndAuthSession(uint64 steamID)
-  __STUB__
+  __STUB("(%lu)", steamID)
 
 void SteamUserWrapper::CancelAuthTicket(HAuthTicket hAuthTicket)
-  __STUB__
+  __STUB("(%u)", hAuthTicket)
 
 int SteamUserWrapper::UserHasLicenseForApp(uint64 steamID, AppId_t appID)
-  __STUB__
+  __STUB("(%lu,%u)", steamID, appID)
 
 bool SteamUserWrapper::BIsBehindNAT()
-  __STUB__
+  __STUB("")
 
-void SteamUserWrapper::AdvertiseGame(uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer)
-  __STUB__
+void SteamUserWrapper::AdvertiseGame(uint64 steamIDGameServer,
+    uint32 unIPServer, uint16 usPortServer)
+  __STUB("(%lu,%u,%hu)", steamIDGameServer, unIPServer, usPortServer)
 
-SteamAPICall_t SteamUserWrapper::RequestEncryptedAppTicket(void *pDataToInclude, int cbDataToInclude)
-  __STUB__
+SteamAPICall_t SteamUserWrapper::RequestEncryptedAppTicket(
+    void *pDataToInclude, int cbDataToInclude)
+  __STUB("(0x%p,%i)", pDataToInclude, cbDataToInclude)
 
-bool SteamUserWrapper::GetEncryptedAppTicket(void *pTicket, int cbMaxTicket, uint32 *pcbTicket)
-  __STUB__
+bool SteamUserWrapper::GetEncryptedAppTicket(void *pTicket, int cbMaxTicket,
+    uint32 *pcbTicket)
+  __STUB("(0x%p,%i,0x%p)", pTicket, cbMaxTicket, pcbTicket)
 
 extern "C"
 {
 
 STEAM_API_PROXY_API void *SteamUser()
 {
+  __TRACE("()");
   return state.getSteamUser();
 }
 
