@@ -10,6 +10,7 @@
 
 static bool SteamAPI_InitReal(bool safeMode)
 {
+  __TRACE("(%i)", safeMode);
   state.setSafeMode(safeMode);
   return steam_bridge_SteamAPI_InitSafe();
 }
@@ -26,7 +27,8 @@ extern "C"
 //
 STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
 {
-  __LOG_ARGS_MSG__("overriding to FALSE", "(%u)", unOwnAppID);
+  __TRACE("(%u)", unOwnAppID);
+  __LOG("Overriding this function to return FALSE (no restart request) appid=%u", unOwnAppID);
   return false;
 }
 
@@ -40,15 +42,15 @@ STEAM_API_PROXY_API bool SteamAPI_RestartAppIfNecessary(uint32 unOwnAppID)
 // that defeats the purpose of using this project.
 STEAM_API_PROXY_API bool SteamAPI_Init()
 {
+  __TRACE("()");
   return SteamAPI_InitReal(false);
 }
 
 STEAM_API_PROXY_API bool SteamAPI_InitSafe()
 {
+  __TRACE("()");
   return SteamAPI_InitReal(true);
 }
-
-
 
 
 // According to steam_api.h:
@@ -56,11 +58,13 @@ STEAM_API_PROXY_API bool SteamAPI_InitSafe()
 // Can do!
 STEAM_API_PROXY_API HSteamPipe GetHSteamPipe()
 {
+  __TRACE("()");
   return SteamAPI_GetHSteamPipe();
 }
 
 STEAM_API_PROXY_API HSteamUser GetHSteamUser()
 {
+  __TRACE("()");
   return SteamAPI_GetHSteamUser();
 }
 

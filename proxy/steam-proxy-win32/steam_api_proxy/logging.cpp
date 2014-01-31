@@ -53,14 +53,14 @@ void __trace__(const char *func, const char *args, ...)
 {
   fprintf(_STREAM, "TRACE: %s ", func);
   _VA_PRINT(args);
-  vprintf(_STREAM, "\n");
+  fprintf(_STREAM, "\n");
 }
 
 void __log__(const char *func, const char *msg, ...)
 {
   fprintf(_STREAM, "LOG: %s ", func);
   _VA_PRINT(msg);
-  fprintf(_STREAM, "\n")
+  fprintf(_STREAM, "\n");
 }
 
 __declspec(noreturn) void __abort__(const char *func, const char *msg,

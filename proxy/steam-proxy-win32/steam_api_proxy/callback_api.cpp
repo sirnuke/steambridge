@@ -16,7 +16,7 @@ void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
     SteamAPICall_t steamAPICall);
 } // extern "C"
 
-
+// TODO: Add traces and whatnot to all this
 class CCallbackBase
 {
 public:
@@ -44,23 +44,25 @@ extern "C"
 
 void callback_run(void *callback, int flags, void *data)
 {
+  __TRACE("(0x%p,%i,0x%p)", callback, flags, data);
   CCallbackBase *c = (CCallbackBase *)(callback);
 
   // TODO: Probably not setting the flags via this function.
   // c->m_nCallbackFlags = flags;
 
-  __LOG_ARGS_MSG__("callback_run executing!", "(self=0x%p,callback=0x%p,data=0x%p,size=%i)",
+  __LOG("callback_run executing on func (0x%p) for callback wrapper (0x%p) data (0x%p) size (%i)",
       &callback_run, callback, data, c->GetCallbackSizeBytes());
 
   c->Run(data);
 
-  __LOG_ARGS_MSG__("callback_run complete!", "(self=0x%p,callback=0x%p,data=0x%p,size=%i)",
+  __LOG("callback_run complete on func (0x%p) for callback wrapper (0x%p) data (0x%p) size (%i)",
       &callback_run, callback, data, c->GetCallbackSizeBytes());
 }
 
 void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
     SteamAPICall_t steamAPICall)
 {
+  __TRACE("(0x%p,%i,0x%p,%i,%lu)", callback, flags, data, ioFailure, steamAPICall);
   CCallbackBase *c = (CCallbackBase *)(callback);
 
   // TODO: It's unlikely that the flags will just random change such
@@ -69,32 +71,33 @@ void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
   //       and the game server flag is entirely client controlled.
   // c->m_nCallbackFlags = flags;
 
-  __LOG_ARGS_MSG__("callback_run_args!", 
-      "(callback=0x%p,data=0x%p,ioFailure=%i,SteamAPICall=%llu)", callback,
-      data, ioFailure, steamAPICall);
+  __LOG("callback_run_args executing on func (0x%p) for wrapper (0x%p), data (0x%p) size (%i), iofailure (%i) APICall (%lu)",
+    &callback_run_args, callback, data, c->GetCallbackSizeBytes(), ioFailure, steamAPICall);
 
   c->Run(data, ioFailure, steamAPICall);
 }
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 {
+  __TRACE("()");
   steam_bridge_SteamAPI_RunCallbacks();
 }
 
 STEAM_API_PROXY_API void SteamAPI_RegisterCallback(
     class CCallbackBase *pCallback, int iCallback)
 {
-  __LOG_ARGS_MSG__("Registering Callback", "(0x%p,%i,%i)", pCallback,
-      iCallback, pCallback->GetCallbackSizeBytes());
+  __TRACE("(0x%p,%i)", pCallback, iCallback);
+  __LOG("Registering Callback (0x%p) iCallback (%i) size (%i)",
+    pCallback, iCallback, pCallback->GetCallbackSizeBytes());
 
   state.addCallback(pCallback);
   int flags = steam_bridge_SteamAPI_RegisterCallback(&callback_run, 
       &callback_run_args, pCallback, iCallback,
       pCallback->GetCallbackSizeBytes());
 
-  __LOG_ARGS_MSG__("After RegisterCallback",
-      "(oflags=%i,nflags=%i,ocallback=%i,acallback=%i)",
-      pCallback->m_nCallbackFlags, flags, pCallback->m_iCallback, iCallback);
+  __LOG("Done registering callback (0x%p) old-flags=%i new-flags=%i; old-callbackid=%i new-callbackid=%i",
+      pCallback, pCallback->m_nCallbackFlags, flags, pCallback->m_iCallback, iCallback);
+
   // Flags gets updated after RegisterCallback (and persumably other
   // similar functions).
   pCallback->m_nCallbackFlags = flags;

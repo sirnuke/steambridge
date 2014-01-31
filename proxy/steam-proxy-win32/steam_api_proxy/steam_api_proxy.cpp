@@ -31,16 +31,16 @@ STEAM_API_PROXY_API void SteamAPI_SetMiniDumpComment(const char *pchMsg)
   __STUB("(\"%s\")", pchMsg)
 
 STEAM_API_PROXY_API void SteamAPI_SetTryCatchCallbacks(bool bTryCatchCallbacks)
-  __STUB("(%i)", pTryCatchCallbacks)
+  __STUB("(%i)", bTryCatchCallbacks)
 
 STEAM_API_PROXY_API void SteamAPI_Shutdown()
   __STUB("")
 
-STEAM_API_PROXY_API void SteamAPI_UnregisterCallResult(void *pCallback,
+STEAM_API_PROXY_API void SteamAPI_UnregisterCallResult(class CCallbackBase *pCallback,
     SteamAPICall_t hAPICall)
   __STUB("(0x%p,%lu)", pCallback, hAPICall)
 
-STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(void *pCallback)
+STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(class CCallbackBase *pCallback)
   __STUB("(0x%p)", pCallback);
 
 STEAM_API_PROXY_API void SteamAPI_UseBreakpadCrashHandler(
@@ -58,23 +58,23 @@ STEAM_API_PROXY_API void *SteamClient()
   __STUB("")
 
 STEAM_API_PROXY_API void SteamContentServer()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void SteamContentServerUtils()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void SteamContentServer_Init()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void SteamContentServer_RunCallbacks()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void SteamContentServer_Shutdown()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void *SteamController()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 
 STEAM_API_PROXY_API void *SteamGameServer()
   __STUB("")
 
 STEAM_API_PROXY_API void *SteamGameServerApps()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 
 STEAM_API_PROXY_API void *SteamGameServerHTTP()
   __STUB("")
@@ -101,7 +101,7 @@ STEAM_API_PROXY_API HSteamUser SteamGameServer_GetHSteamUser()
 // from the mothership library if we have the function definition correct.
 // Set as CANT_IMPLEMENT for now.
 STEAM_API_PROXY_API uint32 SteamGameServer_GetIPCCallCount()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 
 STEAM_API_PROXY_API uint64 SteamGameServer_GetSteamID()
   __STUB("")
@@ -144,7 +144,7 @@ STEAM_API_PROXY_API void *SteamScreenshots()
   __STUB("")
 
 STEAM_API_PROXY_API void *SteamUGC()
-  __CANT_IMPLEMENT
+  __CANT_IMPLEMENT("")
 
 STEAM_API_PROXY_API void *SteamUnifiedMessages()
   __STUB("")

@@ -48,7 +48,7 @@ bool SteamAppsWrapper::BIsDlcInstalled(AppId_t appId)
   __STUB("(%u)", appId)
 
 uint32 SteamAppsWrapper::GetEarliestPurchaseUnixTime(AppId_t nAppID)
-  __STUB("(%u)", appId)
+  __STUB("(%u)", nAppID)
 
 bool SteamAppsWrapper::BIsSubscribedFromFreeWeekend()
   __STUB("")

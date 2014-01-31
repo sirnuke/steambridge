@@ -166,7 +166,7 @@ bool SteamFriendsWrapper::InviteUserToGame(uint64 steamIDFriend,
   __STUB("(%lu,\"%s\")", steamIDFriend, pchConnectString)
 
 int SteamFriendsWrapper::GetCoplayFriendCount()
-  __STUB()
+  __STUB("")
 
 uint64 SteamFriendsWrapper::GetCoplayFriend(int iCoplayFriend)
   __STUB("(%i)", iCoplayFriend)
@@ -200,7 +200,7 @@ int SteamFriendsWrapper::GetClanChatMessage(uint64 steamIDClanChat,
 
 bool SteamFriendsWrapper::IsClanChatAdmin(uint64 steamIDClanChat,
     uint64 steamIDUser)
-  __STUB(("(%lu,%lu)", steamIDClanChat, steamIDUser)
+  __STUB("(%lu,%lu)", steamIDClanChat, steamIDUser)
 
 bool SteamFriendsWrapper::IsClanChatWindowOpenInSteam(uint64 steamIDClanChat)
   __STUB("(%lu)", steamIDClanChat)
@@ -237,7 +237,7 @@ extern "C"
 
 STEAM_API_PROXY_API void *SteamFriends()
 {
-  __TRACE();
+  __TRACE("()");
   return state.getSteamFriends();
 }
 

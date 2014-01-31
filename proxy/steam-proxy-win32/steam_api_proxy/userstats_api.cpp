@@ -50,7 +50,7 @@ bool SteamUserStatsWrapper::ClearAchievement(const char *pchName)
 
 bool SteamUserStatsWrapper::GetAchievementAndUnlockTime(const char *pchName,
     bool *pbAchieved, uint32 *punUnlockTime)
-  __STUB("(\"%s\",0x%p,0x%p)", pchName, pcbAchieved, punUnlockTime)
+  __STUB("(\"%s\",0x%p,0x%p)", pchName, pbAchieved, punUnlockTime)
 
 bool SteamUserStatsWrapper::StoreStats()
   __STUB("")
@@ -98,7 +98,7 @@ bool SteamUserStatsWrapper::ResetAllStats(bool bAchievementsToo)
 SteamAPICall_t SteamUserStatsWrapper::FindOrCreateLeaderboard(
     const char *pchLeaderboardName, int eLeaderboardSortMethod,
     int eLeaderboardDisplayType)
-  __STUB("(\"%s\",%i,%i)", pchLeaderboardName, eLeaderboardStortMethod,
+  __STUB("(\"%s\",%i,%i)", pchLeaderboardName, eLeaderboardSortMethod,
       eLeaderboardDisplayType)
 
 SteamAPICall_t SteamUserStatsWrapper::FindLeaderboard(
@@ -190,7 +190,7 @@ extern "C"
 {
   STEAM_API_PROXY_API void *SteamUserStats()
   {
-    __TRACE("()")
+    __TRACE("()");
     return state.getSteamUserStats();
   }
 }

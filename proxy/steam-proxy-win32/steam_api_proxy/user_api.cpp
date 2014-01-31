@@ -23,13 +23,13 @@ HSteamUser SteamUserWrapper::GetHSteamUser()
 bool SteamUserWrapper::BLoggedOn()
 {
   __TRACE("()");
-  return steam_bridge_SteamUser_BLoggedOn(isteamuser);
+  return steam_bridge_SteamUser_BLoggedOn(steamUser);
 }
 
 uint64 SteamUserWrapper::GetSteamID()
 {
   __TRACE("()");
-  return steam_bridge_SteamUser_GetSteamID(isteamuser);
+  return steam_bridge_SteamUser_GetSteamID(steamUser);
 }
 
 int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob,
@@ -58,7 +58,7 @@ void SteamUserWrapper::StopVoiceRecording()
 int SteamUserWrapper::GetAvailableVoice(uint32 *pcbCompressed,
     uint32 *pcbUncompressed, uint32 nUncompressedVoiceDesiredSampleRate)
   __STUB("(0x%p,0x%p,%u)", pcbCompressed, pcbUncompressed,
-      uUncompressedVocieDesiredSampleRate)
+      nUncompressedVoiceDesiredSampleRate)
 
 int SteamUserWrapper::GetVoice(bool bWantCompressed, void *pDestBuffer,
     uint32 cbDestBufferSize, uint32 *nBytesWritten, bool bWantUncompressed,
@@ -67,7 +67,7 @@ int SteamUserWrapper::GetVoice(bool bWantCompressed, void *pDestBuffer,
   __STUB("(%i,0x%p,%u,0x%p,%i,0x%p,%u,0x%p,%u)", bWantCompressed, pDestBuffer,
       cbDestBufferSize, nBytesWritten, bWantUncompressed,
       pUncompressedDestBuffer, cbUncompressedDestBufferSize,
-      uUncompressBytesWritten, uUncompressedVoiceDesiredSampleRate)
+      nUncompressBytesWritten, nUncompressedVoiceDesiredSampleRate)
 
 int SteamUserWrapper::DecompressVoice(const void *pCompressed,
     uint32 cbCompressed, void *pDestBuffer, uint32 cbDestBufferSize,

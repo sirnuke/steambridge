@@ -18,12 +18,12 @@ AppState::AppState()
   : safeMode(false), steamUser(NULL), steamFriends(NULL), steamApps(NULL),
     steamUserStats(NULL)
 {
-  __LOG_MSG__("Constructing...");
+  __TRACE("(this=0x%p)", this);
 }
 
 AppState::~AppState()
 {
-  __LOG_MSG__("Destructing...");
+  __TRACE("(this=0x%p)", this);
   callbacks.clear();
   if (steamUser)
     delete steamUser;
@@ -37,40 +37,76 @@ AppState::~AppState()
 
 void AppState::addCallback(class CCallbackBase *callback)
 {
+  __TRACE("(0x%p)", callback);
   callbacks.push_back(callback);
 }
 
 SteamUserWrapper *AppState::getSteamUser()
-{ 
+{
+  __TRACE("()");
   if (!steamUser)
+  { 
     steamUser = new SteamUserWrapper();
+    __LOG("Creating ISteamUser wrapper (0x%p)", steamUser);
+  }
   return steamUser; 
 }
 
 SteamFriendsWrapper *AppState::getSteamFriends()
 {
+  __TRACE("()");
   if (!steamFriends)
+  {
     steamFriends = new SteamFriendsWrapper();
+    __LOG("Creating ISteamFriends wrapper (0x%p)", steamFriends);
+  }
   return steamFriends;
 }
 
 SteamAppsWrapper *AppState::getSteamApps()
 {
+  __TRACE("()");
   if (!steamApps)
+  {
     steamApps = new SteamAppsWrapper();
+    __LOG("Creating ISteamApps wrapper (0x%p)", steamApps);
+  }
   return steamApps;
 }
 
 SteamUserStatsWrapper *AppState::getSteamUserStats()
 {
+  __TRACE("()");
   if (!steamUserStats)
+  {
     steamUserStats = new SteamUserStatsWrapper();
+    __LOG("Creating ISteamUserStats wrapper (0x%p)", steamUserStats);
+  }
   return steamUserStats;
 }
 
-void AppState::setAppId(int appid) { this->appid = appid; }
-int  AppState::getAppId() { return appid; }
-void AppState::setSafeMode(bool safe) { safeMode = safe; }
-bool AppState::getSafeMode() { return safeMode; }
+void AppState::setAppId(int appid)
+{
+  __TRACE("(%i)", appid);
+  this->appid = appid;
+}
+
+int  AppState::getAppId()
+{
+  __TRACE("()");
+  return appid;
+}
+
+void AppState::setSafeMode(bool safe)
+{
+  __TRACE("(%i)", safe);
+  safeMode = safe;
+}
+
+bool AppState::getSafeMode()
+{
+  __TRACE("()");
+  return safeMode;
+}
 
 
