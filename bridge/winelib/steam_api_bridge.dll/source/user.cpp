@@ -24,10 +24,11 @@ STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *
   WINE_TRACE("(0x%p)", steamUser);
 
   if (!steamUser)
-    __ABORT_ARGS__("NULL steamUser pointer!", "(0x%p)", steamUser);
+    __ABORT("NULL steamUser pointer!");
   // Confirm the size is 8bytes, which is required per the headers
+  // TODO: There's better places to store this
   if (sizeof(CSteamID) != 8)
-    __ABORT_ARGS__("CSteamID doesn't match the expected size! "
+    __ABORT("CSteamID doesn't match the expected size! "
         "(Should be 64bits/8bytes)", "(%lu/8)", sizeof(CSteamID));
 
   return steamUser->GetSteamID().ConvertToUint64();
@@ -38,7 +39,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *ste
   WINE_TRACE("(0x%p)", steamUser);
 
   if (!steamUser)
-    __ABORT_ARGS__("NULL steamUser pointer!", "(0x%p)", steamUser);
+    __ABORT("NULL steamUser pointer!");
 
   return steamUser->BLoggedOn();
 }
@@ -49,6 +50,7 @@ STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser()
 
   if (!context)
   {
+    __LOG("Context is NULL, Init either failed or wasn't called");
     WINE_WARN("Context is NULL, Init either failed or wasn't called");
     return NULL;
   }

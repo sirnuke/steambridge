@@ -97,17 +97,22 @@ CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
 void CallbackImpl::Run(void *pvParam)
 {
   WINE_TRACE("(this=0x%p,pvParam=0x%p)", this, pvParam);
-  __LOG_ARGS_MSG__("Starting callback from bridge...",
-      "(this=0x%p,param=0x%p,func=0x%p)", this, pvParam, run);
+  __LOG("Starting callback from bridge... (this=0x%p,param=0x%p,func=0x%p)",
+      this, pvParam, run);
   (*run)(cCallbackBase, m_nCallbackFlags, pvParam);
-  __LOG_ARGS_MSG__("Finished callback in bridge...",
-      "(this=0x%p,param=0x%p,func=0x%p)", this, pvParam, run);
+  __LOG("Finished callback in bridge... (this=0x%p,param=0x%p,func=0x%p)",
+      this, pvParam, run);
 }
 
 void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall)
 {
-  WINE_TRACE("(this=0x%p,pvParam=0x%p,bIOFailure=%i,hSteamAPICall=%llu)", this, pvParam, bIOFailure, hSteamAPICall);
+  WINE_TRACE("(this=0x%p,pvParam=0x%p,bIOFailure=%i,hSteamAPICall=%llu)",
+      this, pvParam, bIOFailure, hSteamAPICall);
+  __LOG("Starting callback+ from bridge... (this=0x%p,param=0x%p,func=0x%p)",
+      this, pvParam, run);
   (*runargs)(cCallbackBase, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
+  __LOG("Finished callback+ in bridge... (this=0x%p,param=0x%p,func=0x%p)",
+      this, pvParam, run);
 }
 
 int CallbackImpl::GetCallbackSizeBytes()
@@ -155,9 +160,9 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
 
   if (!context)
   {
-    WINE_WARN("Creating context in RegisterCallback for app, as init wasn't called");
+    __LOG("Creating context in RegisterCallback for app, as init wasn't called");
     if (steam_bridge_SteamAPI_InitSafe() == false)
-      __ABORT__("InitSafe failed when called from RegisterCallback!");
+      __ABORT("InitSafe failed when called from RegisterCallback!");
   }
 
   // To make the behavior clear, flags is bits settings that track the
@@ -174,19 +179,17 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
 
   CallbackImpl *c = new CallbackImpl(run, runargs, cCallbackBase, size);
 
-  __LOG_ARGS_MSG__("Logging wrapper for callback", 
-      "(0x%p,%i,%i)->(0x%p,callback=%i,flags=%i)", cCallbackBase, callback,
-      size, c, c->m_iCallback, c->m_nCallbackFlags);
+  __LOG("Logging callback wrapper (0x%p,%i,%i)->(0x%p,callback=%i,flags=%i)",
+      cCallbackBase, callback, size, c, c->m_iCallback, c->m_nCallbackFlags);
 
   context->addCallback(c);
   SteamAPI_RegisterCallback(c, callback);
 
-  __LOG_ARGS_MSG__("After SteamAPI_RegisterCallback",
-      "(wrapper=0x%p,base=0x%p,callback=%i,flags=%i)", c, cCallbackBase,
-      c->m_iCallback, c->m_nCallbackFlags);
+  __LOG("Callback registered (wrapper=0x%p,base=0x%p,callback=%i,flags=%i)",
+      c, cCallbackBase, c->m_iCallback, c->m_nCallbackFlags);
 
   if (c->m_iCallback != callback)
-    __ABORT_ARGS__("Callback doesn't match expected after RegisterCallback!",
+    __ABORT("Callback doesn't match expected after RegisterCallback! "
         "(wrapper=0x%p,base=0x%p,expected=%i,actual=%i)", c, cCallbackBase,
         callback, c->m_iCallback);
 

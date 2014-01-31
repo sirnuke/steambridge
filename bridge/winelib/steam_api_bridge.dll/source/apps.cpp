@@ -24,7 +24,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
   WINE_TRACE("(0x%p,%u)", steamApps, appId);
 
   if (!steamApps)
-    __ABORT_ARGS__("NULL steamApps pointer!", "(0x%p)", steamApps);
+    __ABORT("NULL steamApps pointer!");
 
   return steamApps->BIsSubscribedApp(appId);
 }
@@ -35,7 +35,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
   WINE_TRACE("(0x%p)", steamApps);
 
   if (!steamApps)
-    __ABORT_ARGS__("NULL steamApps pointer!", "(0x%p)", steamApps);
+    __ABORT("NULL steamApps pointer!", "(0x%p)", steamApps);
 
   return steamApps->GetCurrentGameLanguage();
 }
@@ -46,6 +46,7 @@ STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps()
 
   if (!context)
   {
+    __LOG("Context is NULL, Init either failed or wasn't called");
     WINE_WARN("Context is NULL, Init either failed or wasn't called");
     return NULL;
   }

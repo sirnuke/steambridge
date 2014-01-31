@@ -24,7 +24,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
   WINE_TRACE("(0x%p)", steamFriends);
 
   if (!steamFriends)
-    __ABORT_ARGS__("NULL steamFriends pointer!", "(0x%p)", steamFriends);
+    __ABORT("NULL steamFriends pointer!");
 
   return steamFriends->GetPersonaName();
 }
@@ -35,7 +35,7 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
   WINE_TRACE("(0x%p)", steamFriends);
 
   if (!steamFriends)
-    __ABORT_ARGS__("NULL steamFriends pointer!", "(0x%p)", steamFriends);
+    __ABORT("NULL steamFriends pointer!");
 
   return steamFriends->GetFriendCount(iFriendFlags);
 }
@@ -47,6 +47,7 @@ STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
   if (!context)
   {
     WINE_WARN("Context is NULL, Init either failed or wasn't called");
+    __LOG("Context is NULL, Init either failed or wasn't called");
     return NULL;
   }
 

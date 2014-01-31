@@ -83,7 +83,7 @@ SteamAPIContext::SteamAPIContext(int appid)
       steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
       break;
     default:
-      __ABORT_ARGS__("Unknown application ID!", "(%i)", appid);
+      __ABORT("Unknown application ID (%i)!", appid);
       break;
   }
 
@@ -183,7 +183,7 @@ static int steam_bridge_get_appid()
   // TODO: we may want some sort of steam_appid_override.txt
   file.open("steam_appid.txt");
   if (file.fail())
-    __ABORT__("Unable to open 'steam_appid.txt'");
+    __ABORT("Unable to open 'steam_appid.txt'");
   // TODO: Error checkin' and all that yo.
   file >> appid;
   file.close();
@@ -203,6 +203,7 @@ bool steam_bridge_SteamAPI_InitSafe()
 
   if (context == NULL)
   {
+    WINE_WARN("Init called twice (perhaps internally the first time)");
     int appid = steam_bridge_get_appid();
     bool b = SteamAPI_InitSafe();
     if (!b) return b;

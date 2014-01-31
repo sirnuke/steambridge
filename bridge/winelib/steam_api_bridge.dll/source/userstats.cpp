@@ -24,7 +24,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
   WINE_TRACE("(0x%p)", steamUserStats);
 
   if (!steamUserStats)
-    __ABORT__("NULL steamUserStats pointer!");
+    __ABORT("NULL steamUserStats pointer!");
 
   return steamUserStats->RequestCurrentStats();
 }
@@ -36,6 +36,7 @@ STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats()
   if (!context)
   {
     WINE_WARN("Context is NULL, Init either failed or wasn't called");
+    __LOG("Context is NULL, Init either failed or wasn't called");
     return NULL;
   }
 
