@@ -20,7 +20,8 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
   STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser() __STUB__;
-  STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *) __STUB__;
+  //STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(class ISteamUser *) __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *steamUser) __STUB__;
 
   STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends() __STUB__;
