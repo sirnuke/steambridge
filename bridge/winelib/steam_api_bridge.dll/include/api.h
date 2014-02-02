@@ -34,7 +34,9 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
 
 // SteamUser API calls
 STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser();
-STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(
+//STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(
+// See comment in source/user.cpp about returning 64-bit values
+STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(
     class ISteamUser *steamUser);
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
     class ISteamUser *steamUser);

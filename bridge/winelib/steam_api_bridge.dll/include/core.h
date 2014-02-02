@@ -39,8 +39,15 @@ class SteamAPIContext
 
     void addCallback(class CCallbackBase *callback);
 
+    void setSteamID(uint64 steamID);
+    void *getSteamIDPointer();
+
   private:
-    int appid __attribute__((unused));
+    // NOTE: Store this in the context until we've sorted out Wine's
+    //       issue with returning 64-bit values.
+    uint64 steamID;
+
+    int appid;
 
     std::deque<class CCallbackBase *> callbacks;
 
