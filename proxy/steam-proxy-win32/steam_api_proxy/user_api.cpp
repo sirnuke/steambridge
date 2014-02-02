@@ -29,7 +29,12 @@ bool SteamUserWrapper::BLoggedOn()
 uint64 SteamUserWrapper::GetSteamID()
 {
   __TRACE("()");
-  return steam_bridge_SteamUser_GetSteamID(steamUser);
+  void *v = steam_bridge_SteamUser_GetSteamID(steamUser);
+  __LOG("SteamID location is 0x%p", v);
+  uint64 id = (*(uint64 *)v);
+  __LOG("Get steamid of %lu", id);
+  return (uint64)(v);
+  //return id;
 }
 
 int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob,
