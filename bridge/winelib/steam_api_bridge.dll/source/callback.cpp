@@ -99,7 +99,7 @@ void CallbackImpl::Run(void *pvParam)
   WINE_TRACE("(this=0x%p,pvParam=0x%p)\n", this, pvParam);
   WINE_WARN("Starting callback from bridge... (this=0x%p,param=0x%p,func=0x%p)",
       this, pvParam, run);
-  //(*run)(cCallbackBase, m_nCallbackFlags, pvParam);
+  (*run)(cCallbackBase, m_nCallbackFlags, pvParam);
   WINE_WARN("Finished callback in bridge... (this=0x%p,param=0x%p,func=0x%p)",
       this, pvParam, run);
 }
@@ -110,7 +110,7 @@ void CallbackImpl::Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPIC
       this, pvParam, bIOFailure, hSteamAPICall);
   WINE_WARN("Starting callback+ from bridge... (this=0x%p,param=0x%p,func=0x%p)",
       this, pvParam, run);
-  //(*runargs)(cCallbackBase, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
+  (*runargs)(cCallbackBase, m_nCallbackFlags, pvParam, bIOFailure, hSteamAPICall);
   WINE_WARN("Finished callback+ in bridge... (this=0x%p,param=0x%p,func=0x%p)",
       this, pvParam, run);
 }
