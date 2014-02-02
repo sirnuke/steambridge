@@ -199,16 +199,19 @@ extern "C"
 //       classes?
 bool steam_bridge_SteamAPI_InitSafe()
 {
-  WINE_TRACE("()");
+  WINE_TRACE("\n");
 
   if (context == NULL)
   {
-    WINE_WARN("Init called twice (perhaps internally the first time)");
     int appid = steam_bridge_get_appid();
     bool b = SteamAPI_InitSafe();
     if (!b) return b;
     context = new SteamAPIContext(appid);
     if (!context) return false;
+  }
+  else
+  {
+    WINE_WARN("Init called twice (perhaps internally the first time)\n");
   }
   // TODO: Warn if init'd twice?
   return true;

@@ -35,7 +35,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
   WINE_TRACE("(0x%p)", steamApps);
 
   if (!steamApps)
-    __ABORT("NULL steamApps pointer!", "(0x%p)", steamApps);
+    __ABORT("NULL steamApps pointer!");
 
   return steamApps->GetCurrentGameLanguage();
 }
@@ -46,8 +46,7 @@ STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps()
 
   if (!context)
   {
-    __LOG("Context is NULL, Init either failed or wasn't called");
-    WINE_WARN("Context is NULL, Init either failed or wasn't called");
+    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
     return NULL;
   }
 

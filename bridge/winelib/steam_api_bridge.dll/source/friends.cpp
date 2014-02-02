@@ -46,8 +46,7 @@ STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
 
   if (!context)
   {
-    WINE_WARN("Context is NULL, Init either failed or wasn't called");
-    __LOG("Context is NULL, Init either failed or wasn't called");
+    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
     return NULL;
   }
 
