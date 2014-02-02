@@ -421,8 +421,7 @@ private:
 	ISteamScreenshots	*m_pSteamScreenshots;
 	ISteamHTTP			*m_pSteamHTTP;
 	ISteamUnifiedMessages*m_pSteamUnifiedMessages;
-  // DOWN WITH COMPILER WARNINGS
-	ISteamController	*m_pController  __attribute__((unused));
+	ISteamController	*m_pController; 
 #ifdef _PS3
 	ISteamPS3OverlayRender *m_pSteamPS3OverlayRender;
 #endif
