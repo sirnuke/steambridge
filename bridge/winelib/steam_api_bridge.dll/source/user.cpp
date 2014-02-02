@@ -31,7 +31,6 @@ STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(class ISteamUser *s
         " (Should be 64bits/8bytes) (%zu/8)", sizeof(CSteamID));
 
   uint64 id = steamUser->GetSteamID().ConvertToUint64();
-  WINE_TRACE("Get steamUser ID of %lu\n", id);
   context->setSteamID(id);
   // TODO: returning 64-bit values (such as here) in 32-bit mode means
   //       EAX is set to a the location of a hidden struct containing the
@@ -41,6 +40,7 @@ STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(class ISteamUser *s
   //       this value as a pointer, and blows up accordingly.  As an
   //       immediate work around, store this value in the context and
   //       return that memory location.
+  WINE_TRACE("Get steamUser ID of %lu->%p\n", id, context->getSteamIDPointer());
   return context->getSteamIDPointer();
 }
 
