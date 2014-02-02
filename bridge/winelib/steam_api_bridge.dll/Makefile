@@ -15,8 +15,8 @@ EXES                  =
 ### Common settings
 
 CEXTRA                = -mno-cygwin \
-			-m32 -Wall -Wextra -pipe
-CXXEXTRA              = -m32 -Wall -Wextra -pipe
+			-m32 -Wall -Wextra -pipe -g
+CXXEXTRA              = -m32 -Wall -Wextra -pipe -g
 RCEXTRA               =
 DEFINES               = -DVERSION_SAFE_STEAM_API_INTERFACES
 INCLUDE_PATH          = -Iinclude \
