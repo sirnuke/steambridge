@@ -9,7 +9,7 @@
 #include "logging.h"
 #include "types.h"
 
-#define _STREAM stderr
+#define _STREAM stdout
 #define _VA_PRINT(ARG) { \
   va_list va; \
   va_start(va, ARG); \
@@ -61,6 +61,7 @@ void __log__(const char *func, const char *msg, ...)
   fprintf(_STREAM, "LOG: %s ", func);
   _VA_PRINT(msg);
   fprintf(_STREAM, "\n");
+  fflush(_STREAM);
 }
 
 __declspec(noreturn) void __abort__(const char *func, const char *msg,
