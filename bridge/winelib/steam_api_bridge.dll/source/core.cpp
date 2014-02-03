@@ -25,9 +25,9 @@
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
 SteamAPIContext::SteamAPIContext(int appid) 
-  : steamID(0), appid(appid), steamUser(NULL), steamFriends(NULL),
-    steamUtils(NULL), steamMatchmaking(NULL), steamUserStats(NULL),
-    steamApps(NULL), steamMatchmakingServers(NULL), steamNetworking(NULL),
+  : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
+    steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
+    steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
     steamUnifiedMessages(NULL)
 {
@@ -172,16 +172,6 @@ SteamAPIContext::~SteamAPIContext()
 void SteamAPIContext::addCallback(class CCallbackBase *callback)
 {
   callbacks.push_back(callback);
-}
-
-void SteamAPIContext::setSteamID(uint64 steamID)
-{
-  this->steamID = steamID;
-}
-
-void *SteamAPIContext::getSteamIDPointer()
-{
-  return &steamID;
 }
 
 SteamAPIContext *context = NULL;

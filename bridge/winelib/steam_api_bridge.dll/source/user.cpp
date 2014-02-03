@@ -18,7 +18,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
-STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(class ISteamUser *steamUser)
+STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *steamUser)
 {
   WINE_TRACE("(%p)\n", steamUser);
 
@@ -31,17 +31,8 @@ STEAM_API_BRIDGE_API void *steam_bridge_SteamUser_GetSteamID(class ISteamUser *s
         " (Should be 64bits/8bytes) (%zu/8)", sizeof(CSteamID));
 
   uint64 id = steamUser->GetSteamID().ConvertToUint64();
-  context->setSteamID(id);
-  // TODO: returning 64-bit values (such as here) in 32-bit mode means
-  //       EAX is set to a the location of a hidden struct containing the
-  //       value.  Despite adding -ret64, Winelib doesn't seem to be
-  //       handling this correctly, and just dumps the entire value
-  //       in EAX.  This 'fits' fine, but the win32 Proxy tries to read
-  //       this value as a pointer, and blows up accordingly.  As an
-  //       immediate work around, store this value in the context and
-  //       return that memory location.
-  WINE_TRACE("Get steamUser ID of %lu->%p\n", id, context->getSteamIDPointer());
-  return context->getSteamIDPointer();
+  WINE_TRACE("Got steamUser ID of %llu\n", id);
+  return id;
 }
 
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *steamUser)
