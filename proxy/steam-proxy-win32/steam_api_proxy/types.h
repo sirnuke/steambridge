@@ -25,6 +25,11 @@ struct CGameID
   uint64 b;
 };
 
+struct CSteamID
+{
+  uint64 id;
+};
+
 
 const int k_cubSaltSize   = 8;
 typedef	uint8 Salt_t[ k_cubSaltSize ];

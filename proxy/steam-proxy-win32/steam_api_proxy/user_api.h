@@ -21,7 +21,7 @@ class SteamUserWrapper
     // real magic, it probably isn't necessary to implement anything.
 
     // CSteamID ... ()
-    virtual uint64 GetSteamID();
+    virtual CSteamID GetSteamID();
 
     // int ... (void *, int, CSteamID, uint32, uint16, bool)
     virtual int InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob,
