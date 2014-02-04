@@ -19,6 +19,9 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 const std::string _bridge_version = "0";
 const std::string _bridge_info = "TODO: Put something interesting here";
 
+extern "C"
+{
+
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string()
 {
   WINE_TRACE("\n");
@@ -29,5 +32,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_info_string()
 {
   WINE_TRACE("\n");
   return _bridge_info.c_str();
+}
+
 }
 
