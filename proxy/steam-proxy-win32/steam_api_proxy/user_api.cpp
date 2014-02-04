@@ -38,12 +38,23 @@ CSteamID SteamUserWrapper::GetSteamID()
 int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob,
     int cbMaxAuthBlob, uint64 steamIDGameServer, uint32 unIPServer,
     uint16 usPortServer, bool bSecure)
-  __STUB("(0x%p,%i,%lu,%u,%hu,%i)", pAuthBlob, cbMaxAuthBlob,
-      steamIDGameServer, unIPServer, usPortServer, bSecure)
+{
+  __TRACE("(0x%p,%i,%lu,%u,%hu,%i)", pAuthBlob, cbMaxAuthBlob,
+      steamIDGameServer, unIPServer, usPortServer, bSecure);
+
+  return steam_bridge_SteamUser_InitiateGameConnection(steamUser, pAuthBlob,
+      cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);
+}
+  
 
 void SteamUserWrapper::TerminateGameConnection(uint32 unIPServer,
     uint16 usPortServer)
-  __STUB("(%u,%hu)", unIPServer, usPortServer)
+{
+  __TRACE("(%u,%hu)", unIPServer, usPortServer);
+
+  return steam_bridge_SteamUser_TerminateGameConnection(steamUser, unIPServer,
+      usPortServer);
+}
 
 void SteamUserWrapper::TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent,
     const char *pchExtraInfo)

@@ -19,20 +19,22 @@ extern "C"
   STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc, void *, int, int) __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
-  STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser() __STUB__;
-  STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *) __STUB__;
-  STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *steamUser) __STUB__;
+  STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
+  STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(ISteamUser *, void *, int, uint64, uint32, uint16, bool) __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16) __STUB__;
 
-  STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends() __STUB__;
-  STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(class ISteamFriends *) __STUB__;
-  STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(class ISteamFriends *, int) __STUB__;
+  STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends() __STUB__;
+  STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(ISteamFriends *) __STUB__;
+  STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(ISteamFriends *, int) __STUB__;
 
-  STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps() __STUB__;
-  STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(class ISteamApps *, AppId_t) __STUB__;
-  STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(class ISteamApps *) __STUB__;
+  STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps() __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(ISteamApps *, AppId_t) __STUB__;
+  STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(ISteamApps *) __STUB__;
 
-  STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats() __STUB__;
-  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(class ISteamUserStats *) __STUB__;
+  STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats() __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(ISteamUserStats *) __STUB__;
 
   STEAM_API_BRIDGE_API const char *steam_bridge_version_string() __STUB__;
   STEAM_API_BRIDGE_API const char *steam_bridge_info_string() __STUB__;

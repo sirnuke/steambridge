@@ -22,6 +22,11 @@ typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags,
 typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags,
     void *data, bool ioFailure, SteamAPICall_t steamAPICall);
 
+class ISteamUser;
+class ISteamFriends;
+class ISteamApps;
+class ISteamUserStats;
+
 extern "C"
 {
 
@@ -33,7 +38,7 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
 
 // SteamUser API calls
-STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser();
+STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
 
 // TODO: This returns a 'CSteamID', which is a set 64-bits.
 //       It's relatively cleanly converted between uint64 and the struct,
@@ -46,28 +51,34 @@ STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser();
 //       just return a uint64 and do a quick convert win32 side.
 
 STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(
-    class ISteamUser *steamUser);
+    ISteamUser *steamUser);
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
-    class ISteamUser *steamUser);
+    ISteamUser *steamUser);
+STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
+    ISteamUser *steamUser, void *pAuthBlob, int cbMaxAuthBlob,
+    uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
+    bool bSecure);
+STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(
+    ISteamUser *steamUser, uint32 unIPServer, uint16 usPortServer);
 
 // SteamFriends API calls
-STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends();
+STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends();
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
-    class ISteamFriends *steamFriends);
+    ISteamFriends *steamFriends);
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
-    class ISteamFriends *steamFriends, int iFriendFlags);
+    ISteamFriends *steamFriends, int iFriendFlags);
 
 // SteamApps API Calls
-STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps();
+STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
-    class ISteamApps *steamApps, AppId_t appId);
+    ISteamApps *steamApps, AppId_t appId);
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
-    class ISteamApps *steamApps);
+    ISteamApps *steamApps);
 
 // SteamUserStats API Calls
-STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats();
+STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
-    class ISteamUserStats *steamUserStats);
+    ISteamUserStats *steamUserStats);
 
 // Meta API Calls
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string();
