@@ -37,6 +37,7 @@ protected:
   friend void callback_run(void *, int, void *);
   friend void callback_run_args(void *, int, void *, bool, SteamAPICall_t);
   friend void SteamAPI_RegisterCallback(class CCallbackBase *, int);
+  friend void SteamAPI_UnregisterCallback(class CCallbackBase *);
 };
 
 extern "C"
@@ -108,6 +109,14 @@ STEAM_API_PROXY_API void SteamAPI_RegisterCallback(
   // TODO: Any more parameters that we might need to set?  Don't seem
   //       to be the case, as flags+iCallback are the only two exposed
   //       to the SteamAPI library itself.
+}
+
+STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(class CCallbackBase *pCallback)
+{
+  __TRACE("(0x%p)", pCallback);
+  __LOG("Unregistering callback (0x%p)", pCallback);
+  // TODO: Update flags or something, anything?
+  steam_bridge_SteamAPI_UnregisterCallback(pCallback);
 }
 
 }

@@ -52,6 +52,13 @@ STEAM_API_PROXY_API bool SteamAPI_InitSafe()
   return SteamAPI_InitReal(true);
 }
 
+STEAM_API_PROXY_API void SteamAPI_Shutdown()
+{
+  __TRACE("");
+  __LOG("TODO: Shutting down, record this in the state somehow");
+  steam_bridge_SteamAPI_Shutdown();
+}
+
 
 // According to steam_api.h:
 // "backwards compat export, passes through to SteamAPI_ variant"

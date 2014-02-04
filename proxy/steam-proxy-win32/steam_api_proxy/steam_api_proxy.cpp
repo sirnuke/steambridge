@@ -33,15 +33,9 @@ STEAM_API_PROXY_API void SteamAPI_SetMiniDumpComment(const char *pchMsg)
 STEAM_API_PROXY_API void SteamAPI_SetTryCatchCallbacks(bool bTryCatchCallbacks)
   __STUB("(%i)", bTryCatchCallbacks)
 
-STEAM_API_PROXY_API void SteamAPI_Shutdown()
-  __STUB("")
-
 STEAM_API_PROXY_API void SteamAPI_UnregisterCallResult(class CCallbackBase *pCallback,
     SteamAPICall_t hAPICall)
   __STUB("(0x%p,%lu)", pCallback, hAPICall)
-
-STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(class CCallbackBase *pCallback)
-  __STUB("(0x%p)", pCallback);
 
 STEAM_API_PROXY_API void SteamAPI_UseBreakpadCrashHandler(
     char const *pchVersion, char const *pchDate, char const *pchTime,

@@ -32,9 +32,14 @@ extern "C"
 
 // Core API Calls
 STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
+STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown();
+// TODO: Handle callback flags better, probably don't need/want to
+//       return an int here.
 STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
     steam_bridge_CallbackRunFunc run, steam_bridge_CallbackRunArgsFunc runargs,
-    void *wrapper, int callback, int size);
+    void *object, int callback, int size);
+STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
+    void *object);
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
 
 // SteamUser API calls

@@ -16,7 +16,9 @@
 extern "C"
 {
   STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe() __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown() __STUB__;
   STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc, void *, int, int) __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(void *) __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
