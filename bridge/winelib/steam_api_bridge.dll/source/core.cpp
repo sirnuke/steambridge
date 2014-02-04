@@ -7,6 +7,11 @@
 #include <fstream>
 #include <string>
 
+// Boost headers (settings management)
+// TODO: Bringing these inline with the project at large would be nice.
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/info_parser.hpp>
+
 // Steam headers
 #include <steam_api.h>
 
@@ -22,6 +27,9 @@
 #include "core.h"
 #include "logging.h"
 
+// TODO: Can this be safely hardcoded?
+#define _SETTINGS_FILENAME "~/.steam/root/_steam_bridge_settings.config"
+
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
 SteamAPIContext::SteamAPIContext(int appid) 
@@ -31,6 +39,8 @@ SteamAPIContext::SteamAPIContext(int appid)
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
     steamUnifiedMessages(NULL)
 {
+  // TODO: Lessss work in the constructor!
+
   // TODO: Should do this check in some form
 	// if (!SteamClient())
 
