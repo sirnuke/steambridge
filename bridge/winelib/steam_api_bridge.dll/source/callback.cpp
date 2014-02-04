@@ -26,6 +26,7 @@ class CallbackImpl : protected CCallbackBase
   public:
     CallbackImpl(steam_bridge_CallbackRunFunc run, 
         steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size);
+    ~CallbackImpl();
     virtual void Run(void *pvParam);
     virtual void Run(void *pvParam, bool bIOFailure, SteamAPICall_t hSteamAPICall);
     virtual int GetCallbackSizeBytes();
@@ -43,15 +44,22 @@ class CallbackImpl : protected CCallbackBase
     friend int steam_bridge_SteamAPI_RegisterCallback(
         steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc,
         void *, int, int);
+    friend void steam_bridge_SteamAPI_UnregisterCallback(void *cCallbackBase);
 };
 
 CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
     steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int size) 
   : CCallbackBase(), cCallbackBase(cCallbackBase), size(size), run(run), runargs(runargs)
 {
-  WINE_TRACE("\n");
+  WINE_TRACE("(this=0x%p,0x%p,0x%p,0x%p,%i)\n", this, run, runargs,
+      cCallbackBase, size);
   m_iCallback = 0;
   m_nCallbackFlags = 0;
+}
+
+CallbackImpl::~CallbackImpl()
+{
+  WINE_TRACE("(this=0x%p)\n", this);
 }
 
 // A now for a word or two on the Callback function pointers:
@@ -178,23 +186,44 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
   // Fortunately for us, as it's pure data there shouldn't be any need to
   // do any converting between Linux and Wine.
 
-  CallbackImpl *c = new CallbackImpl(run, runargs, cCallbackBase, size);
+  CCallbackBase *reference = (CCallbackBase *)(cCallbackBase);
+  CallbackImpl *wrapper = new CallbackImpl(run, runargs, reference, size);
 
-  WINE_TRACE("Logging callback wrapper (0x%p,%i,%i)->(0x%p,callback=%i,flags=%i)",
-      cCallbackBase, callback, size, c, c->m_iCallback, c->m_nCallbackFlags);
+  WINE_TRACE("Logging callback wrapper "
+      "(0x%p,%i,%i)->(0x%p,callback=%i,flags=%i)\n", reference, callback,
+      size, wrapper, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
 
-  context->addCallback(c);
-  SteamAPI_RegisterCallback(c, callback);
+  context->addCallback(wrapper, reference);
+  SteamAPI_RegisterCallback(wrapper, callback);
 
-  WINE_TRACE("Callback registered (wrapper=0x%p,base=0x%p,callback=%i,flags=%i)",
-      c, cCallbackBase, c->m_iCallback, c->m_nCallbackFlags);
+  WINE_TRACE("Callback registered "
+      "(wrapper=0x%p,base=0x%p,callback=%i,flags=%i)\n", wrapper,
+      reference, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
 
-  if (c->m_iCallback != callback)
+  if (wrapper->m_iCallback != callback)
     __ABORT("Callback doesn't match expected after RegisterCallback! "
-        "(wrapper=0x%p,base=0x%p,expected=%i,actual=%i)", c, cCallbackBase,
-        callback, c->m_iCallback);
+        "(wrapper=0x%p,base=0x%p,expected=%i,actual=%i)", wrapper,
+        reference, callback, wrapper->m_iCallback);
 
-  return c->m_nCallbackFlags;
+  return wrapper->m_nCallbackFlags;
+}
+
+STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
+    void *cCallbackBase)
+{
+  WINE_TRACE("(0x%p)\n", cCallbackBase);
+  if (!context)
+    __ABORT("No context at an unexpected location!");
+
+  CCallbackBase *reference = (CCallbackBase *)(cCallbackBase);
+  CallbackImpl *wrapper
+    = reinterpret_cast<CallbackImpl *>(context->getCallback(reference));
+  // TODO: Flaggsss
+  SteamAPI_UnregisterCallback(wrapper);
+  context->removeCallback(reference);
+  // TODO: Research destructors, there's nothing defined by steam_api.h -
+  //       so this probabbbllly works right, but G++ complains (rightfully).
+  delete wrapper;
 }
 
 } // extern "C"
