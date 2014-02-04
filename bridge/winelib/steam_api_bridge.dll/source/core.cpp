@@ -169,9 +169,42 @@ SteamAPIContext::~SteamAPIContext()
   // TODO: Delete all callbacks?
 }
 
-void SteamAPIContext::addCallback(class CCallbackBase *callback)
+void SteamAPIContext::addCallback(CCallbackBase *wrapper,
+    CCallbackBase *reference)
 {
-  callbacks.push_back(callback);
+  WINE_TRACE("(0x%p,0x%p)\n", wrapper, reference);
+  callbacks.push_back(wrapper);
+  references[reference] = wrapper;
+}
+
+CCallbackBase *SteamAPIContext::getCallback(CCallbackBase *reference)
+{
+  return references[reference];
+}
+
+// NOTE: This function assumes wrapper has already been deregistered
+// NOTE: This doesn't delete the wrapper becaussss Cplusplussss and
+//       non-virtual destructors.
+void SteamAPIContext::removeCallback(CCallbackBase *reference)
+{
+  WINE_TRACE("(0x%p)\n", reference);
+
+  CCallbackBase *wrapper = references[reference];
+  if (wrapper == NULL)
+  {
+    WINE_ERR("Unable to find corresponding wrapper for (0x%p)\n", reference);
+    return;
+  }
+  std::deque<CCallbackBase *>::iterator it;
+  for (it = callbacks.begin(); it != callbacks.end(); it++)
+    if (*it == wrapper) break;
+  if (it == callbacks.end())
+  {
+    WINE_ERR("Unable to find Callback Wrapper (0x%p) in the deque, "
+        "reference is (0x%p)\n", wrapper, reference);
+    return;
+  }
+  callbacks.erase(it);
 }
 
 SteamAPIContext *context = NULL;
@@ -204,17 +237,33 @@ bool steam_bridge_SteamAPI_InitSafe()
   if (context == NULL)
   {
     int appid = steam_bridge_get_appid();
-    bool b = SteamAPI_InitSafe();
-    if (!b) return b;
+    if (!SteamAPI_InitSafe())
+    {
+      WINE_WARN("SteamAPI_InitSafe failed! (Look for Steam messages)\n");
+      return false;
+    }
     context = new SteamAPIContext(appid);
-    if (!context) return false;
+    if (!context)
+      __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
+    WINE_TRACE("Created Internal API Context (0x%p)\n", context);
   }
   else
-  {
     WINE_WARN("Init called twice (perhaps internally the first time)\n");
-  }
-  // TODO: Warn if init'd twice?
   return true;
+}
+
+STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown()
+{
+  WINE_TRACE("\n");
+  if (context == NULL)
+    WINE_WARN("Shutdown called when not initialized!\n");
+  else
+  {
+    delete context;
+    context = NULL;
+    SteamAPI_Shutdown();
+    WINE_TRACE("SteamAPI Shutdown\n");
+  }
 }
 
 }

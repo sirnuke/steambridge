@@ -4,6 +4,9 @@
 #define  ___STEAM_BRIDGE_CORE_H__
 
 #include <deque>
+#include <tr1/unordered_map>
+
+class CCallbackBase;
 
 class SteamAPIContext
 {
@@ -37,12 +40,15 @@ class SteamAPIContext
       { return steamUnifiedMessages; }
 
 
-    void addCallback(class CCallbackBase *callback);
+    void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);
+    CCallbackBase *getCallback(CCallbackBase *reference);
+    void removeCallback(CCallbackBase *reference);
 
   private:
     int appid;
 
-    std::deque<class CCallbackBase *> callbacks;
+    std::deque<CCallbackBase *> callbacks;
+    std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
 
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
