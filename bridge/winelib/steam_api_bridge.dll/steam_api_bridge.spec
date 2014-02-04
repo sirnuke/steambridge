@@ -9,6 +9,12 @@
 @ cdecl steam_bridge_SteamUser(str)
 @ cdecl -ret64 steam_bridge_SteamUser_GetSteamID(ptr)
 @ cdecl steam_bridge_SteamUser_BLoggedOn(ptr)
+#@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long word long)
+# TODO: Second to last parameter is an unsigned short (16-bits) -
+#       Winelib documenation suggests this is still a 'long'
+@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long long long)
+#@ cdecl steam_bridge_SteamUser_TerminateGameConnection(ptr long word)
+@ cdecl steam_bridge_SteamUser_TerminateGameConnection(ptr long long)
 
 # SteamFriends API Calls
 @ cdecl steam_bridge_SteamFriends()

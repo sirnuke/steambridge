@@ -18,7 +18,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
-STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *steamUser)
+STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(ISteamUser *steamUser)
 {
   WINE_TRACE("(%p)\n", steamUser);
 
@@ -35,7 +35,7 @@ STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(class ISteamUser *
   return id;
 }
 
-STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *steamUser)
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *steamUser)
 {
   WINE_TRACE("(0x%p)\n", steamUser);
 
@@ -45,7 +45,27 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(class ISteamUser *ste
   return steamUser->BLoggedOn();
 }
 
-STEAM_API_BRIDGE_API class ISteamUser *steam_bridge_SteamUser()
+STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
+    ISteamUser *steamUser, void *pAuthBlob, int cbMaxAuthBlob,
+    uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
+    bool bSecure)
+{
+  WINE_TRACE("(0x%p,0x%p,%i,%llu,%u,%hu,%i)\n", steamUser, pAuthBlob,
+      cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);
+
+  return steamUser->InitiateGameConnection(pAuthBlob, cbMaxAuthBlob,
+      steamIDGameServer, unIPServer, usPortServer, bSecure);
+}
+
+STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(
+    ISteamUser *steamUser, uint32 unIPServer, uint16 usPortServer)
+{
+  WINE_TRACE("(0x%p,%u,%hu)\n", steamUser, unIPServer, usPortServer);
+
+  return steamUser->TerminateGameConnection(unIPServer, usPortServer);
+}
+
+STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser()
 {
   WINE_TRACE("\n");
 
