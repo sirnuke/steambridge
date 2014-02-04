@@ -72,6 +72,7 @@ SteamAPIContext::SteamAPIContext(int appid)
       steamNetworkingVersion = "SteamNetworking004";
       steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
     case 1522: // Defcon demo
+    case 1520: // Defcon real
       steamUserVersion = "SteamUser013";
       steamFriendsVersion = "SteamFriends005";
       steamUtilsVersion = "SteamUtils005";
