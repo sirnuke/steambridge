@@ -2,7 +2,9 @@
 
 # Core API calls
 @ cdecl steam_bridge_SteamAPI_InitSafe()
+@ cdecl steam_bridge_SteamAPI_Shutdown()
 @ cdecl steam_bridge_SteamAPI_RegisterCallback(ptr ptr ptr long long)
+@ cdecl steam_bridge_SteamAPI_UnregisterCallback(ptr)
 @ cdecl steam_bridge_SteamAPI_RunCallbacks();
 
 # SteamUser API calls
