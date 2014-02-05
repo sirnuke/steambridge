@@ -61,7 +61,7 @@ bool SteamAPIContext::prep(int appid)
 
   if (!SteamClient())
   {
-    WINE_ERR("SteamClient() return NULL! (InitSafe not called?)");
+    WINE_ERR("SteamClient() returns NULL! (InitSafe not called?)");
     return false;
   }
   // TODO: lol hardcoding.  Placeholders ahoy!
