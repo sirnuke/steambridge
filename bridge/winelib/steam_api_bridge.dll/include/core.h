@@ -11,7 +11,7 @@ class CCallbackBase;
 class SteamAPIContext
 {
   public:
-    SteamAPIContext(int appid);
+    SteamAPIContext();
     ~SteamAPIContext();
 
     class ISteamUser                *getSteamUser()
@@ -38,6 +38,9 @@ class SteamAPIContext
       { return steamHTTP; }
     class ISteamUnifiedMessages     *getSteamUnifiedMessages() 
       { return steamUnifiedMessages; }
+
+
+    bool prep(int appid);
 
 
     void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);

@@ -27,23 +27,43 @@
 #include "core.h"
 #include "logging.h"
 
-// TODO: Can this be safely hardcoded?
-#define _SETTINGS_FILENAME "~/.steam/root/_steam_bridge_settings.config"
+#define _SETTINGS_ROOT "~/.steam/root/_steam_bridge/"
+#define _SETTINGS_APP_VERSION_DB = "appids.info"
+#define _SETTINGS_CONFIG_FILE = "config.info"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
-SteamAPIContext::SteamAPIContext(int appid) 
-  : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
+SteamAPIContext::SteamAPIContext()
+  : appid(0), steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
     steamUnifiedMessages(NULL)
 {
-  // TODO: Lessss work in the constructor!
+  WINE_TRACE("(this=0x%p)\n", this);
+}
 
-  // TODO: Should do this check in some form
-	// if (!SteamClient())
+bool SteamAPIContext::prep(int appid)
+{
+  WINE_TRACE("(this=0x%p,%i)\n", this, appid);
 
+  if (appid == 0)
+  {
+    WINE_ERR("Received invalid appid of (%i)!\n", appid);
+    return false;
+  }
+  if (this->appid != 0)
+  {
+    WINE_ERR("prep(%i) called twice!\n", appid);
+    return false;
+  }
+  this->appid = appid;
+
+  if (!SteamClient())
+  {
+    WINE_ERR("SteamClient() return NULL! (InitSafe not called?)");
+    return false;
+  }
   // TODO: lol hardcoding.  Placeholders ahoy!
   // TODO: Might want to make this part of a seperate init function, like the headers.
   // TODO: The official API checks that each pointer doesn't return NULL.
@@ -58,121 +78,102 @@ SteamAPIContext::SteamAPIContext(int appid)
 
   switch (appid)
   {
-    case 12900: // Audiosurf
-      steamUserVersion = "SteamUser016";
-      steamFriendsVersion = "SteamFriends013";
-      steamUtilsVersion = "SteamUtils005";
-      steamMatchmakingVersion = "SteamMatchMaking009";
-      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION011";
-      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION005";
-      steamNetworkingVersion = "SteamNetworking005";
-      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION008";
-      steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
-      steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
-      break;
-    case 38730: // RUSH demo
-      steamUserVersion = "SteamUser014";
-      steamFriendsVersion = "SteamFriends007";
-      steamUtilsVersion = "SteamUtils005";
-      steamMatchmakingVersion = "SteamMatchMaking008";
-      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
-      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
-      steamNetworkingVersion = "SteamNetworking004";
-      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
-    case 1522: // Defcon demo
-    case 1520: // Defcon real
-      steamUserVersion = "SteamUser013";
-      steamFriendsVersion = "SteamFriends005";
-      steamUtilsVersion = "SteamUtils005";
-      steamMatchmakingVersion = "SteamMatchMaking008";
-      steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-      steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
-      steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
-      steamNetworkingVersion = "SteamNetworking003";
-      steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
-      break;
-    default:
-      __ABORT("Unknown application ID (%i)!", appid);
-      break;
+  case 12900: // Audiosurf
+    steamUserVersion = "SteamUser016";
+    steamFriendsVersion = "SteamFriends013";
+    steamUtilsVersion = "SteamUtils005";
+    steamMatchmakingVersion = "SteamMatchMaking009";
+    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION011";
+    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION005";
+    steamNetworkingVersion = "SteamNetworking005";
+    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION008";
+    steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
+    steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
+    break;
+  case 38730: // RUSH demo
+    steamUserVersion = "SteamUser014";
+    steamFriendsVersion = "SteamFriends007";
+    steamUtilsVersion = "SteamUtils005";
+    steamMatchmakingVersion = "SteamMatchMaking008";
+    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
+    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
+    steamNetworkingVersion = "SteamNetworking004";
+    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
+  case 1522: // Defcon demo
+  case 1520: // Defcon real (probably the same?)
+    steamUserVersion = "SteamUser013";
+    steamFriendsVersion = "SteamFriends005";
+    steamUtilsVersion = "SteamUtils005";
+    steamMatchmakingVersion = "SteamMatchMaking008";
+    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
+    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
+    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
+    steamNetworkingVersion = "SteamNetworking003";
+    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
+    break;
+  default:
+    WINE_ERR("Unknown application ID of (%i)!\n", appid);
+    return false;
   }
 
+  // TODO: Do we need to check this for error values?
   HSteamUser steamUserHandle = SteamAPI_GetHSteamUser();
   HSteamPipe steamPipeHandle = SteamAPI_GetHSteamPipe();
 
-  if (steamUserVersion == "")
-    steamUser = NULL;
-  else
+  if (!steamUserVersion.empty())
     steamUser = SteamClient()->GetISteamUser(steamUserHandle, steamPipeHandle,
         steamUserVersion.c_str());
 
-  if (steamFriendsVersion == "")
-    steamFriends = NULL;
-  else
+  if (!steamFriendsVersion.empty())
     steamFriends = SteamClient()->GetISteamFriends(steamUserHandle,
         steamPipeHandle, steamFriendsVersion.c_str());
 
-  if (steamUtilsVersion == "")
-    steamUtils = NULL;
-  else
+  if (!steamUtilsVersion.empty())
     steamUtils = SteamClient()->GetISteamUtils(steamPipeHandle,
         steamUtilsVersion.c_str());
 
-  if (steamMatchmakingVersion == "")
-    steamMatchmaking = NULL;
-  else
+  if (!steamMatchmakingVersion.empty())
     steamMatchmaking = SteamClient()->GetISteamMatchmaking(steamUserHandle,
         steamPipeHandle, steamMatchmakingVersion.c_str());
 
-  if (steamMatchmakingServersVersion == "")
-    steamMatchmakingServers = NULL;
-  else
+  if (!steamMatchmakingServersVersion.empty())
     steamMatchmakingServers = SteamClient()->GetISteamMatchmakingServers(
         steamUserHandle, steamPipeHandle,
         steamMatchmakingServersVersion.c_str());
 
-  if (steamUserStatsVersion == "")
-    steamUserStats = NULL;
-  else
+  if (!steamUserStatsVersion.empty())
     steamUserStats = SteamClient()->GetISteamUserStats(steamUserHandle,
         steamPipeHandle, steamUserStatsVersion.c_str());
 
-  if (steamAppsVersion == "")
-    steamApps = NULL;
-  else
+  if (!steamAppsVersion.empty())
     steamApps = SteamClient()->GetISteamApps(steamUserHandle, steamPipeHandle,
         steamAppsVersion.c_str());
 
-  if (steamNetworkingVersion == "")
-    steamNetworking = NULL;
-  else
+  if (!steamNetworkingVersion.empty())
     steamNetworking = SteamClient()->GetISteamNetworking(steamUserHandle,
         steamPipeHandle, steamNetworkingVersion.c_str());
 
-  if (steamRemoteStorageVersion == "")
-    steamRemoteStorage = NULL;
-  else
+  if (!steamRemoteStorageVersion.empty())
     steamRemoteStorage = SteamClient()->GetISteamRemoteStorage(steamUserHandle,
         steamPipeHandle, steamRemoteStorageVersion.c_str());
 
-  if (steamScreenshotsVersion == "")
-    steamScreenshots = NULL;
-  else
+  if (!steamScreenshotsVersion.empty())
     steamScreenshots = SteamClient()->GetISteamScreenshots(steamUserHandle,
         steamPipeHandle, steamScreenshotsVersion.c_str());
 
-  if (steamHTTPVersion == "")
-    steamHTTP = NULL;
-  else
+  if (!steamHTTPVersion.empty())
     steamHTTP = SteamClient()->GetISteamHTTP(steamUserHandle, steamPipeHandle,
       steamHTTPVersion.c_str());
 
-  if (steamUnifiedMessagesVersion == "")
-    steamUnifiedMessages = NULL;
-  else
-    SteamClient()->GetISteamUnifiedMessages(steamUserHandle, steamPipeHandle,
-        steamUnifiedMessagesVersion.c_str());
+  if (!steamUnifiedMessagesVersion.empty())
+    steamUnifiedMessages = SteamClient()->GetISteamUnifiedMessages(
+        steamUserHandle, steamPipeHandle, steamUnifiedMessagesVersion.c_str());
+
+  // TODO: Check if any returned NULL?
+  // TODO: Try to get ISteamController anyway?
+  return true;
 }
 
 SteamAPIContext::~SteamAPIContext()
@@ -222,6 +223,7 @@ SteamAPIContext *context = NULL;
 
 static int steam_bridge_get_appid()
 {
+  WINE_TRACE("\n");
   int appid = 0;
   std::ifstream file;
   // TODO: we may want some sort of steam_appid_override.txt
@@ -253,9 +255,11 @@ bool steam_bridge_SteamAPI_InitSafe()
       WINE_WARN("SteamAPI_InitSafe failed! (Look for Steam messages)\n");
       return false;
     }
-    context = new SteamAPIContext(appid);
+    context = new SteamAPIContext();
     if (!context)
       __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
+    if (!context->prep(appid))
+      __ABORT("Unable to setup the SteamAPIContext");
     WINE_TRACE("Created Internal API Context (0x%p)\n", context);
   }
   else
