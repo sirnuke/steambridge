@@ -48,11 +48,6 @@ class SteamAPIContext
     void removeCallback(CCallbackBase *reference);
 
   private:
-    int appid;
-
-    std::deque<CCallbackBase *> callbacks;
-    std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
-
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
     class ISteamUtils               *steamUtils;
@@ -65,6 +60,13 @@ class SteamAPIContext
     class ISteamScreenshots         *steamScreenshots;
     class ISteamHTTP                *steamHTTP;
     class ISteamUnifiedMessages     *steamUnifiedMessages;
+
+    int appid;
+
+    std::deque<CCallbackBase *> callbacks;
+    std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
+
+    bool disclaimer;
 };
 
 extern SteamAPIContext *context;

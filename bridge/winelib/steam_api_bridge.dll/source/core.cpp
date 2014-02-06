@@ -2,7 +2,9 @@
 
 // C headers
 #include <cstdio>
+#include <cstring>
 
+// C++ headers
 #include <deque>
 #include <fstream>
 #include <string>
@@ -11,6 +13,12 @@
 // TODO: Bringing these inline with the project at large would be nice.
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
+
+// POSIX headers
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 // Steam headers
 #include <steam_api.h>
@@ -34,11 +42,11 @@
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
 SteamAPIContext::SteamAPIContext()
-  : appid(0), steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
+  : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
-    steamUnifiedMessages(NULL)
+    steamUnifiedMessages(NULL), appid(0), disclaimer(false)
 {
   WINE_TRACE("(this=0x%p)\n", this);
 }
@@ -64,6 +72,29 @@ bool SteamAPIContext::prep(int appid)
     WINE_ERR("SteamClient() returns NULL! (InitSafe not called?)");
     return false;
   }
+
+  struct stat rootDir;
+  if (stat(_SETTINGS_ROOT, &rootDir) != 0)
+  {
+    if (errno != ENOENT)
+    {
+      WINE_ERR("Unable to stat root directory \"" _SETTINGS_ROOT "\"\n");
+      return false;
+    }
+    if (mkdir(_SETTINGS_ROOT, 0755) != 0)
+    {
+      WINE_ERR("Unable to create directory: %s\n", strerror(errno));
+      return false;
+    }
+  }
+  else if (S_ISDIR(rootDir.st_mode) == 0)
+  {
+    WINE_ERR("Root directory \"" _SETTINGS_ROOT
+        "\" exists, but isn't a directory!\n");
+    return false;
+  }
+
+
   // TODO: lol hardcoding.  Placeholders ahoy!
   // TODO: Might want to make this part of a seperate init function, like the headers.
   // TODO: The official API checks that each pointer doesn't return NULL.
