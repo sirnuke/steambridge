@@ -24,23 +24,23 @@
 void __abort__()
 {
   MessageBoxA(NULL, 
-             "Function detected an invalid state!\n"
-             "This likely is caused by an internal error, perhaps one handled correctly by\n"
-             "the native steam_api library.\n"
-             "Check the command line for more information.\n",
-             "SteamBridge Abort!",
-             MB_ICONERROR | MB_OK);
+      "Function detected an invalid state!\n"
+      "This likely is caused by an internal error, perhaps one handled "
+      "correctly by the native steam_api library. Check the command line for "
+      "more information.",
+      "SteamBridge Abort!",
+      MB_ICONERROR | MB_OK);
   exit(1);
 }
 
 void __stub__()
 {
   MessageBoxA(NULL, 
-             "Stub function called!\n"
-             "This means a function is unimplemented, but required for this app.\n"
-             "Check the command line for more information.\n",
-             "SteamBridge Stub!",
-             MB_ICONERROR | MB_OK);
+      "An unimplemented function has been called. This app cannot "
+      "continue to execute until this is fixed. Check the command line "
+      "for more information.",
+      "SteamBridge Stub!",
+      MB_ICONERROR | MB_OK);
   exit(1);
 }
 
