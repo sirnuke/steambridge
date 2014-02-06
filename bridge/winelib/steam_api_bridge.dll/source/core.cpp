@@ -7,22 +7,24 @@
 // C++ headers
 #include <deque>
 #include <fstream>
-#include <string>
 
 // POSIX headers
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <pwd.h>
+
+// libconfig headers
+#include <libconfig.h>
 
 // Steam headers
 #include <steam_api.h>
 
 // Wine/Win32 headers
 #define NOMINMAX
-// TODO: We probably don't need either of these headers
-#include <windef.h>
-#include <winbase.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #include <wine/debug.h>
 
 // Local headers
@@ -30,9 +32,14 @@
 #include "core.h"
 #include "logging.h"
 
-#define _SETTINGS_ROOT "~/.steam/root/_steam_bridge/"
-#define _SETTINGS_APP_VERSION_DB = "appids.info"
-#define _SETTINGS_CONFIG_FILE = "config.info"
+#define _BRIDGE_DIR "/.steam/root/_steam_bridge/"
+#define _APP_VERSION_DB "appids.cfg"
+#define _CONFIGURATION_FILE "config.cfg"
+
+// TODO: Polish and call ABORT where meaningful.  Internal errors not
+//       related to SteamAPI should almost certainly be ABORT, not just
+//       return false.
+// TODO: We should track userids, and tie disclaimer to it.
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -49,6 +56,8 @@ SteamAPIContext::SteamAPIContext()
 bool SteamAPIContext::prep(int appid)
 {
   WINE_TRACE("(this=0x%p,%i)\n", this, appid);
+
+  bool configChanged = false;
 
   if (appid == 0)
   {
@@ -68,27 +77,55 @@ bool SteamAPIContext::prep(int appid)
     return false;
   }
 
-  struct stat rootDir;
-  if (stat(_SETTINGS_ROOT, &rootDir) != 0)
+  if (!checkBridgeDirectory())
   {
-    if (errno != ENOENT)
-    {
-      WINE_ERR("Unable to stat root directory \"" _SETTINGS_ROOT "\"\n");
-      return false;
-    }
-    if (mkdir(_SETTINGS_ROOT, 0755) != 0)
-    {
-      WINE_ERR("Unable to create directory: %s\n", strerror(errno));
-      return false;
-    }
-  }
-  else if (S_ISDIR(rootDir.st_mode) == 0)
-  {
-    WINE_ERR("Root directory \"" _SETTINGS_ROOT
-        "\" exists, but isn't a directory!\n");
+    WINE_ERR("checkBridgeDirectory failed!\n");
     return false;
   }
 
+  if (!readConfiguration())
+  {
+    WINE_ERR("readConfiguration failed!\n");
+    return false;
+  }
+
+  if (!disclaimer)
+  {
+    int res = MessageBoxA(NULL, 
+        "I would describe Valve as a diety of an Abrahamic religion. "
+        "All powerful; all knowning, and yet unknowable. "
+        "It might bestow free games. It might smite you for not properly "
+        "sacrificing your goats."
+        "\n\n"
+        "SteamBridge doesn't hide itself, and arguably breaks the letter, "
+        "though not the spirit, of the Steam Subscriber Agreement."
+        "\n\n"
+        "Do not continue with an important account.",
+        "But First, a Word of Warning...",
+        MB_ICONWARNING | MB_OKCANCEL);
+    if (res == IDCANCEL)
+    {
+      WINE_TRACE("Disclaimer set to false and User said NO.\n");
+      exit(0);
+    }
+    else if (res == IDOK)
+    {
+      WINE_TRACE("Disclaimer set to false, User said YES.\n");
+      disclaimer = true;
+      configChanged = true;
+    }
+    else
+      __ABORT("Unknown MessageBoxA return value (%i) (?)", res);
+  }
+
+  if (configChanged)
+  {
+    if (!saveConfiguration())
+    {
+      WINE_ERR("saveConfiguration failed!\n");
+      return false;
+    }
+  }
 
   // TODO: lol hardcoding.  Placeholders ahoy!
   // TODO: Might want to make this part of a seperate init function, like the headers.
@@ -206,6 +243,149 @@ SteamAPIContext::~SteamAPIContext()
 {
   // TODO: Delete all callbacks?
 }
+
+bool SteamAPIContext::checkBridgeDirectory()
+{
+  WINE_TRACE("(this=0x%p)\n", this);
+  struct stat rootDir;
+  std::string dir;
+  char *home = NULL;
+
+  if ((home = getenv("HOME")) == NULL)
+  {
+    // Harumph
+    struct passwd *pw = getpwuid(getuid());
+    if (!pw) __ABORT("getpwuid failed (!): %s", strerror(errno));
+    dir = pw->pw_dir;
+  }
+  else
+    dir = home;
+
+  if (dir.empty()) __ABORT("Unable to find a valid home directory!");
+
+  steamBridgeDir = dir + _BRIDGE_DIR;
+
+  if (stat(steamBridgeDir.c_str(), &rootDir) != 0)
+  {
+    if (errno != ENOENT)
+    {
+      WINE_ERR("Unable to stat root directory \"%s\": %s\n",
+          steamBridgeDir.c_str(), strerror(errno));
+      return false;
+    }
+    if (mkdir(steamBridgeDir.c_str(),
+          S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
+    {
+      WINE_ERR("Unable to create directory: %s\n", strerror(errno));
+      return false;
+    }
+  }
+  else if (S_ISDIR(rootDir.st_mode) == 0)
+  {
+    WINE_ERR("Root directory \"%s\" exists, but isn't a directory!\n", 
+        steamBridgeDir.c_str());
+    return false;
+  }
+  return true;
+}
+
+// Yuck yuck yuck?  Yuck yuck yuck.
+#define _LIBCONFIG_WARN(MSG, ...) WINE_WARN(MSG ": %s@%i: %s\n", \
+    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
+      config_error_text(&config)); \
+
+#define _LIBCONFIG_ERR(MSG, ...) WINE_ERR(MSG ": %s@%i: %s\n", \
+    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
+      config_error_text(&config)); \
+
+#define _LIBCONFIG_ABORT(MSG, ...) __ABORT(MSG ": %s@%i: %s\n", \
+    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
+      config_error_text(&config)); \
+
+bool SteamAPIContext::readConfiguration()
+{
+  WINE_TRACE("(this=0x%p\n", this);
+
+  disclaimer = false;
+
+  config_t config;
+  config_init(&config);
+
+  int disclaim = 0;
+
+  std::string filename = steamBridgeDir + _CONFIGURATION_FILE;
+
+  if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
+  {
+    _LIBCONFIG_ERR("Unable to read configuration");
+    config_destroy(&config);
+    return true;
+  }
+
+  if (config_lookup_bool(&config, "steam_bridge.disclaimer", &disclaim) 
+      != CONFIG_TRUE)
+    _LIBCONFIG_WARN("Unable to read 'disclaimer' as a boolean setting");
+
+  // TODO: Is it safe to assume libconfig's bool means true==1?
+  if (disclaim == 1)
+    disclaimer = true;
+  else
+  {
+    if (disclaim != 0)
+      WINE_ERR("Unknown (!?) 'bool' (%i) returned by libconfig for "
+          "steam_bridge.disclaimer, defaulting to false\n", disclaim);
+    disclaimer = false;
+  }
+
+  WINE_TRACE("Got disclaimer value of (%i)\n", disclaimer);
+
+  config_destroy(&config);
+  return true;
+}
+
+bool SteamAPIContext::saveConfiguration()
+{
+  WINE_TRACE("(this=0x%p)\n", this);
+
+  std::string filename = steamBridgeDir + _CONFIGURATION_FILE;
+
+  config_t config;
+  config_init(&config);
+
+  config_setting_t *root, *steam_bridge, *disclaimer;
+
+  // These calls shouldn't fail for basically any reason - signifies an
+  // internal logic error of some sort.
+  root = config_root_setting(&config);
+  if (!root) __ABORT("Unable to get the root element from libconfig!");
+
+  steam_bridge = config_setting_add(root, "steam_bridge", CONFIG_TYPE_GROUP);
+  if (!steam_bridge)
+    __ABORT("Unable to add steam_bridge group to the root in libconfig!");
+
+  disclaimer = config_setting_add(steam_bridge, "disclaimer", CONFIG_TYPE_BOOL);
+  if (!disclaimer)
+    __ABORT("Unable to add disclaimer to steam_bridge group in libconfig!");
+
+  if (config_setting_set_bool(disclaimer, this->disclaimer) != CONFIG_TRUE)
+    _LIBCONFIG_ABORT("Unable to set disclaimer");
+
+  // This one, can, in fact, fail
+  if (config_write_file(&config, filename.c_str()) != CONFIG_TRUE)
+  {
+    _LIBCONFIG_ERR("Unable to write configuration file");
+    config_destroy(&config);
+    return false;
+  }
+
+  config_destroy(&config);
+  WINE_TRACE("Saved the configuration\n");
+  return true;
+}
+
+#undef _LIBCONFIG_WARN
+#undef _LIBCONFIG_ERR
+#undef _LIBCONFIG_ABORT
 
 void SteamAPIContext::addCallback(CCallbackBase *wrapper,
     CCallbackBase *reference)

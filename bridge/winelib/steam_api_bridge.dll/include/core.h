@@ -4,6 +4,7 @@
 #define  ___STEAM_BRIDGE_CORE_H__
 
 #include <deque>
+#include <string>
 #include <tr1/unordered_map>
 
 class CCallbackBase;
@@ -48,6 +49,10 @@ class SteamAPIContext
     void removeCallback(CCallbackBase *reference);
 
   private:
+    bool checkBridgeDirectory();
+    bool readConfiguration();
+    bool saveConfiguration();
+
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
     class ISteamUtils               *steamUtils;
@@ -65,6 +70,8 @@ class SteamAPIContext
 
     std::deque<CCallbackBase *> callbacks;
     std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
+
+    std::string steamBridgeDir;
 
     bool disclaimer;
 };
