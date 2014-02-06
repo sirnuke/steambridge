@@ -12,7 +12,7 @@
 // NOTE: fprints(stderr) doesn't cooperate with Wine, which reimplements
 //       printf* (inside MSVCRT). This causes lockups when printing
 //       messages.  As a workaround, and to obtain Good Citizen Status,
-//       use WINE_* (WINE_TRACE, WINE_WARN, WINE_LOG, etc).  Also,
+//       use WINE_* (WINE_TRACE, WINE_WARN, WINE_ERR, etc).  Also,
 //       unlike the Proxy's logging behavior, WINE_* functions do not
 //       print out a newline.  The passed message must do this.
 //       WINEDEBUG="warn+steam_bridge,trace+steam_bridge" is sufficient
