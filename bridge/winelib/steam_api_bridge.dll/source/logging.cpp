@@ -15,8 +15,7 @@
 //       use WINE_* (WINE_TRACE, WINE_WARN, WINE_ERR, etc).  Also,
 //       unlike the Proxy's logging behavior, WINE_* functions do not
 //       print out a newline.  The passed message must do this.
-//       WINEDEBUG="warn+steam_bridge,trace+steam_bridge" is sufficient
-//       for printing out warnings and trace mssages.
+//       WINEDEBUG="+steam_bridge" is helpful for debug info.
 
 // TODO: Reallly need to print out more information in abort
 // TODO: Might want a sort of pop-up warning
