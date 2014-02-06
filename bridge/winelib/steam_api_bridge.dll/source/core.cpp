@@ -9,11 +9,6 @@
 #include <fstream>
 #include <string>
 
-// Boost headers (settings management)
-// TODO: Bringing these inline with the project at large would be nice.
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/info_parser.hpp>
-
 // POSIX headers
 #include <errno.h>
 #include <sys/stat.h>
