@@ -5,7 +5,6 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
-
 #include <wine/debug.h>
 
 #include "logging.h"
@@ -18,6 +17,9 @@
 //       print out a newline.  The passed message must do this.
 //       WINEDEBUG="warn+steam_bridge,trace+steam_bridge" is sufficient
 //       for printing out warnings and trace mssages.
+
+// TODO: Reallly need to print out more information in abort
+// TODO: Might want a sort of pop-up warning
 
 void __abort__()
 {
