@@ -1,112 +1,100 @@
-Overview
-================
+# SteamBridge
 
-SteamBridge lets you run (some) Steam games on Linux using Wine, but
-through the native Steam client.  Long term, it will allow non-Windows
-users access to their Windows library without the burden of switching
-Steam clients.
-
-***AND***
-
-SteamBridge is cover for a secret government investigation into the
-calling conventions on Windows and Linux.  The reports are classified;
-rumored to complain about unnecessary differences between the two
-Operating Systems, and how masochism isn't covered by Work's Comp.
-
-***AND***
+## What is SteamBridge?
 
 SteamBridge is a forbidden love story between two star-crossed lovers.
-Windows-only Steam games running in Wine, but residing side-by-side with
-their Linux Steam Client and games brethren?  It was a romance almost too
-scandalizing to even speak of, but will Steam's powerful father object?
+Windows Steam games running in Wine, but residing side-by-side with
+their native Steam brethren?  It's an affair too scandalizing to even
+speak of in public.  But will Steam's powerful father object?
 
-But What Is It, Really?
-================
+### AND
 
-SteamBridge is a recreation of the SteamWorks API DLL (Steam\_api.dll)
-that acts a simple proxy between Wine and a Linux-native libsteam\_api.so.
-It exists in two intertwined forms:
+SteamBridge is a cover for a secret government investigation into the
+calling conventions on Windows and Linux.  The reports are classified;
+rumored to contain fierce arguments about how to return values, and
+complaints that masochism isn't covered by Work's Comp.
 
-A Winelib Linux-native Bridge Library
-----------------
+### AND
 
-steam\_api\_bridge.dll.so is compiled as a native Linux DLL that offers
-a C API that wraps pretty thinly over all the functionality provided
-by libsteam\_api.so.  In particular, it offers a clean C API to all the
-blackmagic C++ stuff Valve has done beyond their thin, public API.
+SteamBridge lets you run Steam games on Linux using Wine, but through
+the native Steam client.  Long term, it will allow non-Windows users
+access to their Windows library without the burden of switching clients.
 
-It could, conceivably, be the basis for a Linux C API into the world of
-Steamworks, though that's not the intention.
+It's a two part recreation of the Steam API DLL that acts a proxy between
+Wine and the Linux-native library.
 
-There's also a Visual Studio 2010 project that implements the same C API,
-so the Proxy Windows DLL has something to link against.
+## But first, a few words of warning
 
-A Win32 Proxy DLL replacing Steam\_api.dll
-----------------
+### Will using SteamBridge get me banned?
 
-Compiled through Visual Studio 2010, this acts a fairly thin wrapper for
-the functionality provided by the real Steam\_api.dll.  In particular,
-all the C++ stuff that happens behind the scene.  This DLL is only really
-useful inside a Wine environment.
+I don't know!  It arguably breaks the letter of the Steam Subscriber
+Agreement, though not the spirit.  Unless Valve clarifies, don't use
+this with a real account.  I recommend taking the SteamBridge User pledge:
 
-Will All This Get Me Banned?
-================
+#### The SteamBridge User Pledge
 
-I don't know!  It might!  It arguably breaks the letter of the Steam
-Subscriber Agreement, though in my opinion, not the intent.  It won't
-let you play games that you don't own, for example.
+I, *[state your name]*, have done many stupid things, such as:
 
-I would describe Valve like a deity of an Abrahamic religion.  All
-powerful; all knowing, and yet unknowable.  It might rain gifts of free
-games down upon you.  It might smite you for not properly sacrificing
-your goats - and as you lay dying, you'll wonder "...what goats?"
-
-Until Valve comes down and clarifies in one way or another, don't use
-this with an important account.  In fact, I highly recommend taking the
-following pledge:
-
-The SteamBridge User Pledge
-----------------
-
-*Raise your right hand and repeat after me*
-
-I, [state your name], have done many stupid things before, perhaps on the magnitude of:
-
-* Eyeballing a cut on a critical piece of wood.
-* Buying a used car without even turning it on.
-* Telling a significant other that what they are upset about "isn't a big deal."
-* And while clarifying, insinuating that they are also fat.
-* Buying a game at full price purely from the box art.
+* Buying a game at full price half way through December.
 * Taking a payday loan, because, hey, it's free money, right?
+* Purchasing a used car without driving it.
+* Telling my significant other that what they are upset about "isn't a
+  big deal."
+* And while clarifying, insinuating that they are fat.
 
-But I will never be so stupid as to use SteamBridge with an account of
-any importance.  SteamBridge makes no effort to hide itself.  I fully
-understand Valve has the ability, and possibly the cause, to swing
-the banhammer.
+But I won't use SteamBridge with an account of importance.  I understand
+Valve has the ability, and potentially the cause, to swing the banhammer.
 
-*Lower right hand*
+### Will this net me a VAC ban?
 
-Will This Net Me a VAC Ban?
-================
+Unknown Steam DLLs?  That's a paddling.  Non-VAC games should be safe.
 
-Unknown DLLs being loaded?  Dohhhhhh, that's a paddling.
+## Enough of all that, down the rabbit hole
 
-Not that SteamBridge is anywhere near being able to run any VAC-enabled
-games.  If, and when, that time comes, it's unlikely that you don't
-receive at least a VAC-kick.
+### Compiling the Windows Proxy DLL
 
-SteamBridge, however, should not affect VAC status of non-VAC games.
-I'm not personally aware of any bans occurring outside from outside their
-respective games, with the semi-exception of the Golden Wrench fiasco.
+Windows with Visual Studio.  I'm using 2010 Express on Windows 7 64-bit.
 
-How Do I Use SteamBridge?
-================
+Open the Solution in proxy/steam-proxy-win32.  Compile a Release build.
 
-*Mysterious empty section!*
+### Compiling the Linux Bridge Library
 
-How Does It Actually Work?
-================
+x86 Linux that can compile 32-bit binaries.  You'll need g++, make, Wine &
+its development headers, and 32-bit libconfig & its development headers.
 
-*Mysterious empty section!*
+On a 64-bit Ubuntu installation, you'll (roughly) want *build-essential*,
+*g++*, *g++-multilib*, *wine1.7*, *wine1.7-dev*, *libconfig9:i386*,
+*libconfig9-dev*.  32-bit distros won't need *g++-multilib*, and
+can substitute *libconfig9* for *libconfig9:i386*.
 
+Note that libconfig9:i386 doesn't setup the *libconfig.so* library
+symlink.  On my Ubuntu test machine, **cd /usr/lib/i386-linux-gnu/ ; sudo
+ln -s libconfig.so.9 libconfig.so** does the trick. 
+
+Lastly, you'll need libsteam\_api.so somewhere it can be found.  A copy
+of libsteam\_api.so from the public Source 1 SDK can be found in the
+*steam* folder.  **sudo cp steam/libsteam\_api.so /usr/lib/i386-linux-gnu/
+; sudo ldconfig**, for example.
+
+***NOTE***: that this might break native Steam games.  In the future,
+SteamBridge will use dlopen.  LD\_LIBRARY\_PATH is a work around.
+
+To compile, enter bridge/winelib/steam\_api\_bridge.dll and run **make**.
+
+## Let's get to playing
+
+1. Download a game through Steam inside of Wine, and quit Wine Steam
+2. Copy steam\_api\_bridge.dll.so to the 32-bit Wine DLL directory
+   * Should be /usr/lib/i386-linux-gnu/wine/
+3. Backup a copy of the game's *steam\_api.dll*
+4. Copy *steam\_api\_proxy.dll* from Windows in place of *steam\_api.dll*
+5. Set *steam\_appid.txt* in the same folder as *steam\_api.dll\*
+   * Contains the appid with no newline. **echo -n "1520" > steam\_appid.txt**
+6. Login to native Linux Steam
+7. Run the game using Wine
+8. Party wildly
+
+## What SteamBridge works with
+
+Defcon!  And Defcon's demo!  Appid of 1522 (demo), and 1520.
 
