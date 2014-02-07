@@ -14,10 +14,12 @@
 #include "api.h"
 #include "logging.h"
 
+#include "version.h"
+
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
-const std::string _bridge_version = "0";
-const std::string _bridge_info = "TODO: Put something interesting here";
+const char *steam_bridge_INFO 
+  = "Visit http://github.com/sirnuke/steambridge for more information!";
 
 extern "C"
 {
@@ -25,13 +27,13 @@ extern "C"
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string()
 {
   WINE_TRACE("\n");
-  return _bridge_version.c_str();
+  return steam_bridge_VERSION_STRING;
 }
 
 STEAM_API_BRIDGE_API const char *steam_bridge_info_string()
 {
   WINE_TRACE("\n");
-  return _bridge_info.c_str();
+  return steam_bridge_INFO;
 }
 
 }
