@@ -51,8 +51,6 @@ Unknown Steam DLLs?  That's a paddlin'.  Non-VAC games should be safe.
 
 ## Enough of all that, down the rabbit hole
 
-The short version:
-
 ### Compiling the Windows Proxy DLL
 
 Proxy needs Windows with Visual Studio, and has a Solution in
