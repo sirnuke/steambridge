@@ -49,8 +49,8 @@ class SteamAPIContext
     void removeCallback(CCallbackBase *reference);
 
   private:
-    bool checkBridgeDirectory();
-    bool readConfiguration();
+    void checkBridgeDirectory();
+    void readConfiguration();
     bool saveConfiguration();
 
     class ISteamUser                *steamUser;

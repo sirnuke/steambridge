@@ -36,9 +36,6 @@
 #define _APP_VERSION_DB "appids.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 
-// TODO: Polish and call ABORT where meaningful.  Internal errors not
-//       related to SteamAPI should almost certainly be ABORT, not just
-//       return false.
 // TODO: We should track userids, and tie disclaimer to it.
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
@@ -60,37 +57,20 @@ bool SteamAPIContext::prep(int appid)
   bool configChanged = false;
 
   if (appid == 0)
-  {
-    WINE_ERR("Received invalid appid of (%i)!\n", appid);
-    return false;
-  }
+    __ABORT("Received invalid appid of (%i)!\n", appid);
   if (this->appid != 0)
-  {
-    WINE_ERR("prep(%i) called twice!\n", appid);
-    return false;
-  }
+    __ABORT("prep(%i) called twice!\n", appid);
   this->appid = appid;
 
   if (!SteamClient())
-  {
-    WINE_ERR("SteamClient() returns NULL! (InitSafe not called?)");
-    return false;
-  }
+    __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
-  if (!checkBridgeDirectory())
-  {
-    WINE_ERR("checkBridgeDirectory failed!\n");
-    return false;
-  }
-
-  if (!readConfiguration())
-  {
-    WINE_ERR("readConfiguration failed!\n");
-    return false;
-  }
+  checkBridgeDirectory();
+  readConfiguration();
 
   if (!disclaimer)
   {
+    // TODO: Move the message somewhere more readable?
     int res = MessageBoxA(NULL, 
         "I would describe Valve as a diety of an Abrahamic religion. "
         "All powerful; all knowning, and yet unknowable. "
@@ -120,15 +100,13 @@ bool SteamAPIContext::prep(int appid)
 
   if (configChanged)
   {
+    // This doesn't constitute an error by itself
     if (!saveConfiguration())
-    {
       WINE_ERR("saveConfiguration failed!\n");
-      return false;
-    }
   }
 
   // TODO: lol hardcoding.  Placeholders ahoy!
-  // TODO: Might want to make this part of a seperate init function, like the headers.
+  // TODO: Might want to make this part of a separate init function, like the headers.
   // TODO: The official API checks that each pointer doesn't return NULL.
   //       This is a Good Idea that should be used here.
 
@@ -244,7 +222,7 @@ SteamAPIContext::~SteamAPIContext()
   // TODO: Delete all callbacks?
 }
 
-bool SteamAPIContext::checkBridgeDirectory()
+void SteamAPIContext::checkBridgeDirectory()
 {
   WINE_TRACE("(this=0x%p)\n", this);
   struct stat rootDir;
@@ -268,25 +246,15 @@ bool SteamAPIContext::checkBridgeDirectory()
   if (stat(steamBridgeDir.c_str(), &rootDir) != 0)
   {
     if (errno != ENOENT)
-    {
-      WINE_ERR("Unable to stat root directory \"%s\": %s\n",
+      __ABORT("Unable to stat root directory \"%s\": %s\n",
           steamBridgeDir.c_str(), strerror(errno));
-      return false;
-    }
     if (mkdir(steamBridgeDir.c_str(),
           S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
-    {
-      WINE_ERR("Unable to create directory: %s\n", strerror(errno));
-      return false;
-    }
+      __ABORT("Unable to create directory: %s\n", strerror(errno));
   }
   else if (S_ISDIR(rootDir.st_mode) == 0)
-  {
-    WINE_ERR("Root directory \"%s\" exists, but isn't a directory!\n", 
+    __ABORT("Root directory \"%s\" exists, but isn't a directory!\n",
         steamBridgeDir.c_str());
-    return false;
-  }
-  return true;
 }
 
 // Yuck yuck yuck?  Yuck yuck yuck.
@@ -302,7 +270,7 @@ bool SteamAPIContext::checkBridgeDirectory()
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
       config_error_text(&config)); \
 
-bool SteamAPIContext::readConfiguration()
+void SteamAPIContext::readConfiguration()
 {
   WINE_TRACE("(this=0x%p\n", this);
 
@@ -319,7 +287,7 @@ bool SteamAPIContext::readConfiguration()
   {
     _LIBCONFIG_ERR("Unable to read configuration");
     config_destroy(&config);
-    return true;
+    return;
   }
 
   if (config_lookup_bool(&config, "steam_bridge.disclaimer", &disclaim) 
@@ -340,7 +308,6 @@ bool SteamAPIContext::readConfiguration()
   WINE_TRACE("Got disclaimer value of (%i)\n", disclaimer);
 
   config_destroy(&config);
-  return true;
 }
 
 bool SteamAPIContext::saveConfiguration()
@@ -409,19 +376,13 @@ void SteamAPIContext::removeCallback(CCallbackBase *reference)
 
   CCallbackBase *wrapper = references[reference];
   if (wrapper == NULL)
-  {
-    WINE_ERR("Unable to find corresponding wrapper for (0x%p)\n", reference);
-    return;
-  }
+    __ABORT("Unable to find corresponding wrapper for (0x%p)\n", reference);
   std::deque<CCallbackBase *>::iterator it;
   for (it = callbacks.begin(); it != callbacks.end(); it++)
     if (*it == wrapper) break;
   if (it == callbacks.end())
-  {
-    WINE_ERR("Unable to find Callback Wrapper (0x%p) in the deque, "
+    __ABORT("Unable to find Callback Wrapper (0x%p) in the deque, "
         "reference is (0x%p)\n", wrapper, reference);
-    return;
-  }
   callbacks.erase(it);
 }
 
