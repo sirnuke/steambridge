@@ -5,15 +5,10 @@
 
 #define __ABORT(MSG, ...) { \
   WINE_ERR("Abort! " MSG "\n", ##__VA_ARGS__); \
-  __abort__(); \
+  __abort__(__PRETTY_FUNCTION__, MSG, ##__VA_ARGS__); \
 }
-void __abort__() __attribute__ ((noreturn));
-
-#define __STUB(ARGS, ...) { \
-  WINE_ERR("Stub! " ARGS "\n", ##__VA_ARGS__); \
-  __stub__(); \
-}
-void __stub__() __attribute__ ((noreturn));
+void __abort__(const char *func, const char *msg, ...) 
+  __attribute__ ((noreturn));
 
 #endif //___STEAM_API_BRIDGE_LOGGING_H___
 
