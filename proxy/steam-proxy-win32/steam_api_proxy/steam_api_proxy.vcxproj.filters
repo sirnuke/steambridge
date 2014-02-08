@@ -48,9 +48,6 @@
     <ClInclude Include="userstats_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\bridge\winelib\steam_api_bridge.dll\include\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

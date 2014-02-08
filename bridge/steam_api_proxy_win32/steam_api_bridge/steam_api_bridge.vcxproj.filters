@@ -27,9 +27,6 @@
     <ClInclude Include="steam_api_bridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\winelib\steam_api_bridge.dll\include\api.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
