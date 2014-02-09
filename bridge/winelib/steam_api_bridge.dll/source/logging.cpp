@@ -26,18 +26,21 @@
 // TODO: Reallly need to print out more information in abort
 // TODO: Might want a sort of pop-up warning
 
+WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+
 void __abort__(const char *func, const char *msg, ...)
 {
   std::stringstream ss;
   ss << "Invalid state detected!\n\n";
   ss << "Abort called in (" << func << "): ";
   {
-    char temp[513]; // pffffft
-    memset(temp, 0, 513); // pffffffft
+    char temp[2049]; // pffffft
+    memset(temp, 0, 2049); // pffffffft
     va_list va;
     va_start(va, msg);
-    vsnprintf(temp, 512, msg, va); // pfffft
+    vsnprintf(temp, 2048, msg, va); // pfffft
     va_end(va);
+    // I miss OpenBSD's snprintf that makes sure you have a NULL terminator
     ss << temp;
   }
   ss << "\n\n";
@@ -45,6 +48,7 @@ void __abort__(const char *func, const char *msg, ...)
   ss << "a situation handled correctly by the real steam_api library. More ";
   ss << "information may be available on the command line.";
   std::string s = ss.str();
+  WINE_ERR("Abort called on %s: %s\n", func, s.c_str());
   MessageBoxA(NULL, 
       s.c_str(),
       "SteamBridge Abort!",

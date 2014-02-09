@@ -3,10 +3,8 @@
 #ifndef  ___STEAM_API_BRIDGE_LOGGING_H___
 #define  ___STEAM_API_BRIDGE_LOGGING_H___
 
-#define __ABORT(MSG, ...) { \
-  WINE_ERR("Abort! " MSG "\n", ##__VA_ARGS__); \
-  __abort__(__PRETTY_FUNCTION__, MSG, ##__VA_ARGS__); \
-}
+#define __ABORT(MSG, ...) __abort__(__PRETTY_FUNCTION__, MSG, ##__VA_ARGS__)
+
 void __abort__(const char *func, const char *msg, ...) 
   __attribute__ ((noreturn));
 
