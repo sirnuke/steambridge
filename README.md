@@ -59,8 +59,8 @@ proxy/steam-proxy-win32.
 
 Bridge needs a Linux install that can compile 32-bit binaries.  You'll
 need g++, make, Wine & its development headers, and 32-bit libconfig &
-its development headers.  A Makefile exists inside the winelib directory.
-Once compiled, the setup.sh script will setup everything the Bridge
+its development headers.  A Makefile exists inside the bridge/winelib
+directory.  Once compiled, the setup.sh script will setup the SteamBridge
 runtime environment.
 
 ### Alright, let's play
@@ -76,5 +76,5 @@ Review COMPILE.md for the full notes, on both compiling and running.
 
 ## What SteamBridge works with
 
-Defcon!  And Defcon's demo! (1522/1520!)
+Defcon!  And Defcon's demo! (1520/1522!)
 
