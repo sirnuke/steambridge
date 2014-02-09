@@ -6,77 +6,88 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include <sstream>
+#include <string>
+
 #include "logging.h"
 #include "types.h"
 
 #define _STREAM stdout
 #define _VA_PRINT(ARG) { \
+  char temp[2049]; \
+  memset(temp, 0, 2049); \
   va_list va; \
   va_start(va, ARG); \
-  vfprintf(_STREAM, ARG, va); \
+  vsnprintf(temp, 2048, ARG, va); \
   va_end(va); \
+  ss << temp; \
 }
 
-__declspec(noreturn) void __stub__(const char *func, const char *msg, ...)
+__declspec(noreturn) void __stub__(const char *func, const char *args, ...)
 {
-  fprintf(_STREAM, "ERROR: %s ", func);
-  _VA_PRINT(msg);
-  fprintf(_STREAM, ": is a stub\n");
-  fprintf(_STREAM,
-      "\tThis means a function is unimplemented, but is likely required\n"
-      "\tfor use in this app.  It may be possible to implement this function,\n"
-      "\tand allow this app to continue to execute.\n");
-  MessageBoxA(NULL, 
-             "Stub function called!\nCheck the command line output for more information",
-             APP_NAME " internal error",
-             MB_ICONERROR | MB_OK);
+  std::stringstream ss;
+  ss << func;
+  _VA_PRINT(args);
+  ss << ": is a stub!\n";
+  ss << "This means a function is unimplemented, but required by this app.\n";
+  fprintf(_STREAM, "ERROR: ");
+  fprintf(_STREAM, ss.str().c_str());
+  MessageBoxA(NULL,
+              ss.str().c_str(),
+              APP_NAME " internal error",
+              MB_ICONERROR | MB_OK);
   exit(1);
 }
 
-__declspec(noreturn) void __cant_implement__(const char *func, const char *msg, ...)
+__declspec(noreturn) void __cant_implement__(const char *func,
+    const char *args, ...)
 {
-  fprintf(_STREAM, "ERROR: %s ", func);
-  _VA_PRINT(msg);
-  fprintf(_STREAM, ": cannot be implemented\n");
-  fprintf(_STREAM,
-      "\tThis means a function is unimplemented, but is likely required\n"
-      "\tfor use in this app.  However, it is not likely possible to\n"
-      "\timplement this function due to technical restrictions.\n");
-  MessageBoxA(NULL, 
-             "Stub function called!\nCheck the command line output for more information",
-             APP_NAME " internal error",
-             MB_ICONERROR | MB_OK);
+  std::stringstream ss;
+  ss << func;
+  _VA_PRINT(args);
+  ss << ": cannot be implemented!\n";
+  ss << "This means a function cannot be implemented, but is required by this app.\n";
+  fprintf(_STREAM, "ERROR: ");
+  fprintf(_STREAM, ss.str().c_str());
+  MessageBoxA(NULL,
+              ss.str().c_str(),
+              APP_NAME " internal error",
+              MB_ICONERROR | MB_OK);
   exit(1);
 }
 
 void __trace__(const char *func, const char *args, ...)
 {
-  fprintf(_STREAM, "TRACE: %s ", func);
+  std::stringstream ss;
+  ss << "TRACE: " << func;
   _VA_PRINT(args);
-  fprintf(_STREAM, "\n");
+  ss << std::endl;
+  fprintf(_STREAM, ss.str().c_str());
 }
 
 void __log__(const char *func, const char *msg, ...)
 {
-  fprintf(_STREAM, "LOG: %s ", func);
+  std::stringstream ss;
+  ss << "LOG: " << func;
   _VA_PRINT(msg);
-  fprintf(_STREAM, "\n");
-  fflush(_STREAM);
+  ss << std::endl;
+  fprintf(_STREAM, ss.str().c_str());
 }
 
-__declspec(noreturn) void __abort__(const char *func, const char *msg,
-    const char *args, ...)
+__declspec(noreturn) void __abort__(const char *func, const char *msg, ...)
 {
-  fprintf(_STREAM, "ABORT: %s ", func);
-  _VA_PRINT(args);
-  fprintf(_STREAM, ": abort called\n");
-  fprintf(_STREAM,
-      "\tAn internal error of some sort has been detected, which "
-      "\tlikely signifies an internal error of some sort.");
+  std::stringstream ss;
+  ss << func;
+  _VA_PRINT(msg);
+  ss << ": has called abort!\n";
+  ss << "This signifies a probable internal error.\n"
+  fprintf(_STREAM, "ABORT: ");
+  fprintf(_STREAM, ss.str().c_str());
+  ss << "Check the command line for more information\n";
   MessageBoxA(NULL, 
-             "Abort called!\nCheck the command line output for more information",
-             APP_NAME " internal error",
-             MB_ICONERROR | MB_OK);
+              ss.str().c_str(),
+              APP_NAME " internal error",
+              MB_ICONERROR | MB_OK);
   exit(1);
 }
 
