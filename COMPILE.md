@@ -47,21 +47,20 @@ Note that libconfig9:i386 doesn't setup the *libconfig.so* library
 symlink.  On my Ubuntu test machine, **cd /usr/lib/i386-linux-gnu/ ; sudo
 ln -s libconfig.so.9 libconfig.so** does the trick. 
 
-Lastly, you'll need libsteam\_api.so somewhere it can be found.  A copy
-of libsteam\_api.so from the public Source 1 SDK can be found in the
-*steam* folder.  **sudo cp steam/libsteam\_api.so /usr/lib/i386-linux-gnu/
-; sudo ldconfig**, for example.
+To compile, enter *bridge/winelib/steam\_api\_bridge.dll* and run
+**make**.  Standard make commands are implemented, with the exception
+of install.  Installation is handled by *setup.sh*, which eventually
+will be called by **make install**.
 
-***NOTE***: that this might break native Steam games.  In the future,
-SteamBridge will use dlopen.  LD\_LIBRARY\_PATH is a work around.
-
-To compile, enter *bridge/winelib/steam\_api\_bridge.dll* and run **make**.
-Standard make commands are implemented, with the exception of install.
-
-This produces *steam\_api\_bridge.dll.so*.  This is a Winelib library,
-which can be loaded as a native DLL to a Windows executable running in
-Wine.  Deploy this file to the 32-bit Wine DLL directory, which should
-be */usr/lib/i386-linux-gnu/wine/*.
+*steam\_api\_bridge.dll.so* is the compiled binary, a Winelib library
+for use with Wine.  It needs to be deployed to the 32-bit Wine DLL
+directory, likely */usr/lib/i386-linux-gnu/wine*.  Additionally,
+SteamBridge depends on a directory within the user's local steam root
+(~/.steam/root).  At the moment, this directory contains the SteamBridge
+runtime settings, the upcoming database of appid SteamAPI versions,
+and a copy of *libsteam\_api.so*.  The included script *setup.sh*
+will copy everything to its correct place, though it may be brittle on
+non-standard directories.
 
 # Deployment and execution notes
 
@@ -96,7 +95,6 @@ be */usr/lib/i386-linux-gnu/wine/*.
 * Proxy and Bridge are mostly independent of each other.  Proxy only
   needs to be rebuild when the Bridge API changes.  Changes to the guts
   of Bridge do not affect Proxy.
-* Re-run the winemaker.sh script upon creating new Bridge source files
-  to update the Makefile.  Make sure to re-add the few nice-to-have flags
-  in the Makefile (-Wall -Wextra -pipe -g as of this writing).
+* Re-run the winemaker.sh script when creating new Bridge source files
+  to update the Makefile.
 

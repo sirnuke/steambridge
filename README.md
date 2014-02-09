@@ -61,8 +61,7 @@ proxy/steam-proxy-win32.
 Bridge needs a Linux install that can compile 32-bit binaries.  You'll
 need g++, make, Wine & its development headers, and 32-bit libconfig &
 its development headers.  A Makefile exists inside the winelib directory.
-
-Deploy steam\_api\_bridge.dll.so to the 32-bit Winelib DLL folder.
+Once compiled, the setup.sh script will setup everything in the bridge.
 
 ### Alright, let's play
 
