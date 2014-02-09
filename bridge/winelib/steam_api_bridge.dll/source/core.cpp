@@ -40,6 +40,8 @@
 typedef bool (*steam_api_InitSafe_t)(void);
 typedef void (*steam_api_Shutdown_t)(void);
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
+typedef HSteamUser (*steam_api_GetHSteamUser_t)(void);
+typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 
 // TODO: We should track userids, and tie disclaimer to it.
 
@@ -167,9 +169,13 @@ bool SteamAPIContext::prepare(AppId_t appid)
     return false;
   }
 
+  __DLSYM_GET(steam_api_GetHSteamUser_t, api_GetHSteamUser,
+      "SteamAPI_GetHSteamUser");
+  __DLSYM_GET(steam_api_GetHSteamPipe_t, api_GetHSteamPipe,
+      "SteamAPI_GetHSteamPipe");
   // TODO: Do we need to check this for error values?
-  HSteamUser steamUserHandle = SteamAPI_GetHSteamUser();
-  HSteamPipe steamPipeHandle = SteamAPI_GetHSteamPipe();
+  HSteamUser steamUserHandle = (*api_GetHSteamUser)();
+  HSteamPipe steamPipeHandle = (*api_GetHSteamPipe)();
 
   if (!steamUserVersion.empty())
     steamUser = steamClient->GetISteamUser(steamUserHandle, steamPipeHandle,
