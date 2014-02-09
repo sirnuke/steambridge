@@ -7,6 +7,10 @@
 #include <string>
 #include <tr1/unordered_map>
 
+#define __DLSYM_GET(TYPE, VAR, NAME) \
+  TYPE VAR = (TYPE)(dlsym(context->getSteamAPIHandle(), NAME)); \
+  if (!VAR) __ABORT("unable to find the " #NAME " symbol in libsteam_api.so");
+
 class CCallbackBase;
 
 class SteamAPIContext

@@ -37,6 +37,9 @@
 #define _APP_VERSION_DB "appids.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 
+typedef bool (*steam_api_InitSafe_t)(void);
+typedef void (*steam_api_Shutdown_t)(void);
+
 // TODO: We should track userids, and tie disclaimer to it.
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
@@ -50,6 +53,8 @@ SteamAPIContext::SteamAPIContext()
     disclaimer(false)
 {
   WINE_TRACE("(this=0x%p)\n", this);
+  checkBridgeDirectory();
+  loadSteamAPI();
 }
 
 bool SteamAPIContext::prepare(AppId_t appid)
@@ -66,9 +71,6 @@ bool SteamAPIContext::prepare(AppId_t appid)
 
   if (!SteamClient())
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
-
-  checkBridgeDirectory();
-  loadSteamAPI();
   readConfiguration();
 
   if (!disclaimer)
@@ -450,17 +452,21 @@ bool steam_bridge_SteamAPI_InitSafe()
 
   if (context == NULL)
   {
+    if (!(context = new SteamAPIContext()))
+      __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
+
     AppId_t appid = steam_bridge_get_appid();
-    if (!SteamAPI_InitSafe())
+
+    __DLSYM_GET(steam_api_InitSafe_t, api, "SteamAPI_InitSafe");
+    if (!(*api)())
     {
       WINE_WARN("SteamAPI_InitSafe failed! (Look for Steam messages)\n");
       return false;
     }
-    context = new SteamAPIContext();
-    if (!context)
-      __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
+
     if (!context->prepare(appid))
       __ABORT("Unable to setup the SteamAPIContext");
+
     WINE_TRACE("Created Internal API Context (0x%p)\n", context);
   }
   else
@@ -475,9 +481,10 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown()
     WINE_WARN("Shutdown called when not initialized!\n");
   else
   {
+    __DLSYM_GET(steam_api_Shutdown_t, api, "SteamAPI_Shutdown");
+    (*api)();
     delete context;
     context = NULL;
-    SteamAPI_Shutdown();
     WINE_TRACE("SteamAPI Shutdown\n");
   }
 }
