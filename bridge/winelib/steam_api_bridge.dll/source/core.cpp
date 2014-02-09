@@ -411,6 +411,11 @@ void SteamAPIContext::removeCallback(CCallbackBase *reference)
   callbacks.erase(it);
 }
 
+void *SteamAPIContext::getSteamAPIHandle()
+{
+  return steam_api_handle;
+}
+
 SteamAPIContext *context = NULL;
 
 static int steam_bridge_get_appid()

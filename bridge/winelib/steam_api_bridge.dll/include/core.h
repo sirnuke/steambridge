@@ -46,6 +46,8 @@ class SteamAPIContext
     CCallbackBase *getCallback(CCallbackBase *reference);
     void removeCallback(CCallbackBase *reference);
 
+    void *getSteamAPIHandle();
+
   private:
     void checkBridgeDirectory();
     void loadSteamAPI();
