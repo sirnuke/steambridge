@@ -32,7 +32,7 @@
 #include "core.h"
 #include "logging.h"
 
-#define _BRIDGE_DIR "/.steam/root/_steam_bridge/"
+#define _BRIDGE_DIR "/.steam/root/steam_bridge/"
 #define _APP_VERSION_DB "appids.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 
