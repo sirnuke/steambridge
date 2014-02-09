@@ -33,9 +33,10 @@
 #include "core.h"
 #include "logging.h"
 
-#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/steam_bridge/"
-#define _APP_VERSION_DB "appids.cfg"
+#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge/"
+#define _APP_VERSION_DB "appid_db.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
+#define _STEAM_API_SO "libsteam_api.so"
 
 typedef bool (*steam_api_InitSafe_t)(void);
 typedef void (*steam_api_Shutdown_t)(void);
@@ -283,7 +284,7 @@ void SteamAPIContext::loadSteamAPI()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
-  std::string libPath = steamBridgeRoot + "/libsteam_api.so";
+  std::string libPath = steamBridgeRoot + _STEAM_API_SO;
 
   // TODO: RTLD_LAZY?  Not that it likely makes a huge difference.
   steam_api_handle = dlopen(libPath.c_str(), RTLD_NOW);
