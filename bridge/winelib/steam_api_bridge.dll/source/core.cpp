@@ -39,6 +39,7 @@
 
 typedef bool (*steam_api_InitSafe_t)(void);
 typedef void (*steam_api_Shutdown_t)(void);
+typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 
 // TODO: We should track userids, and tie disclaimer to it.
 
@@ -69,7 +70,9 @@ bool SteamAPIContext::prepare(AppId_t appid)
     __ABORT("prepare(%u) called twice!\n", appid);
   this->appid = appid;
 
-  if (!SteamClient())
+  __DLSYM_GET(steam_api_SteamClient_t, api_SteamClient, "SteamClient");
+  ISteamClient *steamClient = (*api_SteamClient)();
+  if (!steamClient)
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
   readConfiguration();
 
@@ -169,52 +172,52 @@ bool SteamAPIContext::prepare(AppId_t appid)
   HSteamPipe steamPipeHandle = SteamAPI_GetHSteamPipe();
 
   if (!steamUserVersion.empty())
-    steamUser = SteamClient()->GetISteamUser(steamUserHandle, steamPipeHandle,
+    steamUser = steamClient->GetISteamUser(steamUserHandle, steamPipeHandle,
         steamUserVersion.c_str());
 
   if (!steamFriendsVersion.empty())
-    steamFriends = SteamClient()->GetISteamFriends(steamUserHandle,
+    steamFriends = steamClient->GetISteamFriends(steamUserHandle,
         steamPipeHandle, steamFriendsVersion.c_str());
 
   if (!steamUtilsVersion.empty())
-    steamUtils = SteamClient()->GetISteamUtils(steamPipeHandle,
+    steamUtils = steamClient->GetISteamUtils(steamPipeHandle,
         steamUtilsVersion.c_str());
 
   if (!steamMatchmakingVersion.empty())
-    steamMatchmaking = SteamClient()->GetISteamMatchmaking(steamUserHandle,
+    steamMatchmaking = steamClient->GetISteamMatchmaking(steamUserHandle,
         steamPipeHandle, steamMatchmakingVersion.c_str());
 
   if (!steamMatchmakingServersVersion.empty())
-    steamMatchmakingServers = SteamClient()->GetISteamMatchmakingServers(
+    steamMatchmakingServers = steamClient->GetISteamMatchmakingServers(
         steamUserHandle, steamPipeHandle,
         steamMatchmakingServersVersion.c_str());
 
   if (!steamUserStatsVersion.empty())
-    steamUserStats = SteamClient()->GetISteamUserStats(steamUserHandle,
+    steamUserStats = steamClient->GetISteamUserStats(steamUserHandle,
         steamPipeHandle, steamUserStatsVersion.c_str());
 
   if (!steamAppsVersion.empty())
-    steamApps = SteamClient()->GetISteamApps(steamUserHandle, steamPipeHandle,
+    steamApps = steamClient->GetISteamApps(steamUserHandle, steamPipeHandle,
         steamAppsVersion.c_str());
 
   if (!steamNetworkingVersion.empty())
-    steamNetworking = SteamClient()->GetISteamNetworking(steamUserHandle,
+    steamNetworking = steamClient->GetISteamNetworking(steamUserHandle,
         steamPipeHandle, steamNetworkingVersion.c_str());
 
   if (!steamRemoteStorageVersion.empty())
-    steamRemoteStorage = SteamClient()->GetISteamRemoteStorage(steamUserHandle,
+    steamRemoteStorage = steamClient->GetISteamRemoteStorage(steamUserHandle,
         steamPipeHandle, steamRemoteStorageVersion.c_str());
 
   if (!steamScreenshotsVersion.empty())
-    steamScreenshots = SteamClient()->GetISteamScreenshots(steamUserHandle,
+    steamScreenshots = steamClient->GetISteamScreenshots(steamUserHandle,
         steamPipeHandle, steamScreenshotsVersion.c_str());
 
   if (!steamHTTPVersion.empty())
-    steamHTTP = SteamClient()->GetISteamHTTP(steamUserHandle, steamPipeHandle,
+    steamHTTP = steamClient->GetISteamHTTP(steamUserHandle, steamPipeHandle,
       steamHTTPVersion.c_str());
 
   if (!steamUnifiedMessagesVersion.empty())
-    steamUnifiedMessages = SteamClient()->GetISteamUnifiedMessages(
+    steamUnifiedMessages = steamClient->GetISteamUnifiedMessages(
         steamUserHandle, steamPipeHandle, steamUnifiedMessagesVersion.c_str());
 
   // TODO: Check if any returned NULL?
