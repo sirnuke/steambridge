@@ -40,9 +40,7 @@ class SteamAPIContext
     class ISteamUnifiedMessages     *getSteamUnifiedMessages() 
       { return steamUnifiedMessages; }
 
-
     bool prep(int appid);
-
 
     void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);
     CCallbackBase *getCallback(CCallbackBase *reference);
@@ -50,6 +48,7 @@ class SteamAPIContext
 
   private:
     void checkBridgeDirectory();
+    void loadSteamAPI();
     void readConfiguration();
     bool saveConfiguration();
 
@@ -66,12 +65,14 @@ class SteamAPIContext
     class ISteamHTTP                *steamHTTP;
     class ISteamUnifiedMessages     *steamUnifiedMessages;
 
+    void *steam_api_handle;
+
     int appid;
 
     std::deque<CCallbackBase *> callbacks;
     std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
 
-    std::string steamBridgeDir;
+    std::string steamBridgeRoot;
 
     bool disclaimer;
 };

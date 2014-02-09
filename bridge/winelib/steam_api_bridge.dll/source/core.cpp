@@ -9,11 +9,12 @@
 #include <fstream>
 
 // POSIX headers
+#include <dlfcn.h>
 #include <errno.h>
+#include <pwd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <pwd.h>
 
 // libconfig headers
 #include <libconfig.h>
@@ -32,7 +33,7 @@
 #include "core.h"
 #include "logging.h"
 
-#define _BRIDGE_DIR "/.steam/root/steam_bridge/"
+#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/steam_bridge/"
 #define _APP_VERSION_DB "appids.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 
@@ -45,7 +46,8 @@ SteamAPIContext::SteamAPIContext()
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
-    steamUnifiedMessages(NULL), appid(0), disclaimer(false)
+    steamUnifiedMessages(NULL), steam_api_handle(NULL), appid(0),
+    disclaimer(false)
 {
   WINE_TRACE("(this=0x%p)\n", this);
 }
@@ -66,6 +68,7 @@ bool SteamAPIContext::prep(int appid)
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
   checkBridgeDirectory();
+  loadSteamAPI();
   readConfiguration();
 
   if (!disclaimer)
@@ -220,8 +223,17 @@ bool SteamAPIContext::prep(int appid)
 SteamAPIContext::~SteamAPIContext()
 {
   // TODO: Delete all callbacks?
+
+  if (steam_api_handle)
+  {
+    int res = dlclose(steam_api_handle);
+    steam_api_handle = NULL;
+    if (res != 0)
+      WINE_ERR("dlclose failed (%i): %s\n", res, dlerror());
+  }
 }
 
+// TODO: Should handle custom directories via enivornmental variables
 void SteamAPIContext::checkBridgeDirectory()
 {
   WINE_TRACE("(this=0x%p)\n", this);
@@ -241,20 +253,33 @@ void SteamAPIContext::checkBridgeDirectory()
 
   if (dir.empty()) __ABORT("Unable to find a valid home directory!");
 
-  steamBridgeDir = dir + _BRIDGE_DIR;
+  steamBridgeRoot = dir + _STEAM_BRIDGE_ROOT_DIR;
 
-  if (stat(steamBridgeDir.c_str(), &rootDir) != 0)
+  if (stat(steamBridgeRoot.c_str(), &rootDir) != 0)
   {
     if (errno != ENOENT)
+      __ABORT("Root directory \"%s\" doesn't exist!", steamBridgeRoot.c_str());
+    else
       __ABORT("Unable to stat root directory \"%s\": %s\n",
-          steamBridgeDir.c_str(), strerror(errno));
-    if (mkdir(steamBridgeDir.c_str(),
-          S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) != 0)
-      __ABORT("Unable to create directory: %s\n", strerror(errno));
+          steamBridgeRoot.c_str(), strerror(errno));
   }
   else if (S_ISDIR(rootDir.st_mode) == 0)
     __ABORT("Root directory \"%s\" exists, but isn't a directory!\n",
-        steamBridgeDir.c_str());
+        steamBridgeRoot.c_str());
+}
+
+void SteamAPIContext::loadSteamAPI()
+{
+  WINE_TRACE("(this=0x%p)\n", this);
+
+  std::string libPath = steamBridgeRoot + "/libsteam_api.so";
+
+  // TODO: RTLD_LAZY?  Not that it likely makes a huge difference.
+  steam_api_handle = dlopen(libPath.c_str(), RTLD_NOW);
+  
+  // TODO: Can/should we check elsewhere?
+  if (!steam_api_handle)
+    __ABORT("dlopen on \"%s\" failed: %s", libPath.c_str(), dlerror());
 }
 
 // Yuck yuck yuck?  Yuck yuck yuck.
@@ -281,7 +306,7 @@ void SteamAPIContext::readConfiguration()
 
   int disclaim = 0;
 
-  std::string filename = steamBridgeDir + _CONFIGURATION_FILE;
+  std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
 
   if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
   {
@@ -314,7 +339,7 @@ bool SteamAPIContext::saveConfiguration()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
-  std::string filename = steamBridgeDir + _CONFIGURATION_FILE;
+  std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
 
   config_t config;
   config_init(&config);
