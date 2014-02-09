@@ -1,2 +1,8 @@
 #!/bin/sh
-winemaker steam_api_bridge.dll --nosource-fix --dll --nomfc --wine32 -Iinclude -I../../../common/include -I../../../steam/ -L../../../steam -lsteam_api -DVERSION_SAFE_STEAM_API_INTERFACES -lconfig
+LIBRARIES="-lsteam_api -lconfig -ldl"
+INCLUDEPATH="-I../../../steam/ -I../../../common/include/"
+LIBRARYPATH="-L../../../steam/"
+DEFINES="-DVERSION_SAFE_STEAM_API_INTERFACES"
+winemaker steam_api_bridge.dll --nosource-fix --dll --nomfc --wine32 $DEFINES $INCLUDEPATH $LIBRARYPATH $LIBRARIES
+# There HAS to be a better way to do this
+sed -i 's/-m32/-m32 -Wall -Wextra -pipe -g/g' steam_api_bridge.dll/Makefile
