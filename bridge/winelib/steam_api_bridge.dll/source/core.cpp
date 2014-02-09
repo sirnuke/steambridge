@@ -310,8 +310,6 @@ void SteamAPIContext::loadSteamAPIVersions()
   ss.str("");
   ss << "versions." << appName;
 
-  WINE_ERR("Looking up %s\n", ss.str().c_str());
-
   versions = config_lookup(&config, ss.str().c_str());
 
   if (!versions)
