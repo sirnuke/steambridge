@@ -57,6 +57,7 @@ class SteamAPIContext
     void loadSteamAPI();
     void readConfiguration();
     bool saveConfiguration();
+    void loadSteamAPIVersions();
 
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
@@ -81,6 +82,12 @@ class SteamAPIContext
     std::string steamBridgeRoot;
 
     bool disclaimer;
+
+    std::string appName, userVersion, friendsVersion,
+      utilsVersion, matchmakingVersion, matchmakingServersVersion,
+      userStatsVersion, appsVersion, networkingVersion,
+      remoteStorageVersion, screenshotsVersion, httpVersion,
+      unifiedMessagesVersion;
 };
 
 extern SteamAPIContext *context;

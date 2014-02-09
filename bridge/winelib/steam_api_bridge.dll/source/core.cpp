@@ -6,6 +6,7 @@
 
 // C++ headers
 #include <deque>
+#include <sstream>
 #include <fstream>
 
 // POSIX headers
@@ -73,10 +74,6 @@ bool SteamAPIContext::prepare(AppId_t appid)
     __ABORT("prepare(%u) called twice!\n", appid);
   this->appid = appid;
 
-  __DLSYM_GET(steam_api_SteamClient_t, api_SteamClient, "SteamClient");
-  ISteamClient *steamClient = (*api_SteamClient)();
-  if (!steamClient)
-    __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
   readConfiguration();
 
   if (!disclaimer)
@@ -116,119 +113,8 @@ bool SteamAPIContext::prepare(AppId_t appid)
       WINE_ERR("saveConfiguration failed!\n");
   }
 
-  // TODO: lol hardcoding.  Placeholders ahoy!
-  // TODO: Might want to make this part of a separate init function, like the headers.
-  // TODO: The official API checks that each pointer doesn't return NULL.
-  //       This is a Good Idea that should be used here.
+  loadSteamAPIVersions();
 
-  // TODO: Better way of caching versions
-  std::string steamUserVersion, steamFriendsVersion, steamUtilsVersion,
-    steamMatchmakingVersion, steamMatchmakingServersVersion,
-    steamUserStatsVersion, steamAppsVersion, steamNetworkingVersion,
-    steamRemoteStorageVersion, steamScreenshotsVersion, steamHTTPVersion,
-    steamUnifiedMessagesVersion;
-
-  switch (appid)
-  {
-  case 12900: // Audiosurf
-    steamUserVersion = "SteamUser016";
-    steamFriendsVersion = "SteamFriends013";
-    steamUtilsVersion = "SteamUtils005";
-    steamMatchmakingVersion = "SteamMatchMaking009";
-    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION011";
-    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION005";
-    steamNetworkingVersion = "SteamNetworking005";
-    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION008";
-    steamScreenshotsVersion = "STEAMSCREENSHOTS_INTERFACE_VERSION001";
-    steamHTTPVersion = "STEAMHTTP_INTERFACE_VERSION001";
-    break;
-  case 38730: // RUSH demo
-    steamUserVersion = "SteamUser014";
-    steamFriendsVersion = "SteamFriends007";
-    steamUtilsVersion = "SteamUtils005";
-    steamMatchmakingVersion = "SteamMatchMaking008";
-    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
-    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
-    steamNetworkingVersion = "SteamNetworking004";
-    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
-  case 1522: // Defcon demo
-  case 1520: // Defcon real (probably the same?)
-    steamUserVersion = "SteamUser013";
-    steamFriendsVersion = "SteamFriends005";
-    steamUtilsVersion = "SteamUtils005";
-    steamMatchmakingVersion = "SteamMatchMaking008";
-    steamMatchmakingServersVersion = "SteamMatchMakingServers002";
-    steamUserStatsVersion = "STEAMUSERSTATS_INTERFACE_VERSION007";
-    steamAppsVersion = "STEAMAPPS_INTERFACE_VERSION003";
-    steamNetworkingVersion = "SteamNetworking003";
-    steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
-    break;
-  default:
-    WINE_ERR("Unknown application ID of (%u)!\n", appid);
-    return false;
-  }
-
-  __DLSYM_GET(steam_api_GetHSteamUser_t, api_GetHSteamUser,
-      "SteamAPI_GetHSteamUser");
-  __DLSYM_GET(steam_api_GetHSteamPipe_t, api_GetHSteamPipe,
-      "SteamAPI_GetHSteamPipe");
-  // TODO: Do we need to check this for error values?
-  HSteamUser steamUserHandle = (*api_GetHSteamUser)();
-  HSteamPipe steamPipeHandle = (*api_GetHSteamPipe)();
-
-  if (!steamUserVersion.empty())
-    steamUser = steamClient->GetISteamUser(steamUserHandle, steamPipeHandle,
-        steamUserVersion.c_str());
-
-  if (!steamFriendsVersion.empty())
-    steamFriends = steamClient->GetISteamFriends(steamUserHandle,
-        steamPipeHandle, steamFriendsVersion.c_str());
-
-  if (!steamUtilsVersion.empty())
-    steamUtils = steamClient->GetISteamUtils(steamPipeHandle,
-        steamUtilsVersion.c_str());
-
-  if (!steamMatchmakingVersion.empty())
-    steamMatchmaking = steamClient->GetISteamMatchmaking(steamUserHandle,
-        steamPipeHandle, steamMatchmakingVersion.c_str());
-
-  if (!steamMatchmakingServersVersion.empty())
-    steamMatchmakingServers = steamClient->GetISteamMatchmakingServers(
-        steamUserHandle, steamPipeHandle,
-        steamMatchmakingServersVersion.c_str());
-
-  if (!steamUserStatsVersion.empty())
-    steamUserStats = steamClient->GetISteamUserStats(steamUserHandle,
-        steamPipeHandle, steamUserStatsVersion.c_str());
-
-  if (!steamAppsVersion.empty())
-    steamApps = steamClient->GetISteamApps(steamUserHandle, steamPipeHandle,
-        steamAppsVersion.c_str());
-
-  if (!steamNetworkingVersion.empty())
-    steamNetworking = steamClient->GetISteamNetworking(steamUserHandle,
-        steamPipeHandle, steamNetworkingVersion.c_str());
-
-  if (!steamRemoteStorageVersion.empty())
-    steamRemoteStorage = steamClient->GetISteamRemoteStorage(steamUserHandle,
-        steamPipeHandle, steamRemoteStorageVersion.c_str());
-
-  if (!steamScreenshotsVersion.empty())
-    steamScreenshots = steamClient->GetISteamScreenshots(steamUserHandle,
-        steamPipeHandle, steamScreenshotsVersion.c_str());
-
-  if (!steamHTTPVersion.empty())
-    steamHTTP = steamClient->GetISteamHTTP(steamUserHandle, steamPipeHandle,
-      steamHTTPVersion.c_str());
-
-  if (!steamUnifiedMessagesVersion.empty())
-    steamUnifiedMessages = steamClient->GetISteamUnifiedMessages(
-        steamUserHandle, steamPipeHandle, steamUnifiedMessagesVersion.c_str());
-
-  // TODO: Check if any returned NULL?
-  // TODO: Try to get ISteamController anyway?
   return true;
 }
 
@@ -297,15 +183,15 @@ void SteamAPIContext::loadSteamAPI()
 // Yuck yuck yuck?  Yuck yuck yuck.
 #define _LIBCONFIG_WARN(MSG, ...) WINE_WARN(MSG ": %s@%i: %s\n", \
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config)); \
+      config_error_text(&config));
 
 #define _LIBCONFIG_ERR(MSG, ...) WINE_ERR(MSG ": %s@%i: %s\n", \
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config)); \
+      config_error_text(&config));
 
 #define _LIBCONFIG_ABORT(MSG, ...) __ABORT(MSG ": %s@%i: %s\n", \
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config)); \
+      config_error_text(&config));
 
 void SteamAPIContext::readConfiguration()
 {
@@ -385,6 +271,160 @@ bool SteamAPIContext::saveConfiguration()
   config_destroy(&config);
   WINE_TRACE("Saved the configuration\n");
   return true;
+}
+
+void SteamAPIContext::loadSteamAPIVersions()
+{
+  WINE_TRACE("(0x%p)\n", this);
+
+  config_setting_t *versions;
+  config_t config;
+  config_init(&config);
+
+  __DLSYM_GET(steam_api_SteamClient_t, api_SteamClient, "SteamClient");
+  ISteamClient *steamClient = (*api_SteamClient)();
+  if (!steamClient)
+    __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
+
+  char *string;
+
+  std::string filename = steamBridgeRoot + _APP_VERSION_DB;
+
+  if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
+  {
+    _LIBCONFIG_ERR("Unable to read the appid db");
+    config_destroy(&config);
+    return;
+  }
+
+  std::stringstream ss;
+  ss << "ids.id" << appid;
+
+  if (config_lookup_string(&config, ss.str().c_str(), (const char **)(&string))
+      != CONFIG_TRUE)
+    _LIBCONFIG_ABORT("Unable to find appid (%u)", appid);
+
+  appName = string;
+
+  ss.clear();
+  ss.str("");
+  ss << "versions." << appName;
+
+  WINE_ERR("Looking up %s\n", ss.str().c_str());
+
+  versions = config_lookup(&config, ss.str().c_str());
+
+  if (!versions)
+    _LIBCONFIG_ABORT("Unable to find the API versions for %s (%u)",
+        appName.c_str(), appid);
+
+  if (config_setting_lookup_string(versions, "user", (const char **)(&string))
+        == CONFIG_TRUE)
+    userVersion = string;
+
+  if (config_setting_lookup_string(versions, "friends",
+        (const char **)(&string)) == CONFIG_TRUE)
+    friendsVersion = string;
+
+  if (config_setting_lookup_string(versions, "utils", (const char **)(&string))
+        == CONFIG_TRUE)
+    utilsVersion = string;
+
+  if (config_setting_lookup_string(versions, "matchmaking",
+        (const char **)(&string)) == CONFIG_TRUE)
+    matchmakingVersion = string;
+
+  if (config_setting_lookup_string(versions, "matchmaking_servers",
+        (const char **)(&string)) == CONFIG_TRUE)
+    matchmakingServersVersion = string;
+
+  if (config_setting_lookup_string(versions, "user_stats",
+        (const char **)(&string)) == CONFIG_TRUE)
+    userStatsVersion = string;
+
+  if (config_setting_lookup_string(versions, "apps", (const char **)(&string))
+      == CONFIG_TRUE)
+    appsVersion = string;
+
+  if (config_setting_lookup_string(versions, "networking",
+        (const char **)(&string)) == CONFIG_TRUE)
+    networkingVersion = string;
+
+  if (config_setting_lookup_string(versions, "remote_storage",
+        (const char **)(&string)) == CONFIG_TRUE)
+    remoteStorageVersion = string;
+
+  if (config_setting_lookup_string(versions, "screenshots",
+        (const char **)(&string)) == CONFIG_TRUE)
+    screenshotsVersion = string;
+
+  if (config_setting_lookup_string(versions, "http", (const char **)(&string))
+        == CONFIG_TRUE)
+    httpVersion = string;
+
+  if (config_setting_lookup_string(versions, "unified_messages",
+        (const char **)(&string)) == CONFIG_TRUE)
+    unifiedMessagesVersion = string;
+
+  __DLSYM_GET(steam_api_GetHSteamUser_t, api_GetHSteamUser,
+      "SteamAPI_GetHSteamUser");
+  __DLSYM_GET(steam_api_GetHSteamPipe_t, api_GetHSteamPipe,
+      "SteamAPI_GetHSteamPipe");
+  // TODO: Do we need to check this for error values?
+  HSteamUser steamUserHandle = (*api_GetHSteamUser)();
+  HSteamPipe steamPipeHandle = (*api_GetHSteamPipe)();
+
+  if (!userVersion.empty())
+    steamUser = steamClient->GetISteamUser(steamUserHandle,
+      steamPipeHandle, userVersion.c_str());
+
+  if (!friendsVersion.empty())
+    steamFriends = steamClient->GetISteamFriends(steamUserHandle,
+        steamPipeHandle, friendsVersion.c_str());
+
+  if (!utilsVersion.empty())
+    steamUtils = steamClient->GetISteamUtils(steamPipeHandle,
+        utilsVersion.c_str());
+
+  if (!matchmakingVersion.empty())
+    steamMatchmaking = steamClient->GetISteamMatchmaking(steamUserHandle,
+        steamPipeHandle, matchmakingVersion.c_str());
+
+  if (!matchmakingServersVersion.empty())
+    steamMatchmakingServers = steamClient->GetISteamMatchmakingServers(
+        steamUserHandle, steamPipeHandle, matchmakingServersVersion.c_str());
+
+  if (!userStatsVersion.empty())
+    steamUserStats = steamClient->GetISteamUserStats(steamUserHandle,
+        steamPipeHandle, userStatsVersion.c_str());
+
+  if (!appsVersion.empty())
+    steamApps = steamClient->GetISteamApps(steamUserHandle, steamPipeHandle,
+        appsVersion.c_str());
+
+  if (!networkingVersion.empty())
+    steamNetworking = steamClient->GetISteamNetworking(steamUserHandle,
+        steamPipeHandle, networkingVersion.c_str());
+
+  if (!remoteStorageVersion.empty())
+    steamRemoteStorage = steamClient->GetISteamRemoteStorage(steamUserHandle,
+        steamPipeHandle, remoteStorageVersion.c_str());
+
+  if (!screenshotsVersion.empty())
+    steamScreenshots = steamClient->GetISteamScreenshots(steamUserHandle,
+        steamPipeHandle, screenshotsVersion.c_str());
+
+  if (!httpVersion.empty())
+    steamHTTP = steamClient->GetISteamHTTP(steamUserHandle, steamPipeHandle,
+      httpVersion.c_str());
+
+  if (!unifiedMessagesVersion.empty())
+    steamUnifiedMessages = steamClient->GetISteamUnifiedMessages(
+        steamUserHandle, steamPipeHandle, unifiedMessagesVersion.c_str());
+
+  // TODO: Check if any returned NULL?
+  // TODO: Try to get ISteamController anyway?
+  config_destroy(&config);
 }
 
 #undef _LIBCONFIG_WARN
