@@ -18,7 +18,7 @@
   memset(temp, 0, 2049); \
   va_list va; \
   va_start(va, ARG); \
-  vsnprintf(temp, 2048, ARG, va); \
+  vsnprintf_s(temp, 2049, 2048, ARG, va); \
   va_end(va); \
   ss << temp; \
 }
@@ -80,7 +80,7 @@ __declspec(noreturn) void __abort__(const char *func, const char *msg, ...)
   ss << func;
   _VA_PRINT(msg);
   ss << ": has called abort!\n";
-  ss << "This signifies a probable internal error.\n"
+  ss << "This signifies a probable internal error.\n";
   fprintf(_STREAM, "ABORT: ");
   fprintf(_STREAM, ss.str().c_str());
   ss << "Check the command line for more information\n";
