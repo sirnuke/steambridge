@@ -1,3 +1,20 @@
+# The short version
+
+1. Compile the Visual Studio solution (Release build) in
+*proxy/steam-proxy-win32*.  Save the generated *steam\_api\_proxy.dll*
+for later.
+2. Install g++ & multilib, a recent version of Wine & development package,
+and libconfig 32-bit library & development package.
+3. Compile the Linux Winelib DLL using **make** inside
+*bridge/winelib/steam_api_bridge.dll/*.
+4. Setup the SteamBridge environment using the *setup.sh* script.
+5. Download a game through Steam running Wine.
+6. Copy *steam\_api\_proxy.dll\* in place of the game's *steam\_api.dll\*.
+7. Setup *steam\_appid.txt* with the game's appid, if not already set.
+Needs to be the integer id and no newline.
+8. With the Linux Steam client running, run the game using Wine.
+9. Party wildly.
+
 # Windows Proxy DLL
 
 You'll need a Windows setup with Visual Studio installed.  I'm using
@@ -6,13 +23,13 @@ and Windows are probably fine.
 
 Unfortunately, Visual Studio doesn't work inside of Wine.  There's also
 enough fuzziness to C++ that it's unlikely MinGW will work without
-persuasion.  The Free Software dream of a Windows-less future remains
-onhold.
+considerable persuasion.  The Free Software dream of a Windows-less
+future remains onhold.
 
-I will note, for future reference, that GCC and Visual Studio do agree on
-enough that it might be feasible to use MinGW, so long as we stay away
-from pesky exceptions and the like.  For example, they seem to agree on
-virtual tables.
+I will note, for future reference, that GCC and Visual Studio do agree
+on enough that it might be feasible to use MinGW, so long as we stay
+away from pesky exceptions and the like.  For example, they seem to
+implement virtual tables the same way.
 
 I'm using Visual Studio 2010 because it's the latest version supported by
 the Source 1 SDK, though that's not a requirement.  If you do use 2010,
