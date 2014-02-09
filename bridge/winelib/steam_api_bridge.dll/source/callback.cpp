@@ -2,6 +2,8 @@
 
 #include <cstdio>
 
+#include <dlfcn.h>
+
 #include <steam_api.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -12,6 +14,10 @@
 #include "api.h"
 #include "core.h"
 #include "logging.h"
+
+typedef void (*steam_api_RunCallbacks_t)(void);
+typedef void (*steam_api_RegisterCallback_t)(class CCallbackBase *, int);
+typedef void (*steam_api_UnregisterCallback_t)(class CCallbackBase *);
 
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
@@ -152,7 +158,8 @@ void steam_bridge_SteamAPI_RunCallbacks()
   // function pointers isn't possible (see above notes/implementation about
   // cross-OS C-style function calls).
   WINE_TRACE("\n");
-  SteamAPI_RunCallbacks();
+  __DLSYM_GET(steam_api_RunCallbacks_t, api, "SteamAPI_RunCallbacks");
+  (*api)();
 }
 
 int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run, 
@@ -194,7 +201,8 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
       size, wrapper, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
 
   context->addCallback(wrapper, reference);
-  SteamAPI_RegisterCallback(wrapper, callback);
+  __DLSYM_GET(steam_api_RegisterCallback_t, api, "SteamAPI_RegisterCallback");
+  (*api)(wrapper, callback);
 
   WINE_TRACE("Callback registered "
       "(wrapper=0x%p,base=0x%p,callback=%i,flags=%i)\n", wrapper,
@@ -218,8 +226,10 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
   CCallbackBase *reference = (CCallbackBase *)(cCallbackBase);
   CallbackImpl *wrapper
     = reinterpret_cast<CallbackImpl *>(context->getCallback(reference));
+  __DLSYM_GET(steam_api_UnregisterCallback_t, api,
+      "SteamAPI_UnregisterCallback");
   // TODO: Flaggsss
-  SteamAPI_UnregisterCallback(wrapper);
+  (*api)(wrapper);
   context->removeCallback(reference);
   // TODO: Research destructors, there's nothing defined by steam_api.h -
   //       so this probabbbllly works right, but G++ complains (rightfully).
