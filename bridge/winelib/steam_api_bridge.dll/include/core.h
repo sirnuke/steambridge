@@ -40,7 +40,7 @@ class SteamAPIContext
     class ISteamUnifiedMessages     *getSteamUnifiedMessages() 
       { return steamUnifiedMessages; }
 
-    bool prep(int appid);
+    bool prepare(AppId_t appid);
 
     void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);
     CCallbackBase *getCallback(CCallbackBase *reference);
@@ -69,7 +69,7 @@ class SteamAPIContext
 
     void *steam_api_handle;
 
-    int appid;
+    AppId_t appid;
 
     std::deque<CCallbackBase *> callbacks;
     std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;

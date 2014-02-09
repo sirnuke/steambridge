@@ -52,16 +52,16 @@ SteamAPIContext::SteamAPIContext()
   WINE_TRACE("(this=0x%p)\n", this);
 }
 
-bool SteamAPIContext::prep(int appid)
+bool SteamAPIContext::prepare(AppId_t appid)
 {
-  WINE_TRACE("(this=0x%p,%i)\n", this, appid);
+  WINE_TRACE("(this=0x%p,%u)\n", this, appid);
 
   bool configChanged = false;
 
   if (appid == 0)
-    __ABORT("Received invalid appid of (%i)!\n", appid);
+    __ABORT("Received invalid appid of (%u)!\n", appid);
   if (this->appid != 0)
-    __ABORT("prep(%i) called twice!\n", appid);
+    __ABORT("prepare(%u) called twice!\n", appid);
   this->appid = appid;
 
   if (!SteamClient())
@@ -158,7 +158,7 @@ bool SteamAPIContext::prep(int appid)
     steamRemoteStorageVersion = "STEAMREMOTESTORAGE_INTERFACE_VERSION002";
     break;
   default:
-    WINE_ERR("Unknown application ID of (%i)!\n", appid);
+    WINE_ERR("Unknown application ID of (%u)!\n", appid);
     return false;
   }
 
@@ -418,7 +418,7 @@ void *SteamAPIContext::getSteamAPIHandle()
 
 SteamAPIContext *context = NULL;
 
-static int steam_bridge_get_appid()
+static AppId_t steam_bridge_get_appid()
 {
   WINE_TRACE("\n");
 
@@ -450,7 +450,7 @@ bool steam_bridge_SteamAPI_InitSafe()
 
   if (context == NULL)
   {
-    int appid = steam_bridge_get_appid();
+    AppId_t appid = steam_bridge_get_appid();
     if (!SteamAPI_InitSafe())
     {
       WINE_WARN("SteamAPI_InitSafe failed! (Look for Steam messages)\n");
@@ -459,7 +459,7 @@ bool steam_bridge_SteamAPI_InitSafe()
     context = new SteamAPIContext();
     if (!context)
       __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
-    if (!context->prep(appid))
+    if (!context->prepare(appid))
       __ABORT("Unable to setup the SteamAPIContext");
     WINE_TRACE("Created Internal API Context (0x%p)\n", context);
   }
