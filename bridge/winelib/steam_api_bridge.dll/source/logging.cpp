@@ -44,7 +44,7 @@ void __abort__(const char *func, const char *msg, ...)
     ss << temp;
   }
   ss << "\n\n";
-  ss << "This is liksley caused by an internal error, perhaps indicating ";
+  ss << "This is likely caused by an internal error, perhaps indicating ";
   ss << "a situation handled correctly by the real steam_api library. More ";
   ss << "information may be available on the command line.";
   std::string s = ss.str();
