@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-#include "friends_api.h"
+#include "client_api.h"
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
@@ -13,7 +13,7 @@
 SteamClientWrapper::SteamClientWrapper() : steamClient(NULL)
 {
   __TRACE("(this=0x%p)", this);
-  steamUser = steam_bridge_SteamClient();
+  steamClient = steam_bridge_SteamClient();
   __LOG("Wrapping ISteamClient (0x%p) into (0x%p)", steamClient, this);
 }
 
@@ -70,7 +70,7 @@ ISteamUserStats *SteamClientWrapper::GetISteamUserStats(HSteamUser hSteamUser,
   __STUB("(%i,%i,\"%s\")", hSteamUser, hSteamPipe, pchVersion)
 
 ISteamGameServerStats *SteamClientWrapper::GetISteamGameServerStats(
-    HSteamUser hSteamuser, HSteamPipe hSteamPipe, const char *pchVersion)
+    HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion)
   __STUB("(%i,%i,\"%s\")", hSteamUser, hSteamPipe, pchVersion)
 
 ISteamApps *SteamClientWrapper::GetISteamApps(HSteamUser hSteamUser,

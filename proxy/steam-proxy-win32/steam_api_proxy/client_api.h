@@ -22,46 +22,46 @@ class SteamClientWrapper
 
     virtual void ReleaseUser(HSteamPipe hSteamPipe, HSteamUser hUser);
 
-    virtual ISteamUser *GetISteamUser(HSteamUser hSteamUser,
+    virtual class ISteamUser *GetISteamUser(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamGameServer *GetISteamGameServer(HSteamUser hSteamUser,
+    virtual class ISteamGameServer *GetISteamGameServer(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
     virtual void SetLocalIPBinding(uint32 unIP, uint16 usPort); 
 
-    virtual ISteamFriends *GetISteamFriends(HSteamUser hSteamUser,
+    virtual class ISteamFriends *GetISteamFriends(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamUtils *GetISteamUtils(HSteamPipe hSteamPipe,
+    virtual class ISteamUtils *GetISteamUtils(HSteamPipe hSteamPipe,
         const char *pchVersion);
 
-    virtual ISteamMatchmaking *GetISteamMatchmaking(HSteamUser hSteamUser,
-        HSteamPipe hSteamPipe, const char *pchVersion);
+    virtual class ISteamMatchmaking *GetISteamMatchmaking(
+        HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamMatchmakingServers *GetISteamMatchmakingServers(
+    virtual class ISteamMatchmakingServers *GetISteamMatchmakingServers(
         HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
     virtual void *GetISteamGenericInterface(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamUserStats *GetISteamUserStats(HSteamUser hSteamUser,
+    virtual class ISteamUserStats *GetISteamUserStats(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamGameServerStats *GetISteamGameServerStats(
+    virtual class ISteamGameServerStats *GetISteamGameServerStats(
         HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamApps *GetISteamApps(HSteamUser hSteamUser,
+    virtual class ISteamApps *GetISteamApps(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamNetworking *GetISteamNetworking(HSteamUser hSteamUser,
+    virtual class ISteamNetworking *GetISteamNetworking(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamRemoteStorage *GetISteamRemoteStorage(HSteamUser hSteamUser,
-        HSteamPipe hSteamPipe, const char *pchVersion);
+    virtual class ISteamRemoteStorage *GetISteamRemoteStorage(
+        HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamScreenshots *GetISteamScreenshots(HSteamUser hSteamUser,
-        HSteamPipe hSteamPipe, const char *pchVersion);
+    virtual class ISteamScreenshots *GetISteamScreenshots(
+        HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
     virtual void RunFrame();
 
@@ -71,13 +71,13 @@ class SteamClientWrapper
 
     virtual bool BShutdownIfAllPipesClosed();
 
-    virtual ISteamHTTP *GetISteamHTTP(HSteamUser hSteamUser,
+    virtual class ISteamHTTP *GetISteamHTTP(HSteamUser hSteamUser,
         HSteamPipe hSteamPipe, const char *pchVersion);
 
-    virtual ISteamUnifiedMessages *GetISteamUnifiedMessages(
+    virtual class ISteamUnifiedMessages *GetISteamUnifiedMessages(
         HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
   private:
-    ISteamClient *steamClient;
+    class ISteamClient *steamClient;
 
 };
