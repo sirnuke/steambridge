@@ -24,6 +24,7 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
   STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient() __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamClient_SetWarningMessageHook(ISteamClient *, SteamAPIWarningMessageHook_t) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(ISteamUser *, CSteamID *) __STUB__;
