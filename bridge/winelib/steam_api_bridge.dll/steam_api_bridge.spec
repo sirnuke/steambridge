@@ -7,6 +7,9 @@
 @ cdecl steam_bridge_SteamAPI_UnregisterCallback(ptr)
 @ cdecl steam_bridge_SteamAPI_RunCallbacks();
 
+# SteamClient API Calls
+@ cdecl steam_bridge_SteamClient()
+
 # SteamUser API calls
 @ cdecl steam_bridge_SteamUser(str)
 @ cdecl steam_bridge_SteamUser_GetSteamID(ptr ptr)

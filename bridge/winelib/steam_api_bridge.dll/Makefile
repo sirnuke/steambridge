@@ -35,6 +35,7 @@ steam_api_bridge_dll_MODULE= steam_api_bridge.dll
 steam_api_bridge_dll_C_SRCS=
 steam_api_bridge_dll_CXX_SRCS= source/apps.cpp \
 			source/callback.cpp \
+			source/client.cpp \
 			source/core.cpp \
 			source/friends.cpp \
 			source/logging.cpp \

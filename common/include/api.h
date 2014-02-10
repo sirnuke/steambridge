@@ -27,8 +27,7 @@ class ISteamFriends;
 class ISteamApps;
 class ISteamUserStats;
 
-extern "C"
-{
+extern "C" {
 
 // Core API Calls
 STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
@@ -41,6 +40,9 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
     void *object);
 STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
+
+// SteamClient API Calls
+STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient();
 
 // SteamUser API calls
 STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
