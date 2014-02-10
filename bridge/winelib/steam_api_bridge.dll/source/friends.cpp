@@ -8,8 +8,8 @@
 #include <wine/debug.h>
 
 #include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -19,10 +19,9 @@ extern "C"
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
     class ISteamFriends *steamFriends)
 {
-  WINE_TRACE("(0x%p)", steamFriends);
+  WINE_TRACE("(%p)\n", steamFriends);
 
-  if (!steamFriends)
-    __ABORT("NULL steamFriends pointer!");
+  if (!steamFriends) __ABORT("NULL steamFriends pointer!");
 
   return steamFriends->GetPersonaName();
 }
@@ -30,25 +29,24 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
     class ISteamFriends *steamFriends, int iFriendFlags)
 {
-  WINE_TRACE("(0x%p)", steamFriends);
+  WINE_TRACE("(%p,%i)\n", steamFriends, iFriendFlags);
 
-  if (!steamFriends)
-    __ABORT("NULL steamFriends pointer!");
+  if (!steamFriends) __ABORT("NULL steamFriends pointer!");
 
   return steamFriends->GetFriendCount(iFriendFlags);
 }
 
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
 {
-  WINE_TRACE("()");
+  WINE_TRACE("\n");
 
-  if (!context)
+  if (!state)
   {
-    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
+    WINE_ERR("NULL internal state (init not called?)\n");
     return NULL;
   }
 
-  return context->getSteamFriends();
+  return state->getSteamFriends();
 }
 
 } // extern "C"

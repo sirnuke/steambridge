@@ -8,8 +8,8 @@
 #include <wine/debug.h>
 
 #include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -33,8 +33,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
 {
   WINE_TRACE("(%p)\n", steamUser);
 
-  if (!steamUser)
-    __ABORT("NULL steamUser pointer!");
+  if (!steamUser) __ABORT("NULL steamUser pointer!");
 
   return steamUser->BLoggedOn();
 }
@@ -64,13 +63,13 @@ STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser()
 {
   WINE_TRACE("\n");
 
-  if (!context)
+  if (!state)
   {
-    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
+    WINE_ERR("NULL internal state (init not called?)\n");
     return NULL;
   }
 
-  return context->getSteamUser();
+  return state->getSteamUser();
 }
 
 } // extern "C"
