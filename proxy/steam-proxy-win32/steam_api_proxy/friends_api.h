@@ -7,20 +7,6 @@
 
 #include "types.h"
 
-// TODO: This is a placeholder, need to investigate how this is being
-//       packed in the real steam_api libraries.
-/*
-struct FriendGameInfo_t
-{
-	uint64 m_gameID1;
-	uint64 m_gameID2;
-	uint32 m_unGameIP;
-	uint16 m_usGamePort;
-	uint16 m_usQueryPort;
-	uint64 m_steamIDLobby;
-};
-*/
-
 class SteamFriendsWrapper
 {
   public:
