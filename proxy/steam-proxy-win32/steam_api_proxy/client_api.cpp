@@ -98,7 +98,10 @@ uint32 SteamClientWrapper::GetIPCCallCount()
 // Yeah, I don't think this function will work quite right
 void SteamClientWrapper::SetWarningMessageHook(
     SteamAPIWarningMessageHook_t pFunction)
-  __STUB("(0x%p)", pFunction)
+{
+  __TRACE("(0x%p)", pFunction);
+  steam_bridge_SteamClient_SetWarningMessageHook(steamClient, pFunction);
+}
 
 bool SteamClientWrapper::BShutdownIfAllPipesClosed()
   __STUB("")
