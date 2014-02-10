@@ -18,26 +18,24 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
-STEAM_API_BRIDGE_API CSteamID steam_bridge_SteamUser_GetSteamID(ISteamUser *steamUser)
+STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
+    ISteamUser *steamUser, CSteamID *id)
 {
-  WINE_TRACE("(%p)\n", steamUser);
+  WINE_TRACE("(%p,%p)\n", steamUser, id);
 
   if (!steamUser)
     __ABORT("NULL steamUser pointer!");
-  // Confirm the size is 8bytes, which is required per the headers
-  // TODO: There's better places to store this
-  if (sizeof(CSteamID) != 8)
-    __ABORT("CSteamID doesn't match the expected size! "
-        " (Should be 64bits/8bytes) (%zu/8)", sizeof(CSteamID));
+  if (!id)
+    __ABORT("NULL CSteamID result pointer!");
 
-  CSteamID id = steamUser->GetSteamID();
-  WINE_TRACE("Got steamUser ID of %llu\n", id.ConvertToUint64());
-  return id;
+  *id = steamUser->GetSteamID();
+  WINE_TRACE("Got steamUser ID of %lu\n", id->ConvertToUint64());
 }
 
-STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *steamUser)
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
+    ISteamUser *steamUser)
 {
-  WINE_TRACE("(0x%p)\n", steamUser);
+  WINE_TRACE("(%p)\n", steamUser);
 
   if (!steamUser)
     __ABORT("NULL steamUser pointer!");
@@ -50,7 +48,7 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
     CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
     bool bSecure)
 {
-  WINE_TRACE("(0x%p,0x%p,%i,%llu,%u,%hu,%i)\n", steamUser, pAuthBlob,
+  WINE_TRACE("(%p,%p,%i,%llu,%u,%hu,%i)\n", steamUser, pAuthBlob,
       cbMaxAuthBlob, steamIDGameServer.ConvertToUint64(), unIPServer,
       usPortServer, bSecure);
 
@@ -61,7 +59,7 @@ STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
 STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(
     ISteamUser *steamUser, uint32 unIPServer, uint16 usPortServer)
 {
-  WINE_TRACE("(0x%p,%u,%hu)\n", steamUser, unIPServer, usPortServer);
+  WINE_TRACE("(%p,%u,%hu)\n", steamUser, unIPServer, usPortServer);
 
   return steamUser->TerminateGameConnection(unIPServer, usPortServer);
 }

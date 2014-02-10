@@ -55,8 +55,8 @@ STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
 //       that returns a struct in this mannor, and it may be easier to
 //       just return a uint64 and do a quick convert win32 side.
 
-STEAM_API_BRIDGE_API CSteamID steam_bridge_SteamUser_GetSteamID(
-    ISteamUser *steamUser);
+STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
+    ISteamUser *steamUser, CSteamID *id);
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
     ISteamUser *steamUser);
 STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(

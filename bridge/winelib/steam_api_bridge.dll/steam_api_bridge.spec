@@ -9,7 +9,7 @@
 
 # SteamUser API calls
 @ cdecl steam_bridge_SteamUser(str)
-@ cdecl -ret64 steam_bridge_SteamUser_GetSteamID(ptr)
+@ cdecl steam_bridge_SteamUser_GetSteamID(ptr ptr)
 @ cdecl steam_bridge_SteamUser_BLoggedOn(ptr)
 #@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long word long)
 # TODO: Second to last parameter is an unsigned short (16-bits) -
