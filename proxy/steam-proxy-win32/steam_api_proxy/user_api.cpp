@@ -1,14 +1,13 @@
 // user_api.cpp - Implements the user wrapper and various related APIs.
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
 #include "types.h"
 #include "user_api.h"
 
+#include <steam_api_bridge.h>
 
 SteamUserWrapper::SteamUserWrapper() : steamUser(NULL)
 {
@@ -30,17 +29,17 @@ CSteamID SteamUserWrapper::GetSteamID()
 {
   __TRACE("()");
   // TODO: There might be a bit of unnecessary copying here.
-  CSteamID id = { steam_bridge_SteamUser_GetSteamID(steamUser) };
+  CSteamID id = steam_bridge_SteamUser_GetSteamID(steamUser);
   __LOG("Get steamid of %lu", id.id);
   return id;
 }
 
 int SteamUserWrapper::InitiateGameConnection(void *pAuthBlob,
-    int cbMaxAuthBlob, uint64 steamIDGameServer, uint32 unIPServer,
+    int cbMaxAuthBlob, CSteamID steamIDGameServer, uint32 unIPServer,
     uint16 usPortServer, bool bSecure)
 {
   __TRACE("(0x%p,%i,%lu,%u,%hu,%i)", pAuthBlob, cbMaxAuthBlob,
-      steamIDGameServer, unIPServer, usPortServer, bSecure);
+      steamIDGameServer.id, unIPServer, usPortServer, bSecure);
 
   return steam_bridge_SteamUser_InitiateGameConnection(steamUser, pAuthBlob,
       cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);

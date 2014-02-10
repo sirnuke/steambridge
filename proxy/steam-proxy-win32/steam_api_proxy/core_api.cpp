@@ -2,11 +2,11 @@
 
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
+
+#include <steam_api_bridge.h>
 
 static bool SteamAPI_InitReal(bool safeMode)
 {

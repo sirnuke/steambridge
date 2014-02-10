@@ -2,13 +2,13 @@
 
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "apps_api.h"
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
 #include "types.h"
+
+#include <steam_api_bridge.h>
 
 SteamAppsWrapper::SteamAppsWrapper()
 {

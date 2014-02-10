@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 
-
 #include "logging.h"
 #include "steam_api_proxy.h"
 

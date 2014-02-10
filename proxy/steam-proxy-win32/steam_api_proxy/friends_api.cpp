@@ -2,13 +2,13 @@
 
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "friends_api.h"
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
 #include "types.h"
+
+#include <steam_api_bridge.h>
 
 SteamFriendsWrapper::SteamFriendsWrapper() : steamFriends(NULL)
 {

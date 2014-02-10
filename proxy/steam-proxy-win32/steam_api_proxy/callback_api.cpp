@@ -3,11 +3,11 @@
 
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
+
+#include <steam_api_bridge.h>
 
 extern "C"
 {

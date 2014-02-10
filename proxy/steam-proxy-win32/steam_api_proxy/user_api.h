@@ -14,18 +14,16 @@ class SteamUserWrapper
     virtual HSteamUser GetHSteamUser();
     virtual bool BLoggedOn();
 
-    // CSteamID is a class that 'wraps' around a steamID and other
-    // such nonsense.  It's probablllyyy safe to just return a uint64,
-    // at least on this side of the bridge.  At a glance, most everything
-    // of important is inlined, and since it's a set 64 bits without any
-    // real magic, it probably isn't necessary to implement anything.
+    // CSteamID is a class that 'wraps' around a steamID.  It's
+    // effectively equivalent to a unsigned long long int (64-bits).
+    // However, they are returned differently depending whether it's a
+    // uint64 or a struct.  uint64 is passed in two registers, otherwise
+    // a pointer to the CSteamID struct is in EAX.
 
-    // CSteamID ... ()
     virtual CSteamID GetSteamID();
 
-    // int ... (void *, int, CSteamID, uint32, uint16, bool)
     virtual int InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob,
-        uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
+        CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
         bool bSecure);
     virtual void TerminateGameConnection(uint32 unIPServer,
         uint16 usPortServer);

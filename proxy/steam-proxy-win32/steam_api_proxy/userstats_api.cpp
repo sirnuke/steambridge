@@ -2,13 +2,13 @@
 
 #include "stdafx.h"
 
-#include <steam_api_bridge.h>
-
 #include "logging.h"
 #include "state.h"
 #include "steam_api_proxy.h"
 #include "userstats_api.h"
 #include "types.h"
+
+#include <steam_api_bridge.h>
 
 SteamUserStatsWrapper::SteamUserStatsWrapper() : steamUserStats(NULL)
 {
