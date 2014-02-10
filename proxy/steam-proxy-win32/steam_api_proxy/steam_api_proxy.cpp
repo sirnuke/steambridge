@@ -48,9 +48,6 @@ STEAM_API_PROXY_API void SteamAPI_WriteMiniDump(
     uint32 uStructuredExceptionCode, void* pvExceptionInfo, uint32 uBuildID)
   __STUB("(%u,0x%p,%u)", uStructuredExceptionCode, pvExceptionInfo, uBuildID)
 
-STEAM_API_PROXY_API void *SteamClient()
-  __STUB("")
-
 STEAM_API_PROXY_API void SteamContentServer()
   __CANT_IMPLEMENT("")
 STEAM_API_PROXY_API void SteamContentServerUtils()

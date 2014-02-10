@@ -5,6 +5,7 @@
 #include "stdafx.h"
 
 #include "apps_api.h"
+#include "client_api.h"
 #include "friends_api.h"
 #include "logging.h"
 #include "state.h"
@@ -15,8 +16,8 @@ AppState state;
 
 
 AppState::AppState() 
-  : safeMode(false), steamUser(NULL), steamFriends(NULL), steamApps(NULL),
-    steamUserStats(NULL)
+  : safeMode(false), steamClient(NULL), steamUser(NULL), steamFriends(NULL),
+    steamApps(NULL), steamUserStats(NULL)
 {
   __TRACE("(this=0x%p)", this);
 }
@@ -25,20 +26,28 @@ AppState::~AppState()
 {
   __TRACE("(this=0x%p)", this);
   callbacks.clear();
-  if (steamUser)
-    delete steamUser;
-  if (steamFriends)
-    delete steamFriends;
-  if (steamApps)
-    delete steamApps;
-  if (steamUserStats)
-    delete steamUserStats;
+  if (steamClient)    delete steamClient;
+  if (steamUser)      delete steamUser;
+  if (steamFriends)   delete steamFriends;
+  if (steamApps)      delete steamApps;
+  if (steamUserStats) delete steamUserStats;
 }
 
 void AppState::addCallback(class CCallbackBase *callback)
 {
   __TRACE("(0x%p)", callback);
   callbacks.push_back(callback);
+}
+
+SteamClientWrapper *AppState::getSteamClient()
+{
+  __TRACE("()");
+  if (!steamClient)
+  {
+    steamClient = new SteamClientWrapper();
+    __LOG("Created ISteamClient wrapper (0x%p)", steamClient);
+  }
+  return steamClient;
 }
 
 SteamUserWrapper *AppState::getSteamUser()
