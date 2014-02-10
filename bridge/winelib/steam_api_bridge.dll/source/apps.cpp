@@ -8,8 +8,8 @@
 #include <wine/debug.h>
 
 #include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -19,10 +19,9 @@ extern "C"
 STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
     class ISteamApps *steamApps, AppId_t appId)
 {
-  WINE_TRACE("(0x%p,%u)", steamApps, appId);
+  WINE_TRACE("(%p,%u)\n", steamApps, appId);
 
-  if (!steamApps)
-    __ABORT("NULL steamApps pointer!");
+  if (!steamApps) __ABORT("NULL steamApps pointer!");
 
   return steamApps->BIsSubscribedApp(appId);
 }
@@ -30,25 +29,24 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
     class ISteamApps *steamApps)
 {
-  WINE_TRACE("(0x%p)", steamApps);
+  WINE_TRACE("(%p)\n", steamApps);
 
-  if (!steamApps)
-    __ABORT("NULL steamApps pointer!");
+  if (!steamApps) __ABORT("NULL steamApps pointer!");
 
   return steamApps->GetCurrentGameLanguage();
 }
 
 STEAM_API_BRIDGE_API class ISteamApps *steam_bridge_SteamApps()
 {
-  WINE_TRACE("()");
+  WINE_TRACE("\n");
 
-  if (!context)
+  if (!state)
   {
-    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
+    WINE_ERR("NULL internal state (init not called?)\n");
     return NULL;
   }
 
-  return context->getSteamApps();
+  return state->getSteamApps();
 }
 
 } // extern "C"
