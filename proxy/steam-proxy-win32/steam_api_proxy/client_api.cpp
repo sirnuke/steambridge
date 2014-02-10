@@ -114,3 +114,13 @@ ISteamUnifiedMessages *SteamClientWrapper::GetISteamUnifiedMessages(
     HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion)
   __STUB("(%i,%i,\"%s\")", hSteamUser, hSteamPipe, pchVersion)
 
+extern "C"
+{
+
+STEAM_API_PROXY_API void *SteamClient()
+{
+  __TRACE("()");
+  return state.getSteamClient();
+}
+
+} // extern "C"
