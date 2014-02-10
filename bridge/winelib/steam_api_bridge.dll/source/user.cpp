@@ -27,7 +27,7 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
   if (!id) __ABORT("NULL CSteamID result pointer!");
 
   *id = steamUser->GetSteamID();
-  WINE_TRACE("Got steamUser ID of %lu\n", id->ConvertToUint64());
+  WINE_TRACE("Got steamUser ID of %llu\n", id->ConvertToUint64());
 }
 
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
