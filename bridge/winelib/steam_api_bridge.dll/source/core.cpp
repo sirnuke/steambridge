@@ -49,7 +49,7 @@ typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
-SteamAPIContext::SteamAPIContext()
+Context::Context()
   : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
@@ -62,7 +62,7 @@ SteamAPIContext::SteamAPIContext()
   loadSteamAPI();
 }
 
-bool SteamAPIContext::prepare(AppId_t appid)
+bool Context::prepare(AppId_t appid)
 {
   WINE_TRACE("(this=0x%p,%u)\n", this, appid);
 
@@ -118,7 +118,7 @@ bool SteamAPIContext::prepare(AppId_t appid)
   return true;
 }
 
-SteamAPIContext::~SteamAPIContext()
+Context::~Context()
 {
   // TODO: Delete all callbacks?
 
@@ -130,7 +130,7 @@ SteamAPIContext::~SteamAPIContext()
 }
 
 // TODO: Should handle custom directories via enivornmental variables
-void SteamAPIContext::checkBridgeDirectory()
+void Context::checkBridgeDirectory()
 {
   WINE_TRACE("(this=0x%p)\n", this);
   struct stat rootDir;
@@ -164,7 +164,7 @@ void SteamAPIContext::checkBridgeDirectory()
         steamBridgeRoot.c_str());
 }
 
-void SteamAPIContext::loadSteamAPI()
+void Context::loadSteamAPI()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
@@ -191,7 +191,7 @@ void SteamAPIContext::loadSteamAPI()
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
       config_error_text(&config));
 
-void SteamAPIContext::readConfiguration()
+void Context::readConfiguration()
 {
   WINE_TRACE("(this=0x%p\n", this);
 
@@ -231,7 +231,7 @@ void SteamAPIContext::readConfiguration()
   config_destroy(&config);
 }
 
-bool SteamAPIContext::saveConfiguration()
+bool Context::saveConfiguration()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
@@ -271,7 +271,7 @@ bool SteamAPIContext::saveConfiguration()
   return true;
 }
 
-void SteamAPIContext::loadSteamAPIVersions()
+void Context::loadSteamAPIVersions()
 {
   WINE_TRACE("(0x%p)\n", this);
 
@@ -427,7 +427,7 @@ void SteamAPIContext::loadSteamAPIVersions()
 #undef _LIBCONFIG_ERR
 #undef _LIBCONFIG_ABORT
 
-void SteamAPIContext::addCallback(CCallbackBase *wrapper,
+void Context::addCallback(CCallbackBase *wrapper,
     CCallbackBase *reference)
 {
   WINE_TRACE("(0x%p,0x%p)\n", wrapper, reference);
@@ -435,7 +435,7 @@ void SteamAPIContext::addCallback(CCallbackBase *wrapper,
   references[reference] = wrapper;
 }
 
-CCallbackBase *SteamAPIContext::getCallback(CCallbackBase *reference)
+CCallbackBase *Context::getCallback(CCallbackBase *reference)
 {
   return references[reference];
 }
@@ -443,7 +443,7 @@ CCallbackBase *SteamAPIContext::getCallback(CCallbackBase *reference)
 // NOTE: This function assumes wrapper has already been deregistered
 // NOTE: This doesn't delete the wrapper becaussss Cplusplussss and
 //       non-virtual destructors.
-void SteamAPIContext::removeCallback(CCallbackBase *reference)
+void Context::removeCallback(CCallbackBase *reference)
 {
   WINE_TRACE("(0x%p)\n", reference);
 
@@ -459,7 +459,7 @@ void SteamAPIContext::removeCallback(CCallbackBase *reference)
   callbacks.erase(it);
 }
 
-SteamAPIContext *context = NULL;
+Context *context = NULL;
 
 static AppId_t steam_bridge_get_appid()
 {
@@ -493,22 +493,22 @@ bool steam_bridge_SteamAPI_InitSafe()
 
   if (context == NULL)
   {
-    if (!(context = new SteamAPIContext()))
-      __ABORT("Unable to allocate SteamAPIContext (internal context state)!");
+    if (!(context = new Context()))
+      __ABORT("Unable to allocate Context (internal state)!");
 
     AppId_t appid = steam_bridge_get_appid();
 
     __DLSYM_GET(steam_api_InitSafe_t, api, "SteamAPI_InitSafe");
     if (!(*api)())
     {
-      WINE_WARN("SteamAPI_InitSafe failed! (Look for Steam messages)\n");
+      WINE_WARN("SteamAPI_InitSafe failed! - look for Steam messages\n");
       return false;
     }
 
     if (!context->prepare(appid))
-      __ABORT("Unable to setup the SteamAPIContext");
+      __ABORT("Unable to setup the internal Context");
 
-    WINE_TRACE("Created Internal API Context (0x%p)\n", context);
+    WINE_TRACE("Created internal Context (0x%p)\n", context);
   }
   else
     WINE_WARN("Init called twice (perhaps internally the first time)\n");

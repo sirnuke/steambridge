@@ -13,11 +13,11 @@
 
 class CCallbackBase;
 
-class SteamAPIContext
+class Context
 {
   public:
-    SteamAPIContext();
-    ~SteamAPIContext();
+    Context();
+    ~Context();
 
     class ISteamUser                *getSteamUser()
       { return steamUser; }
@@ -100,7 +100,7 @@ class SteamAPIContext
       unifiedMessagesVersion;
 };
 
-extern SteamAPIContext *context;
+extern Context *context;
 
 #endif //___STEAM_BRIDGE_CORE_H__
 
