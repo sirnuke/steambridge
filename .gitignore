@@ -15,3 +15,4 @@ bridge/winelib/steam_api_bridge.dll/*.so
 bridge/winelib/steam_api_bridge.dll/*.swp
 steam/.*.swp
 proxy/steam-proxy-win32/steam_api_proxy/.*.swp
+common/include/.*.swp
