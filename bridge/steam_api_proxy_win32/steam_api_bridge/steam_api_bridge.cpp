@@ -23,6 +23,8 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(void *) __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
+  STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient() __STUB__;
+
   STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(ISteamUser *, CSteamID *) __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *) __STUB__;

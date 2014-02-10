@@ -22,6 +22,7 @@ typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags,
 typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags,
     void *data, bool ioFailure, SteamAPICall_t steamAPICall);
 
+class ISteamClient;
 class ISteamUser;
 class ISteamFriends;
 class ISteamApps;
