@@ -1,4 +1,4 @@
-// core.cpp - Handles the core API calls
+// state.h - Implements the internal State class.
 
 // C headers
 #include <cstdio>
@@ -30,17 +30,14 @@
 #include <wine/debug.h>
 
 // Local headers
-#include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 #define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge/"
 #define _APP_VERSION_DB "appid_db.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 #define _STEAM_API_SO "libsteam_api.so"
 
-typedef bool (*steam_api_InitSafe_t)(void);
-typedef void (*steam_api_Shutdown_t)(void);
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 typedef HSteamUser (*steam_api_GetHSteamUser_t)(void);
 typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
@@ -49,30 +46,27 @@ typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
-Context::Context()
+State::State()
   : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
-    steamUnifiedMessages(NULL), steamAPIHandle(NULL), appid(0),
-    disclaimer(false), warningHookFunction(NULL)
+    steamUnifiedMessages(NULL), initialized(false), steamAPIHandle(NULL),
+    appid(0), disclaimer(false), warningHookFunction(NULL)
 {
   WINE_TRACE("(this=0x%p)\n", this);
+  getAppId();
   checkBridgeDirectory();
   loadSteamAPI();
 }
 
-bool Context::prepare(AppId_t appid)
+void State::initialize()
 {
-  WINE_TRACE("(this=0x%p,%u)\n", this, appid);
+  WINE_TRACE("(this=0x%p)\n", this);
+
+  if (initialized) __ABORT("Function called twice!");
 
   bool configChanged = false;
-
-  if (appid == 0)
-    __ABORT("Received invalid appid of (%u)!\n", appid);
-  if (this->appid != 0)
-    __ABORT("prepare(%u) called twice!\n", appid);
-  this->appid = appid;
 
   readConfiguration();
 
@@ -115,10 +109,10 @@ bool Context::prepare(AppId_t appid)
 
   loadSteamAPIVersions();
 
-  return true;
+  initialized = true;
 }
 
-Context::~Context()
+State::~State()
 {
   // TODO: Delete all callbacks?
 
@@ -129,8 +123,23 @@ Context::~Context()
   }
 }
 
+void State::getAppId()
+{
+  WINE_TRACE("\n");
+
+  appid = 0;
+  std::ifstream file;
+  // TODO: we may want some sort of steam_appid_override.txt
+  file.open("steam_appid.txt");
+  if (file.fail()) __ABORT("Unable to open steam_appid.txt");
+  if (!(file >> appid))
+    __ABORT("Unable to read contents of steam_appid.txt as an AppId_t (int)");
+  file.close();
+  if (appid == 0) __ABORT("Invalid appid of 0 read from steam_appid.txt");
+}
+
 // TODO: Should handle custom directories via enivornmental variables
-void Context::checkBridgeDirectory()
+void State::checkBridgeDirectory()
 {
   WINE_TRACE("(this=0x%p)\n", this);
   struct stat rootDir;
@@ -164,7 +173,7 @@ void Context::checkBridgeDirectory()
         steamBridgeRoot.c_str());
 }
 
-void Context::loadSteamAPI()
+void State::loadSteamAPI()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
@@ -191,7 +200,7 @@ void Context::loadSteamAPI()
     ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
       config_error_text(&config));
 
-void Context::readConfiguration()
+void State::readConfiguration()
 {
   WINE_TRACE("(this=0x%p\n", this);
 
@@ -231,7 +240,7 @@ void Context::readConfiguration()
   config_destroy(&config);
 }
 
-bool Context::saveConfiguration()
+bool State::saveConfiguration()
 {
   WINE_TRACE("(this=0x%p)\n", this);
 
@@ -271,7 +280,7 @@ bool Context::saveConfiguration()
   return true;
 }
 
-void Context::loadSteamAPIVersions()
+void State::loadSteamAPIVersions()
 {
   WINE_TRACE("(0x%p)\n", this);
 
@@ -427,7 +436,7 @@ void Context::loadSteamAPIVersions()
 #undef _LIBCONFIG_ERR
 #undef _LIBCONFIG_ABORT
 
-void Context::addCallback(CCallbackBase *wrapper,
+void State::addCallback(CCallbackBase *wrapper,
     CCallbackBase *reference)
 {
   WINE_TRACE("(0x%p,0x%p)\n", wrapper, reference);
@@ -435,7 +444,7 @@ void Context::addCallback(CCallbackBase *wrapper,
   references[reference] = wrapper;
 }
 
-CCallbackBase *Context::getCallback(CCallbackBase *reference)
+CCallbackBase *State::getCallback(CCallbackBase *reference)
 {
   return references[reference];
 }
@@ -443,7 +452,7 @@ CCallbackBase *Context::getCallback(CCallbackBase *reference)
 // NOTE: This function assumes wrapper has already been deregistered
 // NOTE: This doesn't delete the wrapper becaussss Cplusplussss and
 //       non-virtual destructors.
-void Context::removeCallback(CCallbackBase *reference)
+void State::removeCallback(CCallbackBase *reference)
 {
   WINE_TRACE("(0x%p)\n", reference);
 
@@ -459,76 +468,5 @@ void Context::removeCallback(CCallbackBase *reference)
   callbacks.erase(it);
 }
 
-Context *context = NULL;
-
-static AppId_t steam_bridge_get_appid()
-{
-  WINE_TRACE("\n");
-
-  AppId_t appid = 0;
-  std::ifstream file;
-  // TODO: we may want some sort of steam_appid_override.txt
-  file.open("steam_appid.txt");
-  if (file.fail())
-    __ABORT("Unable to open steam_appid.txt");
-  if (!(file >> appid))
-    __ABORT("Unable to read contents of steam_appid.txt as an AppId_t (int)");
-  file.close();
-
-  if (appid == 0)
-    __ABORT("Invalid appid of 0 read from steam_appid.txt");
-
-  return appid;
-}
-
-extern "C"
-{
-
-// TODO: Would we want/need a wrapper for the straight Init() function?
-//       Maybe one that creates a context that uses the default ISteam*
-//       classes?
-bool steam_bridge_SteamAPI_InitSafe()
-{
-  WINE_TRACE("\n");
-
-  if (context == NULL)
-  {
-    if (!(context = new Context()))
-      __ABORT("Unable to allocate Context (internal state)!");
-
-    AppId_t appid = steam_bridge_get_appid();
-
-    __DLSYM_GET(steam_api_InitSafe_t, api, "SteamAPI_InitSafe");
-    if (!(*api)())
-    {
-      WINE_WARN("SteamAPI_InitSafe failed! - look for Steam messages\n");
-      return false;
-    }
-
-    if (!context->prepare(appid))
-      __ABORT("Unable to setup the internal Context");
-
-    WINE_TRACE("Created internal Context (0x%p)\n", context);
-  }
-  else
-    WINE_WARN("Init called twice (perhaps internally the first time)\n");
-  return true;
-}
-
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown()
-{
-  WINE_TRACE("\n");
-  if (context == NULL)
-    WINE_WARN("Shutdown called when not initialized!\n");
-  else
-  {
-    __DLSYM_GET(steam_api_Shutdown_t, api, "SteamAPI_Shutdown");
-    (*api)();
-    delete context;
-    context = NULL;
-    WINE_TRACE("SteamAPI Shutdown\n");
-  }
-}
-
-} // extern "C"
+State *state = NULL;
 

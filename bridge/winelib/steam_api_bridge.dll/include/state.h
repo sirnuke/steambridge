@@ -1,4 +1,4 @@
-// core.h - Headers for the core API calls.
+// state.h - Implements the internal State class.
 
 #ifndef  ___STEAM_BRIDGE_CORE_H__
 #define  ___STEAM_BRIDGE_CORE_H__
@@ -8,16 +8,16 @@
 #include <tr1/unordered_map>
 
 #define __DLSYM_GET(TYPE, VAR, NAME) \
-  TYPE VAR = (TYPE)(dlsym(context->getSteamAPIHandle(), NAME)); \
+  TYPE VAR = (TYPE)(dlsym(state->getSteamAPIHandle(), NAME)); \
   if (!VAR) __ABORT("unable to find the " #NAME " symbol in libsteam_api.so");
 
 class CCallbackBase;
 
-class Context
+class State
 {
   public:
-    Context();
-    ~Context();
+    State();
+    ~State();
 
     class ISteamUser                *getSteamUser()
       { return steamUser; }
@@ -46,7 +46,7 @@ class Context
 
     void *getSteamAPIHandle() { return steamAPIHandle; }
 
-    bool prepare(AppId_t appid);
+    void initialize();
 
     void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);
     CCallbackBase *getCallback(CCallbackBase *reference);
@@ -59,6 +59,7 @@ class Context
 
   private:
     // Internal functions
+    void getAppId();
     void checkBridgeDirectory();
     void loadSteamAPI();
     void readConfiguration();
@@ -80,6 +81,7 @@ class Context
     class ISteamUnifiedMessages     *steamUnifiedMessages;
 
     // Basic state variables
+    bool initialized;
     std::string steamBridgeRoot;
     void *steamAPIHandle;
     AppId_t appid;
@@ -100,7 +102,7 @@ class Context
       unifiedMessagesVersion;
 };
 
-extern Context *context;
+extern State *state;
 
 #endif //___STEAM_BRIDGE_CORE_H__
 
