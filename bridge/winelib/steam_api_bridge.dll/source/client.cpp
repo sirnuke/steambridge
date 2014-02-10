@@ -5,8 +5,6 @@
 #include <dlfcn.h>
 
 #define NOMINMAX
-#include <windef.h>
-#include <winbase.h>
 #include <wine/debug.h>
 
 #include "api.h"
