@@ -21,6 +21,8 @@ typedef void (*steam_bridge_CallbackRunFunc)(void *wrapper, int flags,
     void *data);
 typedef void (*steam_bridge_CallbackRunArgsFunc)(void *wrapper, int flags,
     void *data, bool ioFailure, SteamAPICall_t steamAPICall);
+typedef void (*steam_bridge_WarningHookFunc)(int severity,
+    const char *message);
 
 class ISteamClient;
 class ISteamUser;
@@ -44,6 +46,8 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
 
 // SteamClient API Calls
 STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient();
+STEAM_API_BRIDGE_API void steam_bridge_SteamClient_SetWarningMessageHook(
+    ISteamClient *steamClient, SteamAPIWarningMessageHook_t func);
 
 // SteamUser API calls
 STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
