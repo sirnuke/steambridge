@@ -8,8 +8,8 @@
 #include <wine/debug.h>
 
 #include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
@@ -20,13 +20,13 @@ STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils()
 {
   WINE_TRACE("\n");
 
-  if (!context)
+  if (!state)
   {
-    WINE_ERR("Context is NULL, Init either failed or wasn't called\n");
+    WINE_ERR("NULL internal state (init not caled?)\n");
     return NULL;
   }
 
-  return context->getSteamUtils();
+  return state->getSteamUtils();
 }
 
 } // extern "C"
