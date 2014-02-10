@@ -21,6 +21,6 @@ void __trace__(const char *func, const char *args, ...);
 #define __LOG(MSG, ...) __log__(__FUNCSIG__, MSG, __VA_ARGS__)
 void __log__(const char *func, const char *msg, ...);
 
-#define __ABORT_(MSG, ...)  __abort__(__FUNCSIG__, MSG, __VA_ARGS__)
+#define __ABORT(MSG, ...)  __abort__(__FUNCSIG__, MSG, __VA_ARGS__)
 __declspec(noreturn) void __abort__(const char *func, const char *msg, ...);
 
