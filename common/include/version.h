@@ -9,9 +9,10 @@
 
 // TODO: It would be cool to have the git commit hash, plus a date or something
 
-const char *steam_bridge_VERSION_STRING = "0.0.1";
-const int steam_bridge_VERSION_MAJOR = 0;
-const int steam_bridge_VERSION_MINOR = 0;
-const int steam_bridge_VERSION_PATCH = 1;
+static const char *steam_bridge_APP_NAME = "SteamBridge";
+static const char *steam_bridge_VERSION_STRING = "0.0.1";
+static const int steam_bridge_VERSION_MAJOR = 0;
+static const int steam_bridge_VERSION_MINOR = 0;
+static const int steam_bridge_VERSION_PATCH = 1;
 
 #endif //___STEAM_API_BRIDGE_VERSION_H___
