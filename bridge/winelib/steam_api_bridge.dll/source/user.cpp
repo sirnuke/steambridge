@@ -23,10 +23,8 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
 {
   WINE_TRACE("(%p,%p)\n", steamUser, id);
 
-  if (!steamUser)
-    __ABORT("NULL steamUser pointer!");
-  if (!id)
-    __ABORT("NULL CSteamID result pointer!");
+  if (!steamUser) __ABORT("NULL steamUser pointer!");
+  if (!id) __ABORT("NULL CSteamID result pointer!");
 
   *id = steamUser->GetSteamID();
   WINE_TRACE("Got steamUser ID of %lu\n", id->ConvertToUint64());
