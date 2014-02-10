@@ -116,6 +116,7 @@
     <ClCompile Include="steam_api_proxy.cpp" />
     <ClCompile Include="userstats_api.cpp" />
     <ClCompile Include="user_api.cpp" />
+    <ClCompile Include="utils_api.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

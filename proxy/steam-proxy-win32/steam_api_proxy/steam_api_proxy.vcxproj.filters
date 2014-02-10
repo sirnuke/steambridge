@@ -92,5 +92,8 @@
     <ClCompile Include="client_api.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
