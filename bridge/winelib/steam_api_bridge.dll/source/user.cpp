@@ -18,7 +18,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
-STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(ISteamUser *steamUser)
+STEAM_API_BRIDGE_API CSteamID steam_bridge_SteamUser_GetSteamID(ISteamUser *steamUser)
 {
   WINE_TRACE("(%p)\n", steamUser);
 
@@ -30,8 +30,8 @@ STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(ISteamUser *steamU
     __ABORT("CSteamID doesn't match the expected size! "
         " (Should be 64bits/8bytes) (%zu/8)", sizeof(CSteamID));
 
-  uint64 id = steamUser->GetSteamID().ConvertToUint64();
-  WINE_TRACE("Got steamUser ID of %llu\n", id);
+  CSteamID id = steamUser->GetSteamID();
+  WINE_TRACE("Got steamUser ID of %llu\n", id.ConvertToUint64());
   return id;
 }
 
@@ -47,11 +47,12 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *steamUser
 
 STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
     ISteamUser *steamUser, void *pAuthBlob, int cbMaxAuthBlob,
-    uint64 steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
+    CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
     bool bSecure)
 {
   WINE_TRACE("(0x%p,0x%p,%i,%llu,%u,%hu,%i)\n", steamUser, pAuthBlob,
-      cbMaxAuthBlob, steamIDGameServer, unIPServer, usPortServer, bSecure);
+      cbMaxAuthBlob, steamIDGameServer.ConvertToUint64(), unIPServer,
+      usPortServer, bSecure);
 
   return steamUser->InitiateGameConnection(pAuthBlob, cbMaxAuthBlob,
       steamIDGameServer, unIPServer, usPortServer, bSecure);
