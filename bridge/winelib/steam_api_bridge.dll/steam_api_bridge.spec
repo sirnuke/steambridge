@@ -36,6 +36,9 @@
 @ cdecl steam_bridge_SteamUserStats()
 @ cdecl steam_bridge_SteamUserStats_RequestCurrentStats(ptr)
 
+# SteamUtils API Calls
+@ cdecl steam_bridge_SteamUtils()
+
 # Meta API calls
 @ cdecl steam_bridge_version_string()
 @ cdecl steam_bridge_info_string()

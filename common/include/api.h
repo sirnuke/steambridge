@@ -29,6 +29,7 @@ class ISteamUser;
 class ISteamFriends;
 class ISteamApps;
 class ISteamUserStats;
+class ISteamUtils;
 
 extern "C" {
 
@@ -91,6 +92,9 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
 STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
     ISteamUserStats *steamUserStats);
+
+// SteamUtils API Calls
+STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();
 
 // Meta API Calls
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string();
