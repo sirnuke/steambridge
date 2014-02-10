@@ -8,13 +8,12 @@
 #include <wine/debug.h>
 
 #include "api.h"
-#include "core.h"
 #include "logging.h"
+#include "state.h"
 
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 
 WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
-
 
 extern "C"
 {
@@ -22,9 +21,9 @@ extern "C"
 static void steam_bridge_WarningHookCallback(int severity, const char *message)
 {
   WINE_TRACE("(%i,\"%s\")\n", severity, message);
-  if (!context) __ABORT("NULL context");
+  if (!state) __ABORT("NULL internal state");
   SteamAPIWarningMessageHook_t func
-    = (SteamAPIWarningMessageHook_t)(context->getWarningHookFunction());
+    = (SteamAPIWarningMessageHook_t)(state->getWarningHookFunction());
   (*func)(severity, message);
 }
 
@@ -32,8 +31,7 @@ STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient()
 {
   WINE_TRACE("\n");
 
-  if (context == NULL)
-    __ABORT("SteamClient called with a NULL context (init not called?)\n");
+  if (!state) __ABORT("NULL internal state (init not called?)");
 
   __DLSYM_GET(steam_api_SteamClient_t, api, "SteamClient");
   return (*api)();
@@ -44,12 +42,13 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamClient_SetWarningMessageHook(
 {
   WINE_TRACE("(%p,%p)\n", steamClient, func);
 
+  if (!state) __ABORT("NULL internal state");
   if (!steamClient) __ABORT("NULL steamClient!");
   if (!func) __ABORT("NULL callback func!");
-  if (!context) __ABORT("NULL context (init not called?)\n");
-  context->setWarningHookFunction(func);
+
+  state->setWarningHookFunction(func);
   steamClient->SetWarningMessageHook(&steam_bridge_WarningHookCallback);
 }
 
-}
+} // extern "C"
 
