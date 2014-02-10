@@ -29,7 +29,8 @@ CSteamID SteamUserWrapper::GetSteamID()
 {
   __TRACE("()");
   // TODO: There might be a bit of unnecessary copying here.
-  CSteamID id = steam_bridge_SteamUser_GetSteamID(steamUser);
+  CSteamID id;
+  steam_bridge_SteamUser_GetSteamID(steamUser, &id);
   __LOG("Get steamid of %lu", id.id);
   return id;
 }

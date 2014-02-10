@@ -24,7 +24,7 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
-  STEAM_API_BRIDGE_API CSteamID steam_bridge_SteamUser_GetSteamID(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(ISteamUser *, CSteamID *) __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *) __STUB__;
   STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(ISteamUser *, void *, int, CSteamID, uint32, uint16, bool) __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16) __STUB__;
