@@ -5,6 +5,8 @@
 
 #include <cstdlib>
 
+#include <types.h>
+
 #include "steam_api_bridge.h"
 
 #define __STUB__ { __stub__(); }
@@ -22,9 +24,9 @@ extern "C"
   STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
-  STEAM_API_BRIDGE_API uint64 steam_bridge_SteamUser_GetSteamID(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API CSteamID steam_bridge_SteamUser_GetSteamID(ISteamUser *) __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *) __STUB__;
-  STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(ISteamUser *, void *, int, uint64, uint32, uint16, bool) __STUB__;
+  STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(ISteamUser *, void *, int, CSteamID, uint32, uint16, bool) __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends() __STUB__;
