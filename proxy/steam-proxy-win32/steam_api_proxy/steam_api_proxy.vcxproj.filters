@@ -48,6 +48,9 @@
     <ClInclude Include="userstats_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="client_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="apps_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client_api.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
