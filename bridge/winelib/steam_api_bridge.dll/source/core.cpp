@@ -54,8 +54,8 @@ SteamAPIContext::SteamAPIContext()
     steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
     steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
-    steamUnifiedMessages(NULL), steam_api_handle(NULL), appid(0),
-    disclaimer(false)
+    steamUnifiedMessages(NULL), steamAPIHandle(NULL), appid(0),
+    disclaimer(false), warningHookFunction(NULL)
 {
   WINE_TRACE("(this=0x%p)\n", this);
   checkBridgeDirectory();
@@ -122,12 +122,10 @@ SteamAPIContext::~SteamAPIContext()
 {
   // TODO: Delete all callbacks?
 
-  if (steam_api_handle)
+  if (steamAPIHandle)
   {
-    int res = dlclose(steam_api_handle);
-    steam_api_handle = NULL;
-    if (res != 0)
-      WINE_ERR("dlclose failed (%i): %s\n", res, dlerror());
+    int res = dlclose(steamAPIHandle);
+    if (res != 0) WINE_ERR("dlclose failed (%i): %s\n", res, dlerror());
   }
 }
 
@@ -173,10 +171,10 @@ void SteamAPIContext::loadSteamAPI()
   std::string libPath = steamBridgeRoot + _STEAM_API_SO;
 
   // TODO: RTLD_LAZY?  Not that it likely makes a huge difference.
-  steam_api_handle = dlopen(libPath.c_str(), RTLD_NOW);
+  steamAPIHandle = dlopen(libPath.c_str(), RTLD_NOW);
   
   // TODO: Can/should we check elsewhere?
-  if (!steam_api_handle)
+  if (!steamAPIHandle)
     __ABORT("dlopen on \"%s\" failed: %s", libPath.c_str(), dlerror());
 }
 
@@ -461,11 +459,6 @@ void SteamAPIContext::removeCallback(CCallbackBase *reference)
   callbacks.erase(it);
 }
 
-void *SteamAPIContext::getSteamAPIHandle()
-{
-  return steam_api_handle;
-}
-
 SteamAPIContext *context = NULL;
 
 static AppId_t steam_bridge_get_appid()
@@ -537,4 +530,5 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown()
   }
 }
 
-}
+} // extern "C"
+

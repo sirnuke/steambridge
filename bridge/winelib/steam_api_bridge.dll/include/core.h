@@ -44,21 +44,28 @@ class SteamAPIContext
     class ISteamUnifiedMessages     *getSteamUnifiedMessages() 
       { return steamUnifiedMessages; }
 
+    void *getSteamAPIHandle() { return steamAPIHandle; }
+
     bool prepare(AppId_t appid);
 
     void addCallback(CCallbackBase *wrapper, CCallbackBase *reference);
     CCallbackBase *getCallback(CCallbackBase *reference);
     void removeCallback(CCallbackBase *reference);
 
-    void *getSteamAPIHandle();
+    void setWarningHookFunction(SteamAPIWarningMessageHook_t function)
+      { warningHookFunction = function; }
+    SteamAPIWarningMessageHook_t getWarningHookFunction()
+      { return warningHookFunction; }
 
   private:
+    // Internal functions
     void checkBridgeDirectory();
     void loadSteamAPI();
     void readConfiguration();
     bool saveConfiguration();
     void loadSteamAPIVersions();
 
+    // Pointers to the Steam API Classes
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
     class ISteamUtils               *steamUtils;
@@ -72,17 +79,20 @@ class SteamAPIContext
     class ISteamHTTP                *steamHTTP;
     class ISteamUnifiedMessages     *steamUnifiedMessages;
 
-    void *steam_api_handle;
-
+    // Basic state variables
+    std::string steamBridgeRoot;
+    void *steamAPIHandle;
     AppId_t appid;
 
-    std::deque<CCallbackBase *> callbacks;
-    std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
-
-    std::string steamBridgeRoot;
-
+    // Configuration options
     bool disclaimer;
 
+    // Callback related code
+    std::deque<CCallbackBase *> callbacks;
+    std::tr1::unordered_map<CCallbackBase *, CCallbackBase *> references;
+    SteamAPIWarningMessageHook_t warningHookFunction;
+
+    // SteamAPI version strings
     std::string appName, userVersion, friendsVersion,
       utilsVersion, matchmakingVersion, matchmakingServersVersion,
       userStatsVersion, appsVersion, networkingVersion,
