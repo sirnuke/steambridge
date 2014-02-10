@@ -9,6 +9,7 @@
 
 // TODO: This is a placeholder, need to investigate how this is being
 //       packed in the real steam_api libraries.
+/*
 struct FriendGameInfo_t
 {
 	uint64 m_gameID1;
@@ -18,6 +19,7 @@ struct FriendGameInfo_t
 	uint16 m_usQueryPort;
 	uint64 m_steamIDLobby;
 };
+*/
 
 class SteamFriendsWrapper
 {
@@ -33,104 +35,78 @@ class SteamFriendsWrapper
 
     virtual int GetFriendCount(int iFriendFlags);
 
-    // CSteamID ... (int, int)
-    virtual uint64 GetFriendByIndex(int iFriend, int iFriendFlags);
+    virtual CSteamID GetFriendByIndex(int iFriend, int iFriendFlags);
 
     // returns a relationship to a user
-    // int ... (CSteamID)
-    virtual int GetFriendRelationship(uint64 steamIDFriend);
+    virtual int GetFriendRelationship(CSteamID steamIDFriend);
 
     // EPersonaState ... (CSteamID)
-    virtual int GetFriendPersonaState(uint64 steamIDFriend);
+    virtual int GetFriendPersonaState(CSteamID steamIDFriend);
 
     // FYI: This function is 'guarenteed' to not return NULL
-    // const char * ... (CSteamID)
-    virtual const char *GetFriendPersonaName(uint64 steamIDFriend);
+    virtual const char *GetFriendPersonaName(CSteamID steamIDFriend);
 
-    // bool ... (CSteamID, FriendGameInfo_t *)
-    virtual bool GetFriendGamePlayed(uint64 steamIDFriend,
-        FriendGameInfo_t *pFriendGameInfo);
+    virtual bool GetFriendGamePlayed(CSteamID steamIDFriend,
+        struct FriendGameInfo_t *pFriendGameInfo);
 
-    // const char * ... (CSteamID, int)
-    virtual const char *GetFriendPersonaNameHistory(uint64 steamIDFriend,
+    virtual const char *GetFriendPersonaNameHistory(CSteamID steamIDFriend,
         int iPersonaName);
 
-    // bool ... (CSteamID, int)
-    virtual bool HasFriend(uint64 steamIDFriend, int iFriendFlags);
+    virtual bool HasFriend(CSteamID steamIDFriend, int iFriendFlags);
 
     virtual int GetClanCount();
 
-    // CSteamID ... (int)
-    virtual uint64 GetClanByIndex(int iClan);
+    virtual CSteamID GetClanByIndex(int iClan);
 
-    // const char * ... (CSteamID)
-    virtual const char *GetClanName(uint64 steamIDClan);
+    virtual const char *GetClanName(CSteamID steamIDClan);
 
-    // const char * ... (CSteamID)
-    virtual const char *GetClanTag(uint64 steamIDClan);
+    virtual const char *GetClanTag(CSteamID steamIDClan);
 
-    // bool ... (CSteamID, int *, int *, int *)
-    virtual bool GetClanActivityCounts(uint64 steamIDClan, int *pnOnline,
+    virtual bool GetClanActivityCounts(CSteamID steamIDClan, int *pnOnline,
         int *pnInGame, int *pnChatting);
 
-    // virtual SteamAPICall_t ... (CSteamID *psteamIDClans, int cClansToRequest)
-    virtual SteamAPICall_t DownloadClanActivityCounts(uint64 *psteamIDClans,
+    virtual SteamAPICall_t DownloadClanActivityCounts(CSteamID *psteamIDClans,
         int cClansToRequest);
 
-    // int ... (CSteamID)
-    virtual int GetFriendCountFromSource(uint64 steamIDSource);
+    virtual int GetFriendCountFromSource(CSteamID steamIDSource);
 
-    // CSteamID ... (CSteamID, int)
-    virtual uint64 GetFriendFromSourceByIndex(uint64 steamIDSource,
+    virtual CSteamID GetFriendFromSourceByIndex(CSteamID steamIDSource,
         int iFriend);
 
-    // bool ... (CSteamID, CSteamID)
-    virtual bool IsUserInSource(uint64 steamIDUser, uint64 steamIDSource);
+    virtual bool IsUserInSource(CSteamID steamIDUser, CSteamID steamIDSource);
 
-    // void ... (CSteamID, bool)
-    virtual void SetInGameVoiceSpeaking(uint64 steamIDUser, bool bSpeaking);
+    virtual void SetInGameVoiceSpeaking(CSteamID steamIDUser, bool bSpeaking);
 
     virtual void ActivateGameOverlay(const char *pchDialog);
 
-    // void ... (const char *, CSteamID)
     virtual void ActivateGameOverlayToUser(const char *pchDialog,
-        uint64 steamID);
+        CSteamID steamID);
 
     virtual void ActivateGameOverlayToWebPage(const char *pchURL);
 
     // void ... (AppId_t, EOverlayToStoreFlag)
     virtual void ActivateGameOverlayToStore(AppId_t nAppID, int eFlag);
 
-    // void ... (CSteamID)
-    virtual void SetPlayedWith(uint64 steamIDUserPlayedWith);
+    virtual void SetPlayedWith(CSteamID steamIDUserPlayedWith);
 
-    // void ... (CSteamID)
-    virtual void ActivateGameOverlayInviteDialog(uint64 steamIDLobby);
+    virtual void ActivateGameOverlayInviteDialog(CSteamID steamIDLobby);
 
-    // int ... (CSteamID)
-    virtual int GetSmallFriendAvatar(uint64 steamIDFriend);
+    virtual int GetSmallFriendAvatar(CSteamID steamIDFriend);
 
-    // int ... (CSteamID)
-    virtual int GetMediumFriendAvatar(uint64 steamIDFriend);
+    virtual int GetMediumFriendAvatar(CSteamID steamIDFriend);
 
-    // int ... (CSteamID)
-    virtual int GetLargeFriendAvatar(uint64 steamIDFriend);
+    virtual int GetLargeFriendAvatar(CSteamID steamIDFriend);
 
-    // bool ... (CSteamID, bool)
-    virtual bool RequestUserInformation(uint64 steamIDUser,
+    virtual bool RequestUserInformation(CSteamID steamIDUser,
         bool bRequireNameOnly);
 
-    // SteamAPICall_t ... (CSteamID)
-    virtual SteamAPICall_t RequestClanOfficerList(uint64 steamIDClan);
+    virtual SteamAPICall_t RequestClanOfficerList(CSteamID steamIDClan);
 
-    // CSteamID ... (CSteamID)
-    virtual uint64 GetClanOwner(uint64 steamIDClan);
+    virtual CSteamID GetClanOwner(CSteamID steamIDClan);
 
-    // int ... (CSteamID)
-    virtual int GetClanOfficerCount(uint64 steamIDClan);
+    virtual int GetClanOfficerCount(CSteamID steamIDClan);
 
-    // CSteamID ... (CSteamID, int)
-    virtual uint64 GetClanOfficerByIndex(uint64 steamIDClan, int iOfficer);
+    virtual CSteamID GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer);
 
     virtual uint32 GetUserRestrictions();
 
@@ -138,85 +114,64 @@ class SteamFriendsWrapper
 
     virtual void ClearRichPresence();
 
-    // const char * ... (CSteamID, const char *)
-    virtual const char *GetFriendRichPresence(uint64 steamIDFriend,
+    virtual const char *GetFriendRichPresence(CSteamID steamIDFriend,
         const char *pchKey);
 
-    // int ... (CSteamID)
-    virtual int GetFriendRichPresenceKeyCount(uint64 steamIDFriend);
+    virtual int GetFriendRichPresenceKeyCount(CSteamID steamIDFriend);
 
-    // const char * ... (CSteamID, int)
-    virtual const char *GetFriendRichPresenceKeyByIndex(uint64 steamIDFriend,
+    virtual const char *GetFriendRichPresenceKeyByIndex(CSteamID steamIDFriend,
         int iKey);
 
-    // void ... (CSteamID)
-    virtual void RequestFriendRichPresence(uint64 steamIDFriend);
+    virtual void RequestFriendRichPresence(CSteamID steamIDFriend);
 
-    // bool ... (CSteamID, const char *)
-    virtual bool InviteUserToGame(uint64 steamIDFriend,
+    virtual bool InviteUserToGame(CSteamID steamIDFriend,
         const char *pchConnectString);
 
     virtual int GetCoplayFriendCount();
 
-    // CSteamID ... (int)
-    virtual uint64 GetCoplayFriend(int iCoplayFriend);
+    virtual CSteamID GetCoplayFriend(int iCoplayFriend);
 
-    // int ... (CSteamID)
-    virtual int GetFriendCoplayTime(uint64 steamIDFriend);
+    virtual int GetFriendCoplayTime(CSteamID steamIDFriend);
 
-    // AppId_t ... (CSteamID)
-    virtual AppId_t GetFriendCoplayGame(uint64 steamIDFriend);
+    virtual AppId_t GetFriendCoplayGame(CSteamID steamIDFriend);
 
-    // SteamAPICall_t ... (CSteamID)
-    virtual SteamAPICall_t JoinClanChatRoom(uint64 steamIDClan);
+    virtual SteamAPICall_t JoinClanChatRoom(CSteamID steamIDClan);
 
-    // bool ... (CSteamID)
-    virtual bool LeaveClanChatRoom(uint64 steamIDClan);
+    virtual bool LeaveClanChatRoom(CSteamID steamIDClan);
 
-    // int ... (CSteamID)
-    virtual int GetClanChatMemberCount(uint64 steamIDClan);
+    virtual int GetClanChatMemberCount(CSteamID steamIDClan);
 
-    // CSteamID ... (CSteamID, int)
-    virtual uint64 GetChatMemberByIndex(uint64 steamIDClan, int iUser);
+    virtual CSteamID GetChatMemberByIndex(CSteamID steamIDClan, int iUser);
 
-    // bool ... (CSteamID, const char *)
-    virtual bool SendClanChatMessage(uint64 steamIDClanChat,
+    virtual bool SendClanChatMessage(CSteamID steamIDClanChat,
         const char *pchText);
 
     // The last two parameters aren't named in the isteamfriends.h header.
     // Persumably just an oversight.
     // int ... (CSteamID, int, void *, int, EChatEntryType *, CSteamID *)
-    virtual int GetClanChatMessage(uint64 steamIDClanChat, int iMessage,
-        void *prgchText, int cchTextMax, int *pint, uint64 *puint64);
+    virtual int GetClanChatMessage(CSteamID steamIDClanChat, int iMessage,
+        void *prgchText, int cchTextMax, int *pint, CSteamID *pid);
 
-    // bool ... (CSteamID, CSteamID)
-    virtual bool IsClanChatAdmin(uint64 steamIDClanChat, uint64 steamIDUser);
+    virtual bool IsClanChatAdmin(CSteamID steamIDClanChat, CSteamID steamIDUser);
 
-    // bool ... (CSteamID)
-    virtual bool IsClanChatWindowOpenInSteam(uint64 steamIDClanChat);
+    virtual bool IsClanChatWindowOpenInSteam(CSteamID steamIDClanChat);
 
-    // bool ... (CSteamID)
-    virtual bool OpenClanChatWindowInSteam(uint64 steamIDClanChat);
+    virtual bool OpenClanChatWindowInSteam(CSteamID steamIDClanChat);
 
-    // bool ... (CSteamID)
-    virtual bool CloseClanChatWindowInSteam(uint64 steamIDClanChat);
+    virtual bool CloseClanChatWindowInSteam(CSteamID steamIDClanChat);
 
-    // bool ... (bool)
     virtual bool SetListenForFriendsMessages(bool bInterceptEnabled);
 
-    // bool ... (CSteamID, const char *)
-    virtual bool ReplyToFriendMessage(uint64 steamIDFriend,
+    virtual bool ReplyToFriendMessage(CSteamID steamIDFriend,
         const char *pchMsgToSend);
 
     // int ... (CSteamID, int, void *, int, EChatEntryType *)
-    virtual int GetFriendMessage(uint64 steamIDFriend, int iMessageID,
+    virtual int GetFriendMessage(CSteamID steamIDFriend, int iMessageID,
         void *pvData, int cubData, int *peChatEntryType);
 
-    // SteamAPICall_t ... (CSteamID)
-    virtual SteamAPICall_t GetFollowerCount(uint64 steamID);
+    virtual SteamAPICall_t GetFollowerCount(CSteamID steamID);
 
-    // SteamAPICall_t ... (CSteamID)
-    virtual SteamAPICall_t IsFollowing(uint64 steamID);
+    virtual SteamAPICall_t IsFollowing(CSteamID steamID);
 
     virtual SteamAPICall_t EnumerateFollowingList(uint32 unStartIndex);
 
