@@ -1,8 +1,7 @@
 # The short version
 
-1. Compile the Visual Studio solution (Release build) in
-*proxy/steam-proxy-win32*.  Save the generated *steam\_api\_proxy.dll*
-for later.
+1. Compile the Visual Studio solution (Release build).  Save the
+*steam\_api\_proxy.dll* for later.
 2. Install g++ & multilib, a recent version of Wine & development package,
 and libconfig 32-bit library & development package.
 3. Compile the Winelib DLL using the provided *Makefile*.
@@ -21,10 +20,10 @@ You'll need a Windows setup with Visual Studio installed.  I'm using
 2010 Express on Windows 7 64-bit.  Other modern versions of Visual Studio
 and Windows are probably fine.
 
-Unfortunately, Visual Studio doesn't work inside of Wine.  There's also
-enough fuzziness to C++ that it's unlikely MinGW will work without
-considerable persuasion.  The Free Software dream of a Windows-less
-future remains onhold.
+Unfortunately, recent Visual Studio releases doesn't work inside of Wine.
+There's also enough fuzziness to C++ that it's unlikely MinGW will
+work without considerable persuasion.  The Free Software dream of a
+Windows-less future remains onhold.
 
 I will note, for future reference, that GCC and Visual Studio do agree
 on enough that it might be feasible to use MinGW, so long as we stay
@@ -35,19 +34,15 @@ I'm using Visual Studio 2010 because it's the latest version supported by
 the Source 1 SDK, though that's not a requirement.  If you do use 2010,
 install Service Pack 1.
 
-A Visual Studio solution exists in proxy/steam-proxy-win32.  You'll need
-to make a Release build, as Wine doesn't like Debug ones (specifically,
-Wine lacks a corresponding a msvcrt\*d.dll).
-
-The compilation spits out two DLLs: steam\_api\_bridge.dll and
-steam\_api\_proxy.dll.  Bridge is a simple stub library that merely
+The compilation spits out two DLLs: *steam\_api\_bridge.dll* and
+*steam\_api\_proxy.dll*.  Bridge is a simple stub library that merely
 implements the same API/symbols as the Linux Winelib library, necessary
 for Proxy to have something to link against.
 
-Proxy is a drop-in replacement for steam\_api.dll - and when deployed,
-should be named steam\_api.dll.  Instead of communicating with the Steam
-client running inside Wine, it communicates with the Winelib Bridge,
-which in turn connects to the native Steam client.
+Proxy is a drop-in replacement for *steam\_api.dll*.  Instead of
+communicating with the Windows Steam client inside Wine, it communicates
+with the Winelib Bridge. The Winelib Bridge, in turn, routes the API
+calls to the native Linux Steam client.
 
 # Linux Bridge Winelib library
 
@@ -61,12 +56,15 @@ can substitute *libconfig9* for *libconfig9:i386*.  Other distros will
 probably have similar requirements.
 
 Note that libconfig9:i386 doesn't setup the *libconfig.so* library
-symlink.  On my Ubuntu test machine, **cd /usr/lib/i386-linux-gnu/ ; sudo
-ln -s libconfig.so.9 libconfig.so** does the trick. 
+symlink.  **cd /usr/lib/i386-linux-gnu/ ; sudo ln -s libconfig.so.9
+libconfig.so** does the trick on my test machine.
 
 To compile, run **make** from the root.  All, clean, rebuild, install,
-and update (copies binaries and data files without overwriting existing
-configuration) are implemented.
+and update tasks are implemented.  Install installs a fresh SteamBridge
+directory (inside your home directory).  Update, however, doesn't
+overwrite your existing configuration.  Don't run either with sudo, the
+one action that requires root access is wrapped in sudo.  Additionally,
+in the future everything will be stored within your home directory.
 
 *steam\_api\_bridge.dll.so* is the compiled binary, a Winelib library
 for use with Wine.  It needs to be deployed to the 32-bit Wine DLL
@@ -74,9 +72,9 @@ directory, likely */usr/lib/i386-linux-gnu/wine*.  Additionally,
 SteamBridge depends on a directory within the user's local steam root
 (~/.steam/root).  At the moment, this directory contains the SteamBridge
 runtime settings, the upcoming database of appid SteamAPI versions,
-and a copy of *libsteam\_api.so*.  The included script *setup.sh*
-will copy everything to the correct place, though it may be brittle on
-non-standard directories.
+and a copy of *libsteam\_api.so*.  The included script *setup.sh* (make
+install) will copy everything to the correct place, though it may be
+brittle on non-standard directories.
 
 # Deployment and execution notes
 
@@ -87,32 +85,35 @@ non-standard directories.
   steam\_appid.txt**, for example.  Many games have this already.
 * Recommend wine debug settings of WINEDEBUG="+steam\_bridge" when
   running Wine games using SteamBridge.
+* Long term, setting up *steam_api.dll* and *steam_appid.txt* will be
+  handled by SteamBridge.
 * Proxy outputs on stdout, and the Winelib Bridge DLL outputs on stderr.
   They step on each other's toes when both using stderr.
-* Additionally, I recommend piping stdout and stderr.
-* Renaming the real *steam\_api.dll* to *steam\_api_original.dll* is a
+* Additionally, I recommend piping stdout and stderr, so you have a
+  record if/when stuff breaks.
+* Renaming the real *steam_api.dll* to *steam_api_original.dll* is a
   Good Idea, and lets you symlink to which ever one is currently being used.
 * The built-in WINE Visual C+++ Runtime (2010, aka msvcp100.dll) works
-  fine, outside seemingly a single specific scenario (so far).
+  fine, outside a single specific scenario (so far).
 * You can run Wine Steam games through Steam Linux using Steam's "Add
   Non-Steam Game..." feature.  You'll need a valid .desktop file,
-  seemingly pointing to a script in $PATH that properly executes the
-  game.
+  pointing to a script in $PATH that properly executes the game.
     * In my test setup, the built-in msvcp100.dll blows up inside its
       DllMain, possibly due to issues with establishing stdin/stdout.
       Installing the real DLL (winetricks vcrun2010) works right.
     * The Steam overlay loads (!) and opens/closes correctly (!), but
       doesn't capture the mouse correctly (so close).
-    * Furthermore, Steam API calls from the client impact the injected
-      Overlay - aka, Ethan Meteor Hunter sets the corner of popups,
-      which is reflected.  This is a bit of an unexpected surprise.
+    * Furthermore, Steam API calls impact the injected Overlay.
+      Ethan Meteor Hunter sets the corner of popups, and the Overlay
+      obeys.  This is a bit of an unexpected surprise.
     * The content of the Overlay isn't tied to the real game.  It's
       still the generic links and content.
 * Gametime is properly recorded!
-* libsteam_api.so is forward compatabile, so long as newer APIs aren't
+* *libsteam_api.so* is forward compatible, so long as newer APIs aren't
   used (which will crash, hopefully quickly).  The Source 1 SDK is behind
-  the library used in Ethan Meteor Hunter, but doesn't seem to affect
-  as it as Ethan doesn't use any weird API calls.
+  the library used in Ethan Meteor Hunter, but it appears to run fine.
+  My guess is as long as the game doesn't use any new API calls, the
+  older library will work fine.
 
 # Miscellaneous design notes
 

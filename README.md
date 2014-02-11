@@ -52,28 +52,29 @@ Unknown Steam DLLs?  That's a paddlin'.  Non-VAC games should be safe.
 
 ### Compiling the Windows Proxy DLL
 
-Proxy needs Windows with Visual Studio, and has a Solution in
-proxy/steam-proxy-win32.
+Proxy needs a Windows environment with Visual Studio.
 
 ### Compiling the Linux Bridge Library
 
-Bridge needs a Linux install that can compile 32-bit binaries.  You'll
-need g++, make, Wine & its development headers, and 32-bit libconfig &
-its development headers.  A Makefile exists inside the bridge/winelib
-directory.  Once compiled, the setup.sh script will setup the SteamBridge
-runtime environment.
+Bridge needs a Linux environment that can compile 32-bit binaries.
+You'll need g++, make, Wine & its development headers, and 32-bit
+libconfig & its development headers.  The root Makefile compiles the
+library, and setups the SteamBridge data directory.
 
 ### Alright, let's play
 
 1. Download a game through Steam inside of Wine
-2. Backup the game's *steam\_api.dll*
-3. Copy *steam\_api\_proxy.dll* in place of *steam\_api.dll*
-4. If it doesn't exist, create *steam_appid.txt* containing the AppId
+2. Backup the game's *steam_api.dll*
+3. Compile *steam_api_proxy.dll* using Visual Studio
+4. Copy *steam_api_proxy.dll* in place of *steam_api.dll*
+5. If it doesn't exist, create *steam_appid.txt* containing the AppId
 and no newline
-5. Run the main executable in Wine
+6. Compile *steam_api_bridge.dll.so* with **make**
+7. Setup the SteamBridge environment with **make install** (no sudo!)
+8. Run the main executable in Wine
 6. Party wildly
 
-Review COMPILE.md for the full notes, on both compiling and running.
+Review *documentation/indepth.md* for the full notes
 
 ## What SteamBridge works with
 
@@ -87,9 +88,9 @@ through the Linux client.  This even gives you a hobbled version of
 the Overlay.
 
 Additionally, it's possible to force the Linux client to download many
-(authorized) games that don't have a Linux port.
+games from a user's library that don't have a Linux port.
 
-All of this combined, the long term goal is a tool to download Windows
-games, configure them to run using the SteamBridge DLLs, and do most of
-the work of adding it back to the client as a non-Steam game.
+Combined, the long term goal is a tool to download Windows games,
+configure them to run using the SteamBridge DLLs, and do most of the
+work of adding it back to the client as a non-Steam game.
 
