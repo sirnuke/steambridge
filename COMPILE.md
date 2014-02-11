@@ -5,9 +5,9 @@
 for later.
 2. Install g++ & multilib, a recent version of Wine & development package,
 and libconfig 32-bit library & development package.
-3. Compile the Linux Winelib DLL using **make** inside
-*bridge/winelib/steam_api_bridge.dll/*.
-4. Setup the SteamBridge environment using the *setup.sh* script.
+3. Compile the Winelib DLL using the provided *Makefile*.
+4. Setup the SteamBridge enivornment with **make install** (do not use
+with sudo, it runs sudo for the one copy command that needs it).
 5. Download a game through Steam running Wine.
 6. Copy *steam\_api\_proxy.dll\* in place of the game's *steam\_api.dll\*.
 7. Setup *steam\_appid.txt* with the game's appid, if not already set.
@@ -64,10 +64,9 @@ Note that libconfig9:i386 doesn't setup the *libconfig.so* library
 symlink.  On my Ubuntu test machine, **cd /usr/lib/i386-linux-gnu/ ; sudo
 ln -s libconfig.so.9 libconfig.so** does the trick. 
 
-To compile, enter *bridge/winelib/steam\_api\_bridge.dll* and run
-**make**.  Standard make commands are implemented, with the exception
-of install.  Installation is handled by *setup.sh*, which eventually
-will be called by **make install**.
+To compile, run **make** from the root.  All, clean, rebuild, install,
+and update (copies binaries and data files without overwriting existing
+configuration) are implemented.
 
 *steam\_api\_bridge.dll.so* is the compiled binary, a Winelib library
 for use with Wine.  It needs to be deployed to the 32-bit Wine DLL
@@ -76,7 +75,7 @@ SteamBridge depends on a directory within the user's local steam root
 (~/.steam/root).  At the moment, this directory contains the SteamBridge
 runtime settings, the upcoming database of appid SteamAPI versions,
 and a copy of *libsteam\_api.so*.  The included script *setup.sh*
-will copy everything to its correct place, though it may be brittle on
+will copy everything to the correct place, though it may be brittle on
 non-standard directories.
 
 # Deployment and execution notes
