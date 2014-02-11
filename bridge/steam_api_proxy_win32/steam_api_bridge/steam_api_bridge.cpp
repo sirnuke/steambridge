@@ -42,6 +42,7 @@ extern "C"
 
   STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats() __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(ISteamUserStats *) __STUB__;
+  STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(ISteamUserStats *) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils() __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUtils_SetOverlayNotificationPosition(ISteamUtils *, int) __STUB__;

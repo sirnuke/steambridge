@@ -67,7 +67,10 @@ bool SteamUserStatsWrapper::IndicateAchievementProgress(const char *pchName,
   __STUB("(\"%s\",%u,%u)", pchName, nCurProgress, nMaxProgress)
 
 uint32 SteamUserStatsWrapper::GetNumAchievements()
-  __STUB("")
+{
+  __TRACE("()");
+  return steam_bridge_SteamUserStats_GetNumAchievements(steamUserStats);
+}
 
 const char *SteamUserStatsWrapper::GetAchievementName(uint32 iAchievement)
   __STUB("(%u)", iAchievement)
