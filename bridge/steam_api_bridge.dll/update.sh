@@ -15,7 +15,7 @@ if [ ! -d /usr/lib/i386-linux-gnu/wine ] ; then
 else
   sudo cp steam_api_bridge.dll.so /usr/lib/i386-linux-gnu/wine/
 fi
-cp ../../steam/libsteam_api.so $INSTALLDIR
+cp ../../common/steam/libsteam_api.so $INSTALLDIR
 cp appid_db.cfg $INSTALLDIR
 echo $VERSION > $INSTALLDIR/version.txt
 echo "Fin"

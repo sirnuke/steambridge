@@ -1,6 +1,6 @@
 #!/bin/sh
 LIBRARIES="-lconfig -ldl"
-INCLUDEPATH="-I../../steam/ -I../../common/include/"
+INCLUDEPATH="-I../../common/steam/ -I../../common/include/"
 LIBRARYPATH=""
 DEFINES="-DVERSION_SAFE_STEAM_API_INTERFACES"
 winemaker steam_api_bridge.dll --nosource-fix --dll --nomfc --wine32 $DEFINES $INCLUDEPATH $LIBRARYPATH $LIBRARIES
