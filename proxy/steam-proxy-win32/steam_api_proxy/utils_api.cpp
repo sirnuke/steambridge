@@ -10,10 +10,6 @@
 
 #include <steam_api_bridge.h>
 
-
-extern "C"
-{
-
 SteamUtilsWrapper::SteamUtilsWrapper() : steamUtils(NULL)
 {
   __TRACE("(this=0x%p)", this);
@@ -101,6 +97,15 @@ bool SteamUtilsWrapper::GetEnteredGamepadTextInput(char *pchText, uint32 cchText
 
 const char *SteamUtilsWrapper::GetSteamUILanguage()
   __STUB("")
+
+extern "C"
+{
+
+STEAM_API_PROXY_API void *SteamUtils()
+{
+  __TRACE("()");
+  return state.getSteamUtils();
+}
 
 } //extern "C"
 

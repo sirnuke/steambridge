@@ -11,6 +11,7 @@ class SteamUserWrapper;
 class SteamFriendsWrapper;
 class SteamAppsWrapper;
 class SteamUserStatsWrapper;
+class SteamUtilsWrapper;
 
 class AppState
 {
@@ -31,6 +32,7 @@ class AppState
     SteamFriendsWrapper *getSteamFriends();
     SteamAppsWrapper *getSteamApps();
     SteamUserStatsWrapper *getSteamUserStats();
+    SteamUtilsWrapper *getSteamUtils();
 
   private:
     int appid;
@@ -44,6 +46,7 @@ class AppState
     SteamFriendsWrapper *steamFriends;
     SteamAppsWrapper *steamApps;
     SteamUserStatsWrapper *steamUserStats;
+    SteamUtilsWrapper *steamUtils;
 };
 
 extern AppState state;

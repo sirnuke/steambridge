@@ -11,13 +11,14 @@
 #include "state.h"
 #include "user_api.h"
 #include "userstats_api.h"
+#include "utils_api.h"
 
 AppState state;
 
 
 AppState::AppState() 
   : safeMode(false), steamClient(NULL), steamUser(NULL), steamFriends(NULL),
-    steamApps(NULL), steamUserStats(NULL)
+    steamApps(NULL), steamUserStats(NULL), steamUtils(NULL)
 {
   __TRACE("(this=0x%p)", this);
 }
@@ -31,6 +32,7 @@ AppState::~AppState()
   if (steamFriends)   delete steamFriends;
   if (steamApps)      delete steamApps;
   if (steamUserStats) delete steamUserStats;
+  if (steamUtils)     delete steamUtils;
 }
 
 void AppState::addCallback(class CCallbackBase *callback)
@@ -92,6 +94,17 @@ SteamUserStatsWrapper *AppState::getSteamUserStats()
     __LOG("Creating ISteamUserStats wrapper (0x%p)", steamUserStats);
   }
   return steamUserStats;
+}
+
+SteamUtilsWrapper *AppState::getSteamUtils()
+{
+  __TRACE("()");
+  if (!steamUtils)
+  {
+    steamUtils = new SteamUtilsWrapper();
+    __LOG("Creating ISteamUtils wrapper (0x%p)", steamUtils);
+  }
+  return steamUtils;
 }
 
 void AppState::setAppId(int appid)

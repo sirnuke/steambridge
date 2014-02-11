@@ -140,9 +140,6 @@ STEAM_API_PROXY_API void *SteamUGC()
 STEAM_API_PROXY_API void *SteamUnifiedMessages()
   __STUB("")
 
-STEAM_API_PROXY_API void *SteamUtils()
-  __STUB("")
-
 STEAM_API_PROXY_API HSteamUser Steam_GetHSteamUserCurrent()
   __STUB("")
 
