@@ -51,7 +51,11 @@ uint32 SteamUtilsWrapper::GetAppID()
 
 void SteamUtilsWrapper::SetOverlayNotificationPosition(
     int eNotificationPosition)
-  __STUB("(%i)", eNotificationPosition)
+{
+  __TRACE("(%i)", eNotificationPosition);
+  steam_bridge_SteamUtils_SetOverlayNotificationPosition(steamUtils,
+    eNotificationPosition);
+}
 
 bool SteamUtilsWrapper::IsAPICallCompleted(SteamAPICall_t hSteamAPICall,
     bool *pbFailed)
