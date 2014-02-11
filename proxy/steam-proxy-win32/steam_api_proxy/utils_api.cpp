@@ -17,8 +17,12 @@ extern "C"
 SteamUtilsWrapper::SteamUtilsWrapper() : steamUtils(NULL)
 {
   __TRACE("(this=0x%p)", this);
-  // steamUtils = steam_bridge_SteamUtils();
+  steamUtils = steam_bridge_SteamUtils();
+  __LOG("Wrapping ISteamUtils (0x%p) into (0x%p)", steamUtils, this);
 }
+
+uint32 SteamUtilsWrapper::GetSecondsSinceAppActive()
+  __STUB("")
 
 uint32 SteamUtilsWrapper::GetSecondsSinceComputerActive()
   __STUB("")
