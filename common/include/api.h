@@ -79,6 +79,8 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
     ISteamFriends *steamFriends);
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
     ISteamFriends *steamFriends, int iFriendFlags);
+STEAM_API_BRIDGE_API void steam_bridge_SteamFriends_SetPlayedWith(
+    ISteamFriends *steamFriends, CSteamID steamIDUserPlayedWith);
 
 // SteamApps API Calls
 STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps();

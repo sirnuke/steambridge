@@ -26,6 +26,7 @@
 @ cdecl steam_bridge_SteamFriends()
 @ cdecl steam_bridge_SteamFriends_GetPersonaName(ptr)
 @ cdecl steam_bridge_SteamFriends_GetFriendCount(ptr long)
+@ cdecl steam_bridge_SteamFriends_SetPlayedWith(ptr int64)
 
 # SteamApps API Calls
 @ cdecl steam_bridge_SteamApps()

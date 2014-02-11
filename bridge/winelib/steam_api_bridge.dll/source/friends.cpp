@@ -17,7 +17,7 @@ extern "C"
 {
 
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
-    class ISteamFriends *steamFriends)
+    ISteamFriends *steamFriends)
 {
   WINE_TRACE("(%p)\n", steamFriends);
 
@@ -27,13 +27,24 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
 }
 
 STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
-    class ISteamFriends *steamFriends, int iFriendFlags)
+    ISteamFriends *steamFriends, int iFriendFlags)
 {
   WINE_TRACE("(%p,%i)\n", steamFriends, iFriendFlags);
 
   if (!steamFriends) __ABORT("NULL steamFriends pointer!");
 
   return steamFriends->GetFriendCount(iFriendFlags);
+}
+
+STEAM_API_BRIDGE_API void steam_bridge_SteamFriends_SetPlayedWith(
+    ISteamFriends *steamFriends, CSteamID steamIDUserPlayedWith)
+{
+  WINE_TRACE("(%p,%llu)\n", steamFriends,
+      steamIDUserPlayedWith.ConvertToUint64());
+
+  if (!steamFriends) __ABORT("NULL steamFriends pointer!");
+
+  steamFriends->SetPlayedWith(steamIDUserPlayedWith);
 }
 
 STEAM_API_BRIDGE_API class ISteamFriends *steam_bridge_SteamFriends()
