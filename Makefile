@@ -11,3 +11,6 @@ clean :
 install :
 	cd $(BRIDGE_DIR) && ./setup.sh
 
+update :
+	cd $(BRIDGE_DIR) && ./update.sh
+
