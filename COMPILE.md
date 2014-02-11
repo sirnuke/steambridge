@@ -110,6 +110,10 @@ non-standard directories.
     * The content of the Overlay isn't tied to the real game.  It's
       still the generic links and content.
 * Gametime is properly recorded!
+* libsteam_api.so is forward compatabile, so long as newer APIs aren't
+  used (which will crash, hopefully quickly).  The Source 1 SDK is behind
+  the library used in Ethan Meteor Hunter, but doesn't seem to affect
+  as it as Ethan doesn't use any weird API calls.
 
 # Miscellaneous design notes
 
