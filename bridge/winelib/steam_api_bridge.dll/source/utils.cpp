@@ -16,6 +16,16 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 extern "C"
 {
 
+void steam_bridge_SteamUtils_SetOverlayNotificationPosition(
+    ISteamUtils *steamUtils, int eNotificationPosition)
+{
+  WINE_TRACE("(%i)\n", eNotificationPosition);
+  if (!steamUtils) __ABORT("NULL steamUser pointer!");
+
+  steamUtils->SetOverlayNotificationPosition(
+      (ENotificationPosition)(eNotificationPosition));
+}
+
 STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils()
 {
   WINE_TRACE("\n");

@@ -38,6 +38,7 @@
 
 # SteamUtils API Calls
 @ cdecl steam_bridge_SteamUtils()
+@ cdecl steam_bridge_SteamUtils_SetOverlayNotificationPosition(ptr long)
 
 # Meta API calls
 @ cdecl steam_bridge_version_string()

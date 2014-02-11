@@ -95,6 +95,8 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
 
 // SteamUtils API Calls
 STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();
+STEAM_API_BRIDGE_API void steam_bridge_SteamUtils_SetOverlayNotificationPosition(
+    ISteamUtils *steamUtils, int eNotificationPosition);
 
 // Meta API Calls
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string();
