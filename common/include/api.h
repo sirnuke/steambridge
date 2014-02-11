@@ -58,10 +58,9 @@ STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
 //       BUT depending on the API definition, how they are returned
 //       changes.  32-bit ints are returned as EAX (easy), 64-bit ints
 //       are returned as EAX+EDX (harder), and struct use some black magic
-//       that may or may not be correctly supported by winelib as of
-//       this comment.  At a quick glance, this is the only function
-//       that returns a struct in this mannor, and it may be easier to
-//       just return a uint64 and do a quick convert win32 side.
+//       that doesn't appear to be correctly supported by Winelib.
+//       The work around is either to return as a 64-bit int, or store
+//       the result in a pointer argument.
 
 STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
     ISteamUser *steamUser, CSteamID *id);
