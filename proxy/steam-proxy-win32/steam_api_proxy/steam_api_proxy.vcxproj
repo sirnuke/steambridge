@@ -91,6 +91,7 @@
     <ClInclude Include="types.h" />
     <ClInclude Include="userstats_api.h" />
     <ClInclude Include="user_api.h" />
+    <ClInclude Include="utils_api.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="apps_api.cpp" />
