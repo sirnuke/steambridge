@@ -35,6 +35,7 @@ extern "C"
   STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends() __STUB__;
   STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(ISteamFriends *) __STUB__;
   STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(ISteamFriends *, int) __STUB__;
+  STEAM_API_BRIDGE_API void steam_bridge_SteamFriends_SetPlayedWith(ISteamFriends *, CSteamID) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps() __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(ISteamApps *, AppId_t) __STUB__;

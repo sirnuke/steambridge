@@ -107,7 +107,10 @@ void SteamFriendsWrapper::ActivateGameOverlayToStore(AppId_t nAppID, int eFlag)
   __STUB("(%u,%i)", nAppID, eFlag)
 
 void SteamFriendsWrapper::SetPlayedWith(CSteamID steamIDUserPlayedWith)
-  __STUB("(%llu)", steamIDUserPlayedWith)
+{
+  __TRACE("(%llu)", steamIDUserPlayedWith.id);
+  steam_bridge_SteamFriends_SetPlayedWith(steamFriends, steamIDUserPlayedWith);
+}
 
 void SteamFriendsWrapper::ActivateGameOverlayInviteDialog(CSteamID steamIDLobby)
   __STUB("(%llu)", steamIDLobby)
