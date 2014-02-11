@@ -1,5 +1,5 @@
-BRIDGE_ROOT=bridge/winelib
-BRIDGE_DIR=bridge/winelib/steam_api_bridge.dll
+BRIDGE_ROOT=bridge
+BRIDGE_DIR=bridge/steam_api_bridge.dll
 
 .PHONY : all clean rebuild winemaker install update
 
