@@ -70,11 +70,26 @@ runtime environment.
 3. Copy *steam\_api\_proxy.dll* in place of *steam\_api.dll*
 4. If it doesn't exist, create *steam_appid.txt* containing the AppId
 and no newline
-5. Party wildly
+5. Run the main executable in Wine
+6. Party wildly
 
 Review COMPILE.md for the full notes, on both compiling and running.
 
 ## What SteamBridge works with
 
-Defcon!  And Defcon's demo! (1520/1522!)
+Defcon!  And Defcon's demo! (1520/1522)   And Ethan Meteor Hunter's
+demo! (273280)
+
+## And from here into oblivion
+
+It takes some persuasion, but Steam games in Wine can be run directly
+through the Linux client.  This even gives you a hobbled version of
+the Overlay.
+
+Additionally, it's possible to force the Linux client to download many
+(authorized) games that don't have a Linux port.
+
+All of this combined, the long term goal is a tool to download Windows
+games, configure them to run using the SteamBridge DLLs, and do most of
+the work of adding it back to the client as a non-Steam game.
 

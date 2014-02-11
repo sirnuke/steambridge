@@ -93,8 +93,25 @@ non-standard directories.
 * Additionally, I recommend piping stdout and stderr.
 * Renaming the real *steam\_api.dll* to *steam\_api_original.dll* is a
   Good Idea, and lets you symlink to which ever one is currently being used.
+* The built-in WINE Visual C+++ Runtime (2010, aka msvcp100.dll) works
+  fine, outside seemingly a single specific scenario (so far).
+* You can run Wine Steam games through Steam Linux using Steam's "Add
+  Non-Steam Game..." feature.  You'll need a valid .desktop file,
+  seemingly pointing to a script in $PATH that properly executes the
+  game.
+    * In my test setup, the built-in msvcp100.dll blows up inside its
+      DllMain, possibly due to issues with establishing stdin/stdout.
+      Installing the real DLL (winetricks vcrun2010) works right.
+    * The Steam overlay loads (!) and opens/closes correctly (!), but
+      doesn't capture the mouse correctly (so close).
+    * Furthermore, Steam API calls from the client impact the injected
+      Overlay - aka, Ethan Meteor Hunter sets the corner of popups,
+      which is reflected.  This is a bit of an unexpected surprise.
+    * The content of the Overlay isn't tied to the real game.  It's
+      still the generic links and content.
+* Gametime is properly recorded!
 
-# Misc design notes
+# Miscellaneous design notes
 
 * Why two DLLs?  The real *steam\_api.dll* only offers a handful of
   API calls.  The meat is accessed through pointers to C++ class instances
@@ -114,4 +131,17 @@ non-standard directories.
   of Bridge do not affect Proxy.
 * Re-run the winemaker.sh script when creating new Bridge source files
   to update the Makefile.
+
+# Outstanding tasks
+
+* Various parts of the code are ugly.
+* Probably worth doing some of the more likely common API calls before
+  finding apps that use them.
+* It'll be a huge pain, but it'd be nice to shove the Visual Studio
+  stuff into a better directory naming scheme.
+* Investigate whether the Proxy can be compiled using MinGW.
+* Root build script?
+* More tools to help automate setting up apps to use SteamBridge.
+* Definitely will need a better way to store API versions.  Sqlite is
+  the knee-jerk reaction.
 
