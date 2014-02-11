@@ -26,6 +26,16 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
   return steamUserStats->RequestCurrentStats();
 }
 
+STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
+    ISteamUserStats *steamUserStats)
+{
+  WINE_TRACE("(%p)\n", steamUserStats);
+
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+
+  return steamUserStats->GetNumAchievements();
+}
+
 STEAM_API_BRIDGE_API class ISteamUserStats *steam_bridge_SteamUserStats()
 {
   WINE_TRACE("\n");

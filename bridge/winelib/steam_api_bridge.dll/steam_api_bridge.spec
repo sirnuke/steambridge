@@ -35,6 +35,7 @@
 # SteamUserStats API Calls
 @ cdecl steam_bridge_SteamUserStats()
 @ cdecl steam_bridge_SteamUserStats_RequestCurrentStats(ptr)
+@ cdecl steam_bridge_SteamUserStats_GetNumAchievements(ptr)
 
 # SteamUtils API Calls
 @ cdecl steam_bridge_SteamUtils()

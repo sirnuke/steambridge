@@ -91,6 +91,8 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
 STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
     ISteamUserStats *steamUserStats);
+STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
+    ISteamUserStats *steamUserStats);
 
 // SteamUtils API Calls
 STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();
