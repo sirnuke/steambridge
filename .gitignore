@@ -7,3 +7,11 @@ steam/.*.swp
 proxy/steam_api_proxy/.*.swp
 proxy/steam_api_bridge/.*.swp
 common/include/.*.swp
+Release/*
+Debug/*
+proxy/steam_api_bridge/Release/*
+proxy/steam_api_bridge/Debug/*
+proxy/steam_api_proxy/Release/*
+proxy/steam_api_proxy/Debug/*
+SteamBridge.opensdf
+SteamBridge.sdf
