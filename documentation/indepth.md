@@ -1,15 +1,15 @@
 # The short version
 
 1. Compile the Visual Studio solution (Release build).  Save the
-*steam\_api\_proxy.dll* for later.
+*steam_api_proxy.dll* for later.
 2. Install g++ & multilib, a recent version of Wine & development package,
 and libconfig 32-bit library & development package.
 3. Compile the Winelib DLL using the provided *Makefile*.
 4. Setup the SteamBridge enivornment with **make install** (do not use
 with sudo, it runs sudo for the one copy command that needs it).
 5. Download a game through Steam running Wine.
-6. Copy *steam\_api\_proxy.dll\* in place of the game's *steam\_api.dll\*.
-7. Setup *steam\_appid.txt* with the game's appid, if not already set.
+6. Copy *steam_api_proxy.dll* in place of the game's *steam_api.dll*.
+7. Setup *steam_appid.txt* with the game's appid, if not already set.
 Needs to be the integer id and no newline.
 8. With the Linux Steam client running, run the game using Wine.
 9. Party wildly.
@@ -34,12 +34,12 @@ I'm using Visual Studio 2010 because it's the latest version supported by
 the Source 1 SDK, though that's not a requirement.  If you do use 2010,
 install Service Pack 1.
 
-The compilation spits out two DLLs: *steam\_api\_bridge.dll* and
-*steam\_api\_proxy.dll*.  Bridge is a simple stub library that merely
+The compilation spits out two DLLs: *steam_api_bridge.dll* and
+*steam_api_proxy.dll*.  Bridge is a simple stub library that merely
 implements the same API/symbols as the Linux Winelib library, necessary
 for Proxy to have something to link against.
 
-Proxy is a drop-in replacement for *steam\_api.dll*.  Instead of
+Proxy is a drop-in replacement for *steam_api.dll*.  Instead of
 communicating with the Windows Steam client inside Wine, it communicates
 with the Winelib Bridge. The Winelib Bridge, in turn, routes the API
 calls to the native Linux Steam client.
@@ -66,21 +66,21 @@ overwrite your existing configuration.  Don't run either with sudo, the
 one action that requires root access is wrapped in sudo.  Additionally,
 in the future everything will be stored within your home directory.
 
-*steam\_api\_bridge.dll.so* is the compiled binary, a Winelib library
+*steam_api_bridge.dll.so* is the compiled binary, a Winelib library
 for use with Wine.  It needs to be deployed to the 32-bit Wine DLL
 directory, likely */usr/lib/i386-linux-gnu/wine*.  Additionally,
 SteamBridge depends on a directory within the user's local steam root
 (~/.steam/root).  At the moment, this directory contains the SteamBridge
 runtime settings, the upcoming database of appid SteamAPI versions,
-and a copy of *libsteam\_api.so*.  The included script *setup.sh* (make
+and a copy of *libsteam_api.so*.  The included script *setup.sh* (make
 install) will copy everything to the correct place, though it may be
 brittle on non-standard directories.
 
 # Deployment and execution notes
 
 * Wine Steam might overwrite the SteamBridge Proxy DLL with the real
-  *steam\_api.dll*
-* You need *steam\_appid.txt* in the same folder as *steam\_api.dll\*,
+  *steam_api.dll*
+* You need *steam_appid.txt* in the same folder as *steam_api.dll*,
   containing the appid with no newline.  **echo -n "1520" >
   steam\_appid.txt**, for example.  Many games have this already.
 * Recommend wine debug settings of WINEDEBUG="+steam\_bridge" when
@@ -117,7 +117,7 @@ brittle on non-standard directories.
 
 # Miscellaneous design notes
 
-* Why two DLLs?  The real *steam\_api.dll* only offers a handful of
+* Why two DLLs?  The real *steam_api.dll* only offers a handful of
   API calls.  The meat is accessed through pointers to C++ class instances
   (ISteamUser, for example), and the real API is calling virtual functions
   in these classes.  This is a sneaky way to offer a complex API while
