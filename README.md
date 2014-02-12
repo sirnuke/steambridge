@@ -74,7 +74,7 @@ and no newline
 8. Run the main executable in Wine
 6. Party wildly
 
-Review *documentation/indepth.md* for the full notes
+Review the *documentation* for more notes
 
 ## What SteamBridge works with
 
