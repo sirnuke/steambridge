@@ -1,12 +1,5 @@
-bridge/steam_api_bridge.dll/include/.*.swp
-bridge/steam_api_bridge.dll/source/.*.swp
 bridge/steam_api_bridge.dll/source/*.o
 bridge/steam_api_bridge.dll/*.so
-bridge/steam_api_bridge.dll/*.swp
-steam/.*.swp
-proxy/steam_api_proxy/.*.swp
-proxy/steam_api_bridge/.*.swp
-common/include/.*.swp
 Release/*
 Debug/*
 proxy/steam_api_bridge/Release/*
@@ -16,3 +9,4 @@ proxy/steam_api_proxy/Debug/*
 SteamBridge.opensdf
 SteamBridge.sdf
 SteamBridge.suo
+.*.swp
