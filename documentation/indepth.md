@@ -115,37 +115,3 @@ brittle on non-standard directories.
   My guess is as long as the game doesn't use any new API calls, the
   older library will work fine.
 
-# Miscellaneous design notes
-
-* Why two DLLs?  The real *steam_api.dll* only offers a handful of
-  API calls.  The meat is accessed through pointers to C++ class instances
-  (ISteamUser, for example), and the real API is calling virtual functions
-  in these classes.  This is a sneaky way to offer a complex API while
-  retaining a straight forward backwards/forwards compatibility, but
-  is a straight no-go with Winelib.  GCC and Visual Studio implement
-  vastly different thiscalls, and the arguments are completely botched.
-  As the C++ calls aren't a public API (no symbols), you can't reimplement
-  them through Winelib.  Therefore, Proxy exists as an entirely Windows
-  CLL that implements the C++ code, and makes the corresponding C calls
-  to the Winelib Bridge.
-* For development/tinkering, I've found valgrind, gdb, and [Dependency
-  Walker](http://www.dependencywalker.com/) to be most helpful.
-* Proxy and Bridge are mostly independent of each other.  Proxy only
-  needs to be rebuild when the Bridge API changes.  Changes to the guts
-  of Bridge do not affect Proxy.
-* Re-run the winemaker.sh script when creating new Bridge source files
-  to update the Makefile.
-
-# Outstanding tasks
-
-* Various parts of the code are ugly.
-* Probably worth doing some of the more likely common API calls before
-  finding apps that use them.
-* It'll be a huge pain, but it'd be nice to shove the Visual Studio
-  stuff into a better directory naming scheme.
-* Investigate whether the Proxy can be compiled using MinGW.
-* Root build script?
-* More tools to help automate setting up apps to use SteamBridge.
-* Definitely will need a better way to store API versions.  Sqlite is
-  the knee-jerk reaction.
-
