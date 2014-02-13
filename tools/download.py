@@ -2,7 +2,7 @@
 
 import argparse
 
-from pyruntime import filesystem
+from pyruntime import appmanifest
 
 # TODO: Confirm the game is owned by steam?
 # TODO: Option to clean install and redownload?
@@ -13,7 +13,7 @@ parser.add_argument("appid", help="the application's id")
 # parser.add_argument("--wine", help="download through Wine steam")
 args = parser.parse_args()
 
-manifest = filesystem.AppManifest(int(args.appid))
+manifest = appmanifest.AppManifest(int(args.appid))
 
 if manifest.exists():
   print "{} already has a manifest!".format(manifest.appid())
