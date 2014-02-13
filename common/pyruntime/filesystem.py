@@ -20,3 +20,7 @@ STEAM_API_LIB = STEAM_BRIDGE_ROOT + "/libsteam_api.so"
 # The root directory of the internal AppDB
 APPDB_ROOT = STEAM_ROOT + "/appdb"
 
+
+def get_appmanifest_filename(appid):
+  return STEAM_ROOT + "/SteamApps/appmanifest_{}.acf".format(appid)
+

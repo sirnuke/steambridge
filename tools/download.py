@@ -10,7 +10,7 @@ from pyruntime import filesystem
 # TODO: Option to download through Wine Steam?
 
 parser = argparse.ArgumentParser()
-parser.add_argument("appid", help="the application's id to download")
+parser.add_argument("appid", help="the application's id")
 args = parser.parse_args()
 appid = args.appid
 
@@ -18,7 +18,7 @@ if appid <= 0:
   print "Invalid appid of {}!".format(appid)
   exit(1)
 
-filename = filesystem.STEAM_ROOT + "/SteamApps/appmanifest_{}.acf".format(appid)
+filename = filesystem.get_appmanifest_filename(appid)
 
 if os.path.isfile(filename):
   print "{} already has an appmanifest!".format(appid)
