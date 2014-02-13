@@ -17,6 +17,12 @@ def err(message):
   print message
   exit(1)
 
+def process_output(stdout):
+  res = stdout.rstrip()
+  if res == '' or res.find('\n') != -1:
+    return None
+  return res
+
 if not manifest.exists():
   err("{} lacks a manifest! (run download.py first)".format(appid))
 
@@ -42,22 +48,18 @@ appdb.installdir = manifest.installdir()
 # TODO: Once done, save that icon inside the appdb directory
 
 # Find the steam_api.dll and back it up
-dlls = filesystem.execute("find {} -name steam_api.dll".format(appdb.installdir))
-dll = None
-
-for entry in dlls.split("\n"):
-  if entry == "":
-    continue
-  if dll != None:
-    err("Found multiple steam_api.dll files in {}".format(appdb.installdir))
-  dll = entry
+stdout = filesystem.execute("find {} -name steam_api.dll".format(appdb.installdir))
+dll = process_output(stdout)
 
 if dll == None:
-  err("Couldn't find a steam_api.dll in {}".format(appdb.installdir))
+  err("Didn't find exactly one steam_api.dll in {}".format(appdb.installdir))
 
 dll = os.path.abspath(dll)
 appdb.workingdir = os.path.dirname(dll)
-shutil.copyfile(dll, dll + ".original")
+if not os.path.isfile(dll + ".original"):
+  shutil.copyfile(dll, dll + ".original")
+else:
+  print "steam_api.dll.original already exists, not backing up..."
 
 # TODO: Get API versions using 'strings steam_api.dll|grep BLANK
 # TODO: Store all this metadata
