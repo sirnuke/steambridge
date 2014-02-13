@@ -1,6 +1,7 @@
 # filesystem.py - Stores various code related to the deployed filesystem
 
 import os
+import subprocess
 
 # Root directory of the Steam installation
 STEAM_ROOT = os.path.expanduser("~") + "/.steam/root"
@@ -54,4 +55,7 @@ def validate():
       return False
 
   return True
+
+def execute(command):
+  return subprocess.check_output(command, shell=True)
 
