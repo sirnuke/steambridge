@@ -1,7 +1,8 @@
 #!/usr/bin/env python2.7
 
-import argparser
+import argparse
 import os
+import shutil
 
 from pyruntime import filesystem, appmanifest, appdb
 
@@ -9,7 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("appid", help="the application's id")
 args = parser.parse_args()
 
-manifest = filesystem.AppManifest(int(args.appid))
+manifest = appmanifest.AppManifest(int(args.appid))
 appid = str(manifest.appid())
 
 def err(message):
@@ -25,9 +26,11 @@ if not manifest.parse():
 if not manifest.is_ready():
   err("{} is not fully downloaded".format(appid))
 
-if manifest.installdir() == None or manifest.name() == None:
+if not manifest.is_valid():
   err("{} lacks the full manifest data".format(appid))
 
+appdb = appdb.Entry(manifest.appid())
+appdb.installdir = manifest.installdir()
 
 # TODO: Get the icon from steam.  On Windows it's an icon, on Linux it's a
 #       zip containing pngs of the various sizes.  Stored in
@@ -36,9 +39,26 @@ if manifest.installdir() == None or manifest.name() == None:
 #       appids (Information.clienticon).  However, it's not clear how
 #       to get this data. I believe SteamDb.info parses the internal
 #       data sent to Steam clients.
-# TODO: Once done, save that icon here
+# TODO: Once done, save that icon inside the appdb directory
 
-# TODO: Find where the win32 app stores steam_api.dll.  Back it up.
+# Find the steam_api.dll and back it up
+dlls = filesystem.execute("find {} -name steam_api.dll".format(appdb.installdir))
+dll = None
+
+for entry in dlls.split("\n"):
+  if entry == "":
+    continue
+  if dll != None:
+    err("Found multiple steam_api.dll files in {}".format(appdb.installdir))
+  dll = entry
+
+if dll == None:
+  err("Couldn't find a steam_api.dll in {}".format(appdb.installdir))
+
+dll = os.path.abspath(dll)
+appdb.workingdir = os.path.dirname(dll)
+shutil.copyfile(dll, dll + ".original")
+
 # TODO: Get API versions using 'strings steam_api.dll|grep BLANK
 # TODO: Store all this metadata
 # TODO: Create a .desktop file that points to execute.py, and later the icon
