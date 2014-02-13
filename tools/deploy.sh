@@ -8,13 +8,14 @@ toolsdir=$bridgedir/bin
 # Stores internal state data about installed applications
 appdbdir=$bridgedir/appdb
 # Python library for shared code between the internal tools
-pylibdir=$bridgedir/pysteambridgetools
+pylibdir=$toolsdir/pyruntime
 
 # Files
 bridgelib=bridge/steam_api_bridge.dll/steam_api_bridge.dll.so
 steamapilib=common/steam/libsteam_api.so
 proxydllname=steam_api_proxy.dll
 versiontxt=common/VERSION.txt
+pylib=`find common/pyruntime/ -name *.py`
 tools=`find tools/ -name *.py`
 
 # Argument settings
@@ -77,8 +78,10 @@ chmod -x $proxydll
 
 cp $bridgelib $bridgedir
 cp $steamapilib $bridgedir
+cp $proxydll $bridgedir
 cp $versiontxt $bridgedir
 cp $tools $toolsdir
+cp $pylib $pylibdir
 # Temp file until the new appdb system is setup
 cp bridge/steam_api_bridge.dll/appid_db.cfg $appdbdir
 
