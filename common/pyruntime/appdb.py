@@ -4,16 +4,18 @@ import os
 
 import filesystem
 
-def cd_into(appid):
-  # TODO: Handle this better?
-  try:
-    os.chdir(filesystem.APPDB_ROOT)
-    os.mkdirs(appid)
-    os.chdir(appid)
-  except OSError as exception:
-    print "Unable to make or cd into {}'s appdb directory: ({}) {}" \
-        .format(appid, exception.errno, exception.strerror)
-    exit(1)
+class AppDBEntry:
+  def __init__(self, appid):
+    self.installdir = None
+    self._appid = appid
+    self._directory = filesystem.APPDB_ROOT + str(appid)
 
+    if not os.path.isdir(self._directory):
+      os.mkdir(self._directory)
+
+  def validate(self):
+    if self.installdir == None:
+      return False
+    return True
 
 
