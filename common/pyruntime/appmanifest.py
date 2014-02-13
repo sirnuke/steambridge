@@ -11,8 +11,8 @@ class AppManifest:
       print "Invalid appid of {}".format(appid)
       exit(1)
 
-    self._filename = filesystem.STEAM_ROOT \
-        + "/SteamApps/appmanifest_{}.acf".format(appid)
+    self._filename = filesystem.STEAM_APPMANIFESTS \
+        + "/appmanifest_{}.acf".format(appid)
     self._name = None
     self._state = None
     self._installdir = None
@@ -56,8 +56,8 @@ class AppManifest:
               self._name = data['value']
 
           elif data['key'] == 'installdir':
-            self._installdir = filesystem.STEAM_ROOT \
-                + "/SteamApps/common/{}".format(data['value'])
+            self._installdir = filesystem.STEAM_APPS \
+                + "/{}".format(data['value'])
 
     # For now, only require a state
     if self._state == None:
@@ -69,6 +69,11 @@ class AppManifest:
     if self._state == '4':
       return True
     return False
+
+  def is_valid(self):
+    if self._installdir == None or self._name == None or self._state == None:
+      return False
+    return True
 
   def exists(self):
     return self._exists
