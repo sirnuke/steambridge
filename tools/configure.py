@@ -25,7 +25,9 @@ if not manifest.parse():
 if not manifest.is_ready():
   err("{} is not fully downloaded".format(appid))
 
-appdb.cd_into(appid)
+if manifest.installdir() == None or manifest.name() == None:
+  err("{} lacks the full manifest data".format(appid))
+
 
 # TODO: Get the icon from steam.  On Windows it's an icon, on Linux it's a
 #       zip containing pngs of the various sizes.  Stored in
