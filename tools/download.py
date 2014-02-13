@@ -11,6 +11,7 @@ from pyruntime import filesystem
 
 parser = argparse.ArgumentParser()
 parser.add_argument("appid", help="the application's id")
+# parser.add_argument("--wine", help="download through Wine steam")
 args = parser.parse_args()
 appid = args.appid
 
