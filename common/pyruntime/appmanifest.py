@@ -65,6 +65,11 @@ class AppManifest:
 
     return True
 
+  def is_ready(self):
+    if self._state == '4':
+      return True
+    return False
+
   def exists(self):
     return self._exists
 
