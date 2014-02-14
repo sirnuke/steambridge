@@ -9,6 +9,7 @@ class Entry:
   def __init__(self, appid):
     self.installdir = None
     self.workingdir = None
+    self.name = None
     self._appid = appid
     self._directory = filesystem.APPDB_ROOT + "/" + str(appid)
     self._apiversions = {}
@@ -25,8 +26,9 @@ class Entry:
     self._apiversions[api] = version
 
   def save(self):
-    data = { 'appid' : self._appid, 'apiversions' : self._apiversions,
-        'installdir' : self.installdir, 'workingdir' : self.workingdir }
+    data = { 'appid' : self._appid, 'name' : self.name,
+        'installdir' : self.installdir, 'workingdir' : self.workingdir,
+        'apiversions' : self._apiversions}
     with open(self._directory + "/appdb.json", 'w') as f:
       json.dump(data, f)
 
