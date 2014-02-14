@@ -19,9 +19,21 @@ def err(message):
 
 def process_output(stdout):
   res = stdout.rstrip()
-  if res == '' or res.find('\n') != -1:
+  if res == '':
+    return False, 'NONE'
+  if res.find('\n') != -1:
+    return False, 'MULTIPLE'
+  return True, res
+
+def find_version(dll, search, name):
+  st, api = process_output(filesystem.execute("strings \"{}\" | grep \"{}\"" \
+      .format(dll, search)))
+  if st == False and api == 'Multiple':
+    err("Found multiple API version strings for '{}'".format(name))
+  if st == False:
     return None
-  return res
+  return api
+
 
 if not manifest.exists():
   err("{} lacks a manifest! (run download.py first)".format(appid))
@@ -48,20 +60,53 @@ appdb.installdir = manifest.installdir()
 # TODO: Once done, save that icon inside the appdb directory
 
 # Find the steam_api.dll and back it up
-stdout = filesystem.execute("find {} -name steam_api.dll".format(appdb.installdir))
-dll = process_output(stdout)
+st, dll = process_output(filesystem.execute("find \"{}\" -name steam_api.dll".format(appdb.installdir)))
 
-if dll == None:
-  err("Didn't find exactly one steam_api.dll in {}".format(appdb.installdir))
+if st == -1:
+  err("Didn't find a steam_api.dll in {}".format(appdb.installdir))
+elif st == -2:
+  err("Found mulitple steam_api.dlls in {}".format(appdb.installdir))
 
 dll = os.path.abspath(dll)
 appdb.workingdir = os.path.dirname(dll)
-if not os.path.isfile(dll + ".original"):
-  shutil.copyfile(dll, dll + ".original")
+dllorig = dll + ".original"
+if not os.path.isfile(dllorig):
+  shutil.copyfile(dll, dllorig)
 else:
   print "steam_api.dll.original already exists, not backing up..."
 
-# TODO: Get API versions using 'strings steam_api.dll|grep BLANK
-# TODO: Store all this metadata
+# Get the API versions from the native steam_api.dll
+appdb.setapiversion('user', find_version(dllorig, \
+    "SteamUser[[:digit:]]\{3\}", "SteamUser"))
+appdb.setapiversion('friends', find_version(dllorig, \
+    "SteamFriends[[:digit:]]\{3\}", "SteamFriends"))
+appdb.setapiversion('utils', find_version(dllorig, \
+    "SteamUtils[[:digit:]]\{3\}", "SteamUtils"))
+appdb.setapiversion('matchmaking', find_version(dllorig, \
+    "SteamMatchMaking[[:digit:]]\{3\}", "SteamMatchmaking"))
+appdb.setapiversion('matchmaking_servers', find_version(dllorig, \
+    "SteamMatchMakingServers[[:digit:]]\{3\}", "MatchmakingServers"))
+appdb.setapiversion('user_stats', find_version(dllorig, \
+    "STEAMUSERSTATS_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamUserStats"))
+appdb.setapiversion('apps', find_version(dllorig, \
+    "STEAMAPPS_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamApps"))
+appdb.setapiversion('networking', find_version(dllorig, \
+    "SteamNetworking[[:digit:]]\{3\}", "SteamNetworking"))
+appdb.setapiversion('remote_storage', find_version(dllorig, \
+    "STEAMREMOTESTORAGE_INTERFACE_VERSION[[:digit:]]\{3\}", \
+    "SteamRemoteStorage"))
+appdb.setapiversion('screenshots', find_version(dllorig, \
+    "STEAMSCREENSHOTS_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamScreenshots"))
+appdb.setapiversion('http', find_version(dllorig, \
+    "STEAMHTTP_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamHTTP"))
+appdb.setapiversion('unified_messages', find_version(dllorig, \
+    "STEAMUNIFIEDMESSAGES_INTERFACE_VERSION[[:digit:]]\{3\}", \
+    "SteamUnifiedMessages"))
+appdb.setapiversion('ugc', find_version(dllorig, \
+    "STEAMUGC_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamUGC"))
+
+# Save the appdb file
+appdb.save()
+
 # TODO: Create a .desktop file that points to execute.py, and later the icon
 
