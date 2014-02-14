@@ -1,5 +1,6 @@
 # appdb.py - Wraps around an internal appdb state
 
+import json
 import os
 
 import filesystem
@@ -9,7 +10,7 @@ class Entry:
     self.installdir = None
     self.workingdir = None
     self._appid = appid
-    self._directory = filesystem.APPDB_ROOT + str(appid)
+    self._directory = filesystem.APPDB_ROOT + "/" + str(appid)
     self._apiversions = {}
 
     if not os.path.isdir(self._directory):
@@ -22,5 +23,11 @@ class Entry:
 
   def setapiversion(self, api, version):
     self._apiversions[api] = version
+
+  def save(self):
+    data = { 'appid' : self._appid, 'apiversions' : self._apiversions,
+        'installdir' : self.installdir, 'workingdir' : self.workingdir }
+    with open(self._directory + "/appdb.json", 'w') as f:
+      json.dump(data, f)
 
 
