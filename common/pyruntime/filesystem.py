@@ -24,13 +24,19 @@ BRIDGE_LIB = STEAM_BRIDGE_ROOT + "/steam_api_bridge.dll.so"
 # Location of the native Linux steam_api library
 STEAM_API_LIB = STEAM_BRIDGE_ROOT + "/libsteam_api.so"
 
-# The root directory of the internal AppDB
+# Root directory of the internal AppDB
 APPDB_ROOT = STEAM_BRIDGE_ROOT + "/appdb"
+
+# Directory storing the SteamBridge tools
+TOOLS_DIR = STEAM_BRIDGE_ROOT + "/bin"
+
+# Location of the execute tool script
+EXECUTE_TOOL = TOOLS_DIR + "/execute.py"
 
 _STEAM_DIRS = [STEAM_ROOT, STEAM_APPMANIFESTS, STEAM_APPS]
 _STEAM_FILES = []
-_BRIDGE_DIRS = [STEAM_BRIDGE_ROOT, APPDB_ROOT]
-_BRIDGE_FILES = [PROXY_DLL, BRIDGE_LIB, STEAM_API_LIB]
+_BRIDGE_DIRS = [STEAM_BRIDGE_ROOT, APPDB_ROOT, TOOLS_DIR]
+_BRIDGE_FILES = [PROXY_DLL, BRIDGE_LIB, STEAM_API_LIB, EXECUTE_TOOL]
 
 # TODO: Handle error cases better.  Exceptionz
 def validate():
