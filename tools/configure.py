@@ -49,6 +49,7 @@ if not manifest.is_valid():
 
 appdb = appdb.Entry(manifest.appid())
 appdb.installdir = manifest.installdir()
+appdb.name = manifest.name()
 
 # TODO: Get the icon from steam.  On Windows it's an icon, on Linux it's a
 #       zip containing pngs of the various sizes.  Stored in
@@ -108,5 +109,18 @@ appdb.setapiversion('ugc', find_version(dllorig, \
 # Save the appdb file
 appdb.save()
 
-# TODO: Create a .desktop file that points to execute.py, and later the icon
+# Create a .desktop file on the desktop
+desktop = os.path.expanduser("~") \
+    + "/Desktop/{}.desktop".format(manifest.appid())
+
+with open(desktop, 'w') as f:
+  f.write("[Desktop Entry]\n")
+  # TODO: Icon would go here
+  f.write("Type=Application\n")
+  f.write("Name={} (Wine)\n".format(appdb.name))
+  f.write("Exec={} {}\n".format(filesystem.EXECUTE_TOOL, manifest.appid()))
+
+os.chmod(desktop, 0755)
+
+
 
