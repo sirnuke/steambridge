@@ -12,13 +12,14 @@ class Entry:
     self.name = None
     self._appid = appid
     self._directory = filesystem.APPDB_ROOT + "/" + str(appid)
+    self._filename = self._directory + "/appdb.json"
     self._apiversions = {}
 
     if not os.path.isdir(self._directory):
       os.mkdir(self._directory)
 
   def validate(self):
-    if self.installdir == None or self.workingdir == None:
+    if self.installdir == None or self.workingdir == None or self.name == None:
       return False
     return True
 
@@ -29,7 +30,21 @@ class Entry:
     data = { 'appid' : self._appid, 'name' : self.name,
         'installdir' : self.installdir, 'workingdir' : self.workingdir,
         'apiversions' : self._apiversions}
-    with open(self._directory + "/appdb.json", 'w') as f:
+    with open(self._filename, 'w') as f:
       json.dump(data, f)
+
+  def load(self):
+    with open(self._filename, 'r') as f:
+      data = json.load(f)
+    if self._appid != data['appid']:
+      print "Warning, {}'s appid of {} doesn't match the expected" \
+          .format(self._filename, data['appid'], self._appid)
+    self.name = data['name']
+    self.installdir = data['installdir']
+    self.workingdir = data['workingdir']
+    self._apiversions = data['apiversions']
+
+  def exists(self):
+    return os.path.isfile(self._filename)
 
 
