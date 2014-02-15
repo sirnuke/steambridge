@@ -26,13 +26,60 @@ def process_output(stdout):
   return True, res
 
 def find_version(dll, search, name):
-  st, api = process_output(filesystem.execute("strings \"{}\" | grep \"{}\"" \
-      .format(dll, search)))
+  st, api = process_output(filesystem.execute( \
+    'strings "{}" | grep "{}" || true'.format(dll, search)))
   if st == False and api == 'Multiple':
     err("Found multiple API version strings for '{}'".format(name))
   if st == False:
     return None
   return api
+
+# This is a holdover algorithm until appcache/appinfo.vdf is
+# readable. This file appears to be a compiled version of the keyvalue
+# format Valve loves oh so much.  It specifically contains various metadata,
+# possibly including the icon data.
+def find_executable(search):
+  # First, look for any executables in the root directory
+  exes = filesystem.execute('ls "{}" | grep "\\.exe" || true'.format(search)) \
+      .rstrip().split('\n')
+
+  # Didn't find any?  Do a recursive find
+  if len(exes) == 0:
+    exes = filesystem.execute('find "{}" | grep "\\.exe" || true' \
+        .format(search)).rstrip().split("\n")
+    if len(exes) == 0:
+      err("Unable to find any executable (*.exe) files")
+
+  if len(exes) == 1:
+    return os.path.abspath(search + '/' + exes[0])
+
+  # Look for something that appears to link against steam_api.dll
+  options = []
+  for exe in exes:
+    stdout = filesystem.execute( \
+        'strings "{}" | grep "steam_api\\.dll" || true' \
+        .format(os.path.abspath(search + '/' + exe))).rstrip()
+    if stdout != '':
+      options.append(exe)
+
+  if len(options) == 1:
+    return os.path.abspath(options[0])
+
+  # If nothing seems to link against steam_api.dll, compare all executables
+  if len(options) == 0:
+    options = exes
+
+  # And default to the largest one, which probably isn't correct
+  # Actually, the smallest miiight be the better option
+  final = None
+  size = 0
+  for exe in options:
+    s = os.path.getsize(exe)
+    if s > size:
+      final = exe
+      size = s
+
+  return os.path.abspath(final)
 
 
 if not manifest.exists():
@@ -60,8 +107,14 @@ appdb.name = manifest.name()
 #       data sent to Steam clients.
 # TODO: Once done, save that icon inside the appdb directory
 
+# Find the main executable
+appdb.executable = find_executable(appdb.installdir)
+print "WARN: Using a temporary algorithm to find the main executable"
+print "Found {}".format(appdb.executable)
+
 # Find the steam_api.dll and back it up
-st, dll = process_output(filesystem.execute("find \"{}\" -name steam_api.dll".format(appdb.installdir)))
+st, dll = process_output(filesystem.execute('find "{}" -name steam_api.dll' \
+    .format(appdb.installdir)))
 
 if st == -1:
   err("Didn't find a steam_api.dll in {}".format(appdb.installdir))
@@ -106,6 +159,9 @@ appdb.setapiversion('unified_messages', find_version(dllorig, \
 appdb.setapiversion('ugc', find_version(dllorig, \
     "STEAMUGC_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamUGC"))
 
+if not appdb.validate():
+  err("Invalid appdb object! (internal error?)")
+
 # Save the appdb file
 appdb.save()
 
@@ -122,5 +178,7 @@ with open(desktop, 'w') as f:
 
 os.chmod(desktop, 0755)
 
-
+# Note that it's possible to add this to the shortcuts.vdf file
+# located... somewhere... in the Steam install.  Might be a better way to
+# go about this than creating a complete .desktop file.
 
