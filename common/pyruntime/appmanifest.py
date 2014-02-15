@@ -40,7 +40,7 @@ class AppManifest:
           data = r.groupdict()
 
           if data['key'] == 'AppID':
-            if int(data['value']) != appid:
+            if int(data['value']) != self._appid:
               print "ERROR: Expecting appid of {}, found {}" \
                   .format(appid, data['value'])
               exit(1)
