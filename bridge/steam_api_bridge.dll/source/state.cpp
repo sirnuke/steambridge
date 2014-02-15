@@ -32,11 +32,14 @@
 // Local headers
 #include "logging.h"
 #include "state.h"
+#include "picojson.h"
 
-#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge/"
-#define _APP_VERSION_DB "appdb/appid_db.cfg"
-#define _CONFIGURATION_FILE "config.cfg"
-#define _STEAM_API_SO "libsteam_api.so"
+#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge"
+#define _APPDB_DIR "/appdb/"
+#define _APPDB_FILENAME "/appdb.json"
+#define _APPDB_APIVERSIONS "apiversions"
+#define _CONFIGURATION_FILE "/config.cfg"
+#define _STEAM_API_SO "/libsteam_api.so"
 
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 typedef HSteamUser (*steam_api_GetHSteamUser_t)(void);
@@ -284,92 +287,78 @@ void State::loadSteamAPIVersions()
 {
   WINE_TRACE("(%p)\n", this);
 
-  config_setting_t *versions;
-  config_t config;
-  config_init(&config);
-
   __DLSYM_GET(steam_api_SteamClient_t, api_SteamClient, "SteamClient");
   ISteamClient *steamClient = (*api_SteamClient)();
   if (!steamClient)
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
-  char *string;
-
-  std::string filename = steamBridgeRoot + _APP_VERSION_DB;
-
-  if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
-  {
-    _LIBCONFIG_ERR("Unable to read the appid db");
-    config_destroy(&config);
-    return;
-  }
-
   std::stringstream ss;
-  ss << "ids.id" << appid;
+  ss << steamBridgeRoot << _APPDB_DIR << appid << _APPDB_FILENAME;
+  std::string filename = ss.str();
 
-  if (config_lookup_string(&config, ss.str().c_str(), (const char **)(&string))
-      != CONFIG_TRUE)
-    _LIBCONFIG_ABORT("Unable to find appid (%u)", appid);
+  std::ifstream in(filename.c_str());
 
-  appName = string;
+  if (!in) __ABORT("Unable to open '%s'", filename.c_str());
 
-  ss.clear();
-  ss.str("");
-  ss << "versions." << appName;
+  picojson::value data;
 
-  versions = config_lookup(&config, ss.str().c_str());
+  in >> data;
 
-  if (!versions)
-    _LIBCONFIG_ABORT("Unable to find the API versions for %s (%u)",
-        appName.c_str(), appid);
+  if (!in)
+    __ABORT("Error reading '%s': %s", filename.c_str(),
+        picojson::get_last_error().c_str());
 
-  if (config_setting_lookup_string(versions, "user", (const char **)(&string))
-        == CONFIG_TRUE)
-    userVersion = string;
+  if (!data.is<picojson::value::object>())
+    __ABORT("Root element in '%s' isn't an object", filename.c_str());
 
-  if (config_setting_lookup_string(versions, "friends",
-        (const char **)(&string)) == CONFIG_TRUE)
-    friendsVersion = string;
+  const picojson::value &api = data.get(_APPDB_APIVERSIONS);
 
-  if (config_setting_lookup_string(versions, "utils", (const char **)(&string))
-        == CONFIG_TRUE)
-    utilsVersion = string;
+  if (!api.is<picojson::object>())
+    __ABORT(_APPDB_APIVERSIONS " element in '%s' isn't an object",
+        filename.c_str());
 
-  if (config_setting_lookup_string(versions, "matchmaking",
-        (const char **)(&string)) == CONFIG_TRUE)
-    matchmakingVersion = string;
+  const picojson::value &user = api.get("user");
+  if (user.is<std::string>()) userVersion = user.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "matchmaking_servers",
-        (const char **)(&string)) == CONFIG_TRUE)
-    matchmakingServersVersion = string;
+  const picojson::value &friends = api.get("friends");
+  if (friends.is<std::string>()) friendsVersion = friends.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "user_stats",
-        (const char **)(&string)) == CONFIG_TRUE)
-    userStatsVersion = string;
+  const picojson::value &utils = api.get("utils");
+  if (utils.is<std::string>()) utilsVersion = utils.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "apps", (const char **)(&string))
-      == CONFIG_TRUE)
-    appsVersion = string;
+  const picojson::value &matchmaking = api.get("matchmaking");
+  if (matchmaking.is<std::string>())
+    matchmakingVersion = matchmaking.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "networking",
-        (const char **)(&string)) == CONFIG_TRUE)
-    networkingVersion = string;
+  const picojson::value &matchmakingServers = api.get("matchmaking_servers");
+  if (matchmakingServers.is<std::string>())
+    matchmakingServersVersion = matchmakingServers.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "remote_storage",
-        (const char **)(&string)) == CONFIG_TRUE)
-    remoteStorageVersion = string;
+  const picojson::value &userStats = api.get("user_stats");
+  if (userStats.is<std::string>())
+    userStatsVersion = userStats.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "screenshots",
-        (const char **)(&string)) == CONFIG_TRUE)
-    screenshotsVersion = string;
+  const picojson::value &apps = api.get("apps");
+  if (apps.is<std::string>()) appsVersion = apps.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "http", (const char **)(&string))
-        == CONFIG_TRUE)
-    httpVersion = string;
+  const picojson::value &networking = api.get("networking");
+  if (networking.is<std::string>())
+    networkingVersion = networking.get<std::string>();
 
-  if (config_setting_lookup_string(versions, "unified_messages",
-        (const char **)(&string)) == CONFIG_TRUE)
-    unifiedMessagesVersion = string;
+  const picojson::value &remoteStorage = api.get("remote_storage");
+  if (remoteStorage.is<std::string>())
+    remoteStorageVersion = remoteStorage.get<std::string>();
+
+  const picojson::value &screenshots = api.get("screenshots");
+  if (screenshots.is<std::string>())
+    screenshotsVersion = screenshots.get<std::string>();
+
+  const picojson::value &http = api.get("http");
+  if (http.is<std::string>()) httpVersion = http.get<std::string>();
+
+  const picojson::value &unifiedMessages = api.get("unified_messages");
+  if (unifiedMessages.is<std::string>())
+    unifiedMessagesVersion = unifiedMessages.get<std::string>();
 
   __DLSYM_GET(steam_api_GetHSteamUser_t, api_GetHSteamUser,
       "SteamAPI_GetHSteamUser");
@@ -429,7 +418,6 @@ void State::loadSteamAPIVersions()
 
   // TODO: Check if any returned NULL?
   // TODO: Try to get ISteamController anyway?
-  config_destroy(&config);
 }
 
 #undef _LIBCONFIG_WARN
