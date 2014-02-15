@@ -297,8 +297,6 @@ void State::loadSteamAPIVersions()
 
   std::string filename = steamBridgeRoot + _APP_VERSION_DB;
 
-  WINE_ERR("Filename is %s\n", filename.c_str());
-
   if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
   {
     _LIBCONFIG_ERR("Unable to read the appid db");
