@@ -21,6 +21,9 @@ PROXY_DLL = STEAM_BRIDGE_ROOT + "/steam_api_proxy.dll"
 # Location of the Winelib bridge library
 BRIDGE_LIB = STEAM_BRIDGE_ROOT + "/steam_api_bridge.dll.so"
 
+# Location of any extra Winelib DLLs
+WINELIB_PATH = STEAM_BRIDGE_ROOT
+
 # Location of the native Linux steam_api library
 STEAM_API_LIB = STEAM_BRIDGE_ROOT + "/libsteam_api.so"
 
@@ -62,6 +65,12 @@ def validate():
 
   return True
 
-def execute(command):
-  return subprocess.check_output(command, shell=True)
+def execute(command, ignore_results = False):
+  if not ignore_results:
+    return subprocess.check_output(command, shell=True)
+  else:
+    try:
+      return subprocess.check_output(command, shell=True)
+    except subprocess.CalledProcessError as e:
+      return e.output
 
