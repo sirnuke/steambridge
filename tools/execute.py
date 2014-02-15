@@ -1,6 +1,8 @@
 #!/usr/bin/env python2.7
 
 import argparse
+import shutil
+import os
 
 from pyruntime import filesystem, appdb
 
@@ -15,12 +17,29 @@ def err(message):
 appdb = appdb.Entry(str(args.appid))
 
 if appdb.exists() == False:
-  err("{} doesn't appear to be configured".format(appid))
+  err("{} doesn't appear to be configured".format(appdb.appid()))
 
 appdb.load()
 
-# Enter the 'working' directory of `appid`
-# Copy the proxy dll to steam_api.dll
-# If steam_appid.txt exists and differs in expected value, back it up
-# Write out steam_appid.txt containing `appid`
-# Execute using WINEDEBUG="..." WINEPREFIX="..." WINEDLLPATH="..." wine app 2>... >...
+if not appdb.validate():
+  err("{} has an invalid appdb file".format(appdb.appid()))
+
+# Copy the proxy DLL
+shutil.copyfile(filesystem.PROXY_DLL, appdb.workingdir + "/steam_api.dll")
+
+# Set appid.txt, if it doesn't already exist
+# TODO: Check to make sure the existing appid.txt has the right value?
+if not os.path.isfile(appdb.workingdir + "/steam_appid.txt"):
+  with open(appdb.workingdir + "/steam_appid.txt", 'w') as f:
+    f.write(appdb.appid())
+
+# Change to the installation directory and execute using wine
+os.chdir(appdb.installdir)
+# TODO: wineprefix
+cmd = 'WINEDEBUG="+steam_bridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
+    .format(filesystem.WINELIB_PATH, appdb.executable, appdb.directory(), appdb.directory())
+
+print "DEBUG: execute('{}')".format(cmd)
+
+filesystem.execute(cmd, ignore_results=True)
+
