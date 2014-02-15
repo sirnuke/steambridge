@@ -62,7 +62,7 @@ class State
     void getAppId();
     void checkBridgeDirectory();
     void loadSteamAPI();
-    void readConfiguration();
+    bool readConfiguration();
     bool saveConfiguration();
     void loadSteamAPIVersions();
 

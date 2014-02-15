@@ -17,9 +17,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-// libconfig headers
-#include <libconfig.h>
-
 // Steam headers
 #include <steam_api.h>
 
@@ -190,57 +187,45 @@ void State::loadSteamAPI()
     __ABORT("dlopen on \"%s\" failed: %s", libPath.c_str(), dlerror());
 }
 
-// Yuck yuck yuck?  Yuck yuck yuck.
-#define _LIBCONFIG_WARN(MSG, ...) WINE_WARN(MSG ": %s@%i: %s\n", \
-    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config));
-
-#define _LIBCONFIG_ERR(MSG, ...) WINE_ERR(MSG ": %s@%i: %s\n", \
-    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config));
-
-#define _LIBCONFIG_ABORT(MSG, ...) __ABORT(MSG ": %s@%i: %s\n", \
-    ##__VA_ARGS__, config_error_file(&config), config_error_line(&config), \
-      config_error_text(&config));
-
-void State::readConfiguration()
+bool State::readConfiguration()
 {
   WINE_TRACE("(this=%p\n", this);
 
   disclaimer = false;
 
-  config_t config;
-  config_init(&config);
-
-  int disclaim = 0;
-
   std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
 
-  if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
+  std::ifstream in(filename.c_str());
+
+  if (!in)
   {
-    _LIBCONFIG_ERR("Unable to read configuration");
-    config_destroy(&config);
-    return;
+    WINE_WARN("Unable to open %s\n", filename.c_str());
+    return false;
   }
 
-  if (config_lookup_bool(&config, "steam_bridge.disclaimer", &disclaim) 
-      != CONFIG_TRUE)
-    _LIBCONFIG_WARN("Unable to read 'disclaimer' as a boolean setting");
+  picojson::value data;
+  in >> data;
 
-  // TODO: Is it safe to assume libconfig's bool means true==1?
-  if (disclaim == 1)
-    disclaimer = true;
+  if (!in)
+  {
+    WINE_ERR("Unable to read %s as JSON\n", filename.c_str());
+    return false;
+  }
+
+  if (!data.is<picojson::value::object>())
+  {
+    WINE_ERR("Root element of %s isn't an object\n", filename.c_str());
+    return false;
+  }
+
+  const picojson::value &disclaimer = data.get("disclaimer");
+
+  if (disclaimer.is<bool>())
+    this->disclaimer = disclaimer.get<bool>();
   else
-  {
-    if (disclaim != 0)
-      WINE_ERR("Unknown (!?) 'bool' (%i) returned by libconfig for "
-          "steam_bridge.disclaimer, defaulting to false\n", disclaim);
-    disclaimer = false;
-  }
+    WINE_ERR("Unable to read disclaimer as a bool in %s\n", filename.c_str());
 
-  WINE_TRACE("Got disclaimer value of (%i)\n", disclaimer);
-
-  config_destroy(&config);
+  return true;
 }
 
 bool State::saveConfiguration()
@@ -249,36 +234,16 @@ bool State::saveConfiguration()
 
   std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
 
-  config_t config;
-  config_init(&config);
+  std::ofstream out(filename.c_str());
 
-  config_setting_t *root, *steam_bridge, *disclaimer;
+  out << "{ ";
+  out << "\"disclaimer : ";
+  if (disclaimer)
+    out << "true ";
+  else
+    out << "false ";
+  out << "}";
 
-  // These calls shouldn't fail for basically any reason - signifies an
-  // internal logic error of some sort.
-  root = config_root_setting(&config);
-  if (!root) __ABORT("Unable to get the root element from libconfig!");
-
-  steam_bridge = config_setting_add(root, "steam_bridge", CONFIG_TYPE_GROUP);
-  if (!steam_bridge)
-    __ABORT("Unable to add steam_bridge group to the root in libconfig!");
-
-  disclaimer = config_setting_add(steam_bridge, "disclaimer", CONFIG_TYPE_BOOL);
-  if (!disclaimer)
-    __ABORT("Unable to add disclaimer to steam_bridge group in libconfig!");
-
-  if (config_setting_set_bool(disclaimer, this->disclaimer) != CONFIG_TRUE)
-    _LIBCONFIG_ABORT("Unable to set disclaimer");
-
-  // This one, can, in fact, fail
-  if (config_write_file(&config, filename.c_str()) != CONFIG_TRUE)
-  {
-    _LIBCONFIG_ERR("Unable to write configuration file");
-    config_destroy(&config);
-    return false;
-  }
-
-  config_destroy(&config);
   WINE_TRACE("Saved the configuration\n");
   return true;
 }
