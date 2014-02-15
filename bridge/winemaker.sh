@@ -1,5 +1,5 @@
 #!/bin/sh
-LIBRARIES="-lconfig -ldl"
+LIBRARIES="-ldl"
 INCLUDEPATH="-I../../common/steam/ -I../../common/include/"
 LIBRARYPATH=""
 DEFINES="-DVERSION_SAFE_STEAM_API_INTERFACES"
