@@ -27,7 +27,7 @@ def process_output(stdout):
 
 def find_version(dll, search, name):
   st, api = process_output(filesystem.execute( \
-    'strings "{}" | grep "{}" || true'.format(dll, search)))
+    'strings "{}" | grep "^{}$" || true'.format(dll, search)))
   if st == False and api == 'Multiple':
     err("Found multiple API version strings for '{}'".format(name))
   if st == False:
@@ -40,18 +40,18 @@ def find_version(dll, search, name):
 # possibly including the icon data.
 def find_executable(search):
   # First, look for any executables in the root directory
-  exes = filesystem.execute('ls "{}" | grep "\\.exe" || true'.format(search)) \
+  exes = filesystem.execute('ls "{}" | grep "\\.exe$" || true'.format(search)) \
       .rstrip().split('\n')
 
   # Didn't find any?  Do a recursive find
-  if len(exes) == 0:
-    exes = filesystem.execute('find "{}" | grep "\\.exe" || true' \
-        .format(search)).rstrip().split("\n")
-    if len(exes) == 0:
+  if len(exes) == 1 and exes[0] == '':
+    exes = filesystem.execute('ls -R "{}" | grep "\\.exe$" || true' \
+        .format(search)).rstrip().split('\n')
+    if len(exes) == 1 and exes[0] == '':
       err("Unable to find any executable (*.exe) files")
 
   if len(exes) == 1:
-    return os.path.abspath(search + '/' + exes[0])
+    return exes[0]
 
   # Look for something that appears to link against steam_api.dll
   options = []
@@ -63,7 +63,7 @@ def find_executable(search):
       options.append(exe)
 
   if len(options) == 1:
-    return os.path.abspath(options[0])
+    return options[0]
 
   # If nothing seems to link against steam_api.dll, compare all executables
   if len(options) == 0:
@@ -79,8 +79,7 @@ def find_executable(search):
       final = exe
       size = s
 
-  return os.path.abspath(final)
-
+  return final
 
 if not manifest.exists():
   err("{} lacks a manifest! (run download.py first)".format(appid))
@@ -108,7 +107,8 @@ appdb.name = manifest.name()
 # TODO: Once done, save that icon inside the appdb directory
 
 # Find the main executable
-appdb.executable = find_executable(appdb.installdir)
+appdb.executable = os.path.abspath(appdb.installdir + '/' \
+    + find_executable(appdb.installdir))
 print "WARN: Using a temporary algorithm to find the main executable"
 print "Found {}".format(appdb.executable)
 
