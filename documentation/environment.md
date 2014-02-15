@@ -22,12 +22,11 @@ You'll need an x86 Linux environment that can produce 32-bit binaries.
 My test bed is a 13.10 64-bit Ubuntu install.
 
 On a 64-bit Ubuntu installation, you'll (roughly) want *build-essential*,
-*g++*, *g++-multilib*, *wine1.7*, *wine1.7-dev*, *libconfig9:i386*,
-*libconfig9-dev*.  32-bit distros won't need *g++-multilib*, and
-can substitute *libconfig9* for *libconfig9:i386*.  Other distros will
-probably have similar requirements.
+*g++*, *g++-multilib*, *wine1.7*, and *wine1.7-dev*.  32-bit distros
+won't need *g++-multilib*.  Other distros will probably have similar
+requirements.
 
-Note that libconfig9:i386 doesn't setup the *libconfig.so* library
-symlink.  **cd /usr/lib/i386-linux-gnu/ ; sudo ln -s libconfig.so.9
-libconfig.so** does the trick on my test machine.
+Specifically, various components depend on *make*, *strings*,
+*python2.7*,and *bash*.  All of which should be installed out of the box,
+or as part of the previous package list.
 

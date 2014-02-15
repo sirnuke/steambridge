@@ -1,17 +1,19 @@
 # The short version
 
-1. Compile the Visual Studio solution (Release build).  Save the
-*steam_api_proxy.dll* for later.
-2. Install g++ & multilib, a recent version of Wine & development package,
-and libconfig 32-bit library & development package.
+1. Compile the Visual Studio solution (Release build).  Copy
+*steam_api_proxy.dll* to the Linux tree.
+2. Install g++ & multilib and a recent version of Wine & dev.
 3. Compile the Winelib DLL using the provided *Makefile*.
-4. Setup the SteamBridge environment with **make install** (do not use
-with sudo, it runs sudo for the one copy command that needs it).
-5. Download a game through Steam running Wine.
-6. Copy *steam_api_proxy.dll* in place of the game's *steam_api.dll*.
-7. Setup *steam_appid.txt* with the game's appid, if not already set.
-Needs to be the integer id and no newline.
-8. With the Linux Steam client running, run the game using Wine.
+4. Setup the SteamBridge environment with **make deploy** (no root/sudo).
+Various tools are installed to *~/.steam/root/SteamBridge/bin*.
+5. Download an application using *download.py*.  Various applications
+won't download correctly.  You'll need to use the Windows native
+Steam client (probably inside Wine).  Copy the appmanifest file in
+*SteamApps* and the installation directory in *SteamApps/common* to
+*~/.steam/root/SteamApps/* manually.  Eventually, this will be handled
+through SteamBridge.
+6. Configure the game using *configure.py*.
+7. Execute the game using the newly created .desktop file or *execute.py*.
 
 # Windows Proxy DLL
 
@@ -27,52 +29,35 @@ calls to the native Linux Steam client.
 
 # Linux Bridge Winelib library
 
-To compile, run **make** from the root.  All, clean, rebuild, install,
-and update tasks are implemented.  Install installs a fresh SteamBridge
-directory (inside your home directory).  Update, however, doesn't
-overwrite your existing configuration.  Don't run either with sudo, the
-one action that requires root access is wrapped in sudo.  Additionally,
-in the future everything will be stored within your home directory.
+To compile, run **make** from the root.  All, clean, rebuild, deploy, and
+redeploy are implemented.  Deploy sets up the SteamBridge environment
+inside your home directory.  Redeploy deletes the existing one and
+then deploys.  As everything is contained within your home, root/sudo
+access is not needed.
 
-*steam_api_bridge.dll.so* is the compiled binary, a Winelib library
-for use with Wine.  It needs to be deployed to the 32-bit Wine DLL
-directory, likely */usr/lib/i386-linux-gnu/wine*.  Additionally,
-SteamBridge depends on a directory within the user's local steam root
-(~/.steam/root).  At the moment, this directory contains the SteamBridge
-runtime settings, the upcoming database of appid SteamAPI versions,
-and a copy of *libsteam_api.so*.  The included script *setup.sh* (make
-install) will copy everything to the correct place, though it may be
-brittle on non-standard directories.
+*steam_api_bridge.dll.so* is the compiled binary, a Winelib
+library for use with Wine.  The SteamBridge deployment copies it to
+*~/.steam/root/SteamBridge/*.  Execute sets up the Wine settings to look
+there for WineLib DLLs.
 
 # Deployment and execution notes
 
-* Wine Steam might overwrite the SteamBridge Proxy DLL with the real
-  *steam_api.dll*
 * You need *steam_appid.txt* in the same folder as *steam_api.dll*,
   containing the appid with no newline.  **echo -n "1520" >
-  steam\_appid.txt**, for example.  Many games have this already.
-* Recommend wine debug settings of WINEDEBUG="+steam\_bridge" when
-  running Wine games using SteamBridge.
-* Long term, setting up *steam_api.dll* and *steam_appid.txt* will be
-  handled by SteamBridge.
-* Proxy outputs on stdout, and the Winelib Bridge DLL outputs on stderr.
-  They step on each other's toes when both using stderr.
-* Additionally, I recommend piping stdout and stderr, so you have a
-  record if/when stuff breaks.
-* Renaming the real *steam_api.dll* to *steam_api_original.dll* is a
-  Good Idea, and lets you symlink to which ever one is currently being used.
+  steam\_appid.txt**, for example.  Applications that have the file
+  already, but set to an unexpected value, will break SteamBridge.
+* Output is stored in ~/.steam/root/SteamBridge/appdb/[appid]/\*.txt.
 * The built-in WINE Visual C+++ Runtime (2010, aka msvcp100.dll) works
   fine, outside a single specific scenario (so far).
 * You can run Wine Steam games through Steam Linux using Steam's "Add
-  Non-Steam Game..." feature.  You'll need a valid .desktop file,
-  pointing to a script in $PATH that properly executes the game.
+  Non-Steam Game..." feature.  See the .desktop file created by Configure.
     * In my test setup, the built-in msvcp100.dll blows up inside its
       DllMain, possibly due to issues with establishing stdin/stdout.
       Installing the real DLL (winetricks vcrun2010) works right.
     * The Steam overlay loads (!) and opens/closes correctly (!), but
       doesn't capture the mouse correctly (so close).
     * Furthermore, Steam API calls impact the injected Overlay.
-      Ethan Meteor Hunter sets the corner of popups, and the Overlay
+      Ethan: Meteor Hunter sets the corner of popups, and the Overlay
       obeys.  This is a bit of an unexpected surprise.
     * The content of the Overlay isn't tied to the real game.  It's
       still the generic links and content.
