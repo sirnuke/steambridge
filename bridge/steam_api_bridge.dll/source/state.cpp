@@ -34,7 +34,7 @@
 #include "state.h"
 
 #define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge/"
-#define _APP_VERSION_DB "appid_db.cfg"
+#define _APP_VERSION_DB "appdb/appid_db.cfg"
 #define _CONFIGURATION_FILE "config.cfg"
 #define _STEAM_API_SO "libsteam_api.so"
 
@@ -54,7 +54,7 @@ State::State()
     steamUnifiedMessages(NULL), initialized(false), steamAPIHandle(NULL),
     appid(0), disclaimer(false), warningHookFunction(NULL)
 {
-  WINE_TRACE("(this=0x%p)\n", this);
+  WINE_TRACE("(this=%p)\n", this);
   getAppId();
   checkBridgeDirectory();
   loadSteamAPI();
@@ -62,7 +62,7 @@ State::State()
 
 void State::initialize()
 {
-  WINE_TRACE("(this=0x%p)\n", this);
+  WINE_TRACE("(this=%p)\n", this);
 
   if (initialized) __ABORT("Function called twice!");
 
@@ -141,7 +141,7 @@ void State::getAppId()
 // TODO: Should handle custom directories via enivornmental variables
 void State::checkBridgeDirectory()
 {
-  WINE_TRACE("(this=0x%p)\n", this);
+  WINE_TRACE("(this=%p)\n", this);
   struct stat rootDir;
   std::string dir;
   char *home = NULL;
@@ -175,7 +175,7 @@ void State::checkBridgeDirectory()
 
 void State::loadSteamAPI()
 {
-  WINE_TRACE("(this=0x%p)\n", this);
+  WINE_TRACE("(this=%p)\n", this);
 
   std::string libPath = steamBridgeRoot + _STEAM_API_SO;
 
@@ -202,7 +202,7 @@ void State::loadSteamAPI()
 
 void State::readConfiguration()
 {
-  WINE_TRACE("(this=0x%p\n", this);
+  WINE_TRACE("(this=%p\n", this);
 
   disclaimer = false;
 
@@ -242,7 +242,7 @@ void State::readConfiguration()
 
 bool State::saveConfiguration()
 {
-  WINE_TRACE("(this=0x%p)\n", this);
+  WINE_TRACE("(this=%p)\n", this);
 
   std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
 
@@ -282,7 +282,7 @@ bool State::saveConfiguration()
 
 void State::loadSteamAPIVersions()
 {
-  WINE_TRACE("(0x%p)\n", this);
+  WINE_TRACE("(%p)\n", this);
 
   config_setting_t *versions;
   config_t config;
@@ -296,6 +296,8 @@ void State::loadSteamAPIVersions()
   char *string;
 
   std::string filename = steamBridgeRoot + _APP_VERSION_DB;
+
+  WINE_ERR("Filename is %s\n", filename.c_str());
 
   if (config_read_file(&config, filename.c_str()) != CONFIG_TRUE)
   {
@@ -439,7 +441,7 @@ void State::loadSteamAPIVersions()
 void State::addCallback(CCallbackBase *wrapper,
     CCallbackBase *reference)
 {
-  WINE_TRACE("(0x%p,0x%p)\n", wrapper, reference);
+  WINE_TRACE("(%p,%p)\n", wrapper, reference);
   callbacks.push_back(wrapper);
   references[reference] = wrapper;
 }
@@ -454,17 +456,17 @@ CCallbackBase *State::getCallback(CCallbackBase *reference)
 //       non-virtual destructors.
 void State::removeCallback(CCallbackBase *reference)
 {
-  WINE_TRACE("(0x%p)\n", reference);
+  WINE_TRACE("(%p)\n", reference);
 
   CCallbackBase *wrapper = references[reference];
   if (wrapper == NULL)
-    __ABORT("Unable to find corresponding wrapper for (0x%p)\n", reference);
+    __ABORT("Unable to find corresponding wrapper for (%p)\n", reference);
   std::deque<CCallbackBase *>::iterator it;
   for (it = callbacks.begin(); it != callbacks.end(); it++)
     if (*it == wrapper) break;
   if (it == callbacks.end())
-    __ABORT("Unable to find Callback Wrapper (0x%p) in the deque, "
-        "reference is (0x%p)\n", wrapper, reference);
+    __ABORT("Unable to find Callback Wrapper (%p) in the deque, "
+        "reference is (%p)\n", wrapper, reference);
   callbacks.erase(it);
 }
 
