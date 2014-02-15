@@ -15,9 +15,9 @@ rebuild : clean
 winemaker :
 	cd $(BRIDGE_ROOT) && ./winemaker.sh
 
-install :
-	cd $(BRIDGE_DIR) && ./setup.sh
+deploy :
+	./tools/deploy.sh
 
-update :
-	cd $(BRIDGE_DIR) && ./update.sh
+redeploy :
+	./tools/deploy.sh --clean
 
