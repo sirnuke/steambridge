@@ -38,9 +38,9 @@ class Entry:
   def load(self):
     with open(self._filename, 'r') as f:
       data = json.load(f)
-    if self._appid != data['appid']:
-      print "Warning, {}'s appid of {} doesn't match the expected" \
-          .format(self._filename, data['appid'], self._appid)
+    if self._appid != str(data['appid']):
+      print "Warning, {}'s appid of {} doesn't match the expected value" \
+          .format(data['appid'], self._appid)
     self.name = data['name']
     self.installdir = data['installdir']
     self.workingdir = data['workingdir']
@@ -49,5 +49,11 @@ class Entry:
 
   def exists(self):
     return os.path.isfile(self._filename)
+
+  def directory(self):
+    return self._directory
+
+  def appid(self):
+    return self._appid
 
 
