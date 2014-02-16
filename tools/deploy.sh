@@ -1,20 +1,11 @@
 #!/bin/bash
-# Directories:
-rootdir=~/.steam/root
-bridgedir=$rootdir/SteamBridge
 
-# Stores internal tools provided
-toolsdir=$bridgedir/bin
-# Stores internal state data about installed applications
-appdbdir=$bridgedir/appdb
-# Python library for shared code between the internal tools
-pylibdir=$toolsdir/pyruntime
+. ./common/settings.sh
 
 # Files
 bridgelib=bridge/steam_api_bridge.dll/steam_api_bridge.dll.so
 steamapilib=common/steam/libsteam_api.so
 proxydllname=steam_api_proxy.dll
-versiontxt=common/VERSION.txt
 pylib=`find common/pyruntime/ -name *.py`
 tools=`find tools/ -name *.py`
 
@@ -26,8 +17,13 @@ if [ $EUID -eq 0 ] ; then
   exit 1
 fi
 
-if [ ! -f $bridgelib ] ; then
+if [ ! -f "$bridgelib" ] ; then
   echo "$0: The Winelib Bridge library isn't compiled!"
+  exit 1
+fi
+
+if [ ! -f "common/pyruntime/config.py" ] ; then
+  echo "$0: $APP_NAME isn't configured (make config)"
   exit 1
 fi
 
@@ -42,8 +38,8 @@ if [ -z "$proxydll" ] ; then
   exit 1
 fi
 
-if [ ! -d $rootdir ] ; then
-  echo "$0: '$rootdir' not found - Linux Steam not installed?"
+if [ ! -d $STEAM_ROOT ] ; then
+  echo "$0: '$STEAM_ROOT' not found - Linux Steam not installed?"
   exit 1
 fi
 
@@ -63,25 +59,26 @@ for arg in "$@"; do
 done
 
 if $clean ; then
-  rm -rf $bridgedir
+  rm -rf $STEAM_BRIDGE_ROOT
 fi
 
-mkdir -p $bridgedir
-mkdir -p $toolsdir
-mkdir -p $appdbdir
-mkdir -p $pylibdir
+mkdir -p $STEAM_BRIDGE_ROOT
+mkdir -p $WINELIB_PATH
+mkdir -p $APPDB_ROOT
+mkdir -p $TOOLS_DIR
+mkdir -p $PYRUNTIME_DIR
 
 # As a minor safety mark, as both may default to executable bit set
 # Yes, it's more ideal to modify the copied files than the sources.
 chmod -x $bridgelib
 chmod -x $proxydll
 
-cp $bridgelib $bridgedir
-cp $steamapilib $bridgedir
-cp $proxydll $bridgedir
-cp $versiontxt $bridgedir
-cp $tools $toolsdir
-cp $pylib $pylibdir
+cp $bridgelib $BRIDGE_LIB
+cp $steamapilib $STEAM_API_LIB
+cp $proxydll $PROXY_DLL
+echo $VERSION_LONG > $STEAM_BRIDGE_ROOT/steam-bridge-version.txt
+cp $tools $TOOLS_DIR
+cp $pylib $PYRUNTIME_DIR
 
 echo "$0: Deployed"
 
