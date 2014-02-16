@@ -1,7 +1,6 @@
-SteamBridge itself is distributed under the following license:
+SteamBridge itself is distributed under the following (MIT License):
 
 Copyright (C) 2014 Bryan DeGrendel
-
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -21,16 +20,15 @@ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-As a note, this codebase copies a small part of Valve Software's
-Source SDK 2013.  The SteamBridge code itself does not use, in my
-opinion, a substantial portion of the Source SDK.  A very small part
-of the SteamAPI headers are reused for the Proxy DLL.  However, as
-SteamBridge itself requires the Source SDK for compilation and execution,
-it is my belief that you are still held to the Source SDK license.
-The original copy of the Source SDK license as of the release used
-for development of this library is located at LICENSE.source-sdk-2013.
-Third party license notices used by the Source SDK are also included
-in thirdpartylegalnotices.txt.
+As a note, this codebase copies a small part of Valve Software's Source
+SDK 2013.  The SteamBridge code itself does not use, in my opinion,
+a substantial portion of the Source SDK.  C++ class definitions are
+partially used in the Proxy DLL.  However, as SteamBridge itself requires
+the Source SDK for compilation and execution, it is my belief that you are
+still held to the Source SDK license.  The original copy of the Source
+SDK license as of the release used for development of this library is
+located at LICENSE.source-sdk-2013.  Third party license notices used
+by the Source SDK are also included in thirdpartylegalnotices.txt.
 
 The code contained in reference/steam and common/steam are fully under
 the terms of the Valve Software license.
