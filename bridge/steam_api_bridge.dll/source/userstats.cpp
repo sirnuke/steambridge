@@ -16,8 +16,6 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
-class ISteamUserStats;
-
 #define _THIN_WRAPPER(API, TRACE, ...) { \
   WINE_TRACE("(%p," TRACE ")\n", steamUserStats, ##__VA_ARGS__); \
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!"); \
