@@ -82,8 +82,6 @@ cp $proxydll $bridgedir
 cp $versiontxt $bridgedir
 cp $tools $toolsdir
 cp $pylib $pylibdir
-# Temp file until the new appdb system is setup
-cp bridge/steam_api_bridge.dll/appid_db.cfg $appdbdir
 
 echo "$0: Deployed"
 
