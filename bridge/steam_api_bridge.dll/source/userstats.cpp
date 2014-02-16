@@ -18,6 +18,12 @@ WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
 
 class ISteamUserStats;
 
+#define _THIN_WRAPPER(TRACE, API, ...) { \
+  WINE_TRACE(TRACE, steamUserStats, ##__VA_ARGS__); \
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!"); \
+  return steamUserStats->API(__VA_ARGS__); \
+}
+
 extern "C"
 {
 
@@ -181,10 +187,51 @@ STEAM_API_BRIDGE_API SteamAPICall_t
   steam_bridge_SteamUserStats_RequestUserStats(ISteamUserStats *steamUserStats,
       CSteamID steamIDUser)
 {
-  WINE_TRACE("(%p,%llu)\n", steamUserStats, steamIDUser.ConvertToUint64());
+  WINE_TRACE("(%p,%llu)\n", steamUserStats, steamIDUser);
+  //WINE_TRACE("(%p,%llu)\n", steamUserStats, steamIDUser.ConvertToUint64());
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->RequestUserStats(steamIDUser);
 }
 
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetUserStatI(
+    ISteamUserStats *steamUserStats, CSteamID steamIDUser, const char *pchName,
+    int32 *pData)
+{
+  WINE_TRACE("(%p,%llu,\"%s\",%p)\n", steamUserStats,
+      steamIDUser.ConvertToUint64(), pchName);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetUserStat(steamIDUser, pchName, pData);
+}
+
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetUserStatF(
+    ISteamUserStats *steamUserStats, CSteamID steamIDUser, const char *pchName,
+    float *pData)
+{
+  WINE_TRACE("(%p,%llu,\"%s\",%p)\n", steamUserStats,
+      steamIDUser.ConvertToUint64(), pchName, pData);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetUserStat(steamIDUser, pchName, pData);
+}
+
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetUserAchievement(
+    ISteamUserStats *steamUserStats, CSteamID steamIDUser, const char *pchName,
+    bool *pbAchieved)
+{
+  WINE_TRACE("(%p,%llu,\"%s\",%p)\n", steamUserStats,
+      steamIDUser.ConvertToUint64(), pchName, pbAchieved);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetUserAchievement(steamIDUser, pchName, pbAchieved);
+}
+
+STEAM_API_BRIDGE_API bool 
+  steam_bridge_SteamUserStats_GetUserAchievementAndUnlockTime(
+    ISteamUserStats *steamUserStats, CSteamID steamIDUser, const char *pchName,
+    bool *pbAchieved, uint32 *punUnlockTime)
+  _THIN_WRAPPER("(%p,%llu,\"%s\",%p,%p)\n", GetUserAchievementAndUnlockTime,
+      steamIDUser, pchName, pbAchieved, punUnlockTime)
+
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_ResetAllStats(
+    ISteamUserStats *steamUserStats, bool bAchievementsToo)
+  _THIN_WRAPPER("(%p,%i)\n", ResetAllStats, bAchievementsToo)
 } // extern "C"
 

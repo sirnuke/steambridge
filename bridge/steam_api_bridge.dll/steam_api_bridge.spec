@@ -51,6 +51,11 @@
 @ cdecl steam_bridge_SteamUserStats_GetNumAchievements(ptr)
 @ cdecl steam_bridge_SteamUserStats_GetAchievementName(ptr long)
 @ cdecl steam_bridge_SteamUserStats_RequestUserStats(ptr int64)
+@ cdecl steam_bridge_SteamUserStats_GetUserStatI(ptr int64 str ptr)
+@ cdecl steam_bridge_SteamUserStats_GetUserStatF(ptr int64 str ptr)
+@ cdecl steam_bridge_SteamUserStats_GetUserAchievement(ptr int64 str ptr)
+@ cdecl steam_bridge_SteamUserStats_GetUserAchievementAndUnlockTime(ptr int64 str ptr ptr)
+@ cdecl steam_bridge_SteamUserStats_ResetAllStats(ptr long)
 
 # SteamUtils API Calls
 @ cdecl steam_bridge_SteamUtils()
