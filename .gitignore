@@ -12,3 +12,4 @@ SteamBridge.suo
 .*.swp
 common/pyruntime/config.py
 common/include/config.h
+common/local.sh
