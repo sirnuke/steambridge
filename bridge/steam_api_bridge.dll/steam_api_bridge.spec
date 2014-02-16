@@ -57,6 +57,30 @@
 @ cdecl SteamUserStats_GetUserAchievement(ptr int64 str ptr)
 @ cdecl SteamUserStats_GetUserAchievementAndUnlockTime(ptr int64 str ptr ptr)
 @ cdecl SteamUserStats_ResetAllStats(ptr long)
+# API calls returning a SteamAPICall_t are returning a uint64
+# Unlike CSteamIDs, which get quirky depending on whether it's considered
+# a struct or 64-bits of data, this should be safe to use with -ret64
+@ cdecl -ret64 SteamUserStats_FindOrCreateLeaderboard(ptr str long long)
+@ cdecl -ret64 SteamUserStats_FindLeaderboard(ptr str)
+@ cdecl SteamUserStats_GetLeaderboardName(str int64);
+@ cdecl SteamUserStats_GetLeaderboardEntryCount(ptr int64)
+@ cdecl SteamUserStats_GetLeaderboardSortMethod(ptr int64)
+@ cdecl SteamUserStats_GetLeaderboardDisplayType(ptr int64)
+@ cdecl -ret64 SteamUserStats_DownloadLeaderboardEntries(ptr int64 long long long)
+@ cdecl -ret64 SteamUserStats_DownloadLeaderboardEntriesForUsers(ptr int64 ptr long)
+@ cdecl SteamUserStats_GetDownloadedLeaderboardEntry(ptr int64 long ptr ptr long)
+@ cdecl -ret64 SteamUserStats_UploadLeaderboardScore(ptr int64 long long ptr long)
+@ cdecl -ret64 SteamUserStats_AttachLeaderboardUGC(ptr int64 int64)
+@ cdecl -ret64 SteamUserStats_GetNumberOfCurrentPlayers(ptr)
+@ cdecl -ret64 SteamUserStats_RequestGlobalAchievementPercentages(ptr)
+@ cdecl SteamUserStats_GetMostAchievedAchievementInfo(ptr ptr long ptr ptr)
+@ cdecl SteamUserStats_GetNextMostAchievedAchievementInfo(ptr long ptr long ptr ptr)
+@ cdecl SteamUserStats_GetAchievementAchievedPercent(ptr str ptr)
+@ cdecl -ret64 SteamUserStats_RequestGlobalStats(ptr long)
+@ cdecl SteamUserStats_GetGlobalStatI(ptr str ptr)
+@ cdecl SteamUserStats_GetGlobalStatD(ptr str ptr)
+@ cdecl SteamUserStats_GetGlobalStatHistoryI(ptr str ptr long)
+@ cdecl SteamUserStats_GetGlobalStatHistoryD(ptr str ptr long)
 
 # SteamUtils API Calls
 @ cdecl steam_bridge_SteamUtils()

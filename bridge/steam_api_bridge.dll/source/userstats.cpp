@@ -115,5 +115,98 @@ bool SteamUserStats_GetUserAchievementAndUnlockTime(ISteamUserStats *steamUserSt
 bool SteamUserStats_ResetAllStats(ISteamUserStats *steamUserStats, bool bAchievementsToo)
   _THIN_WRAPPER(ResetAllStats, "%i", bAchievementsToo)
 
+SteamAPICall_t SteamUserStats_FindOrCreateLeaderboard(ISteamUserStats *steamUserStats,
+    const char *pchLeaderboardName, ELeaderboardSortMethod eLeaderboardSortMethod,
+    ELeaderboardDisplayType eLeaderboardDisplayType)
+  _THIN_WRAPPER(FindOrCreateLeaderboard, "\"%s\",%i,%i", pchLeaderboardName, eLeaderboardSortMethod,
+      eLeaderboardDisplayType)
+
+SteamAPICall_t SteamUserStats_FindLeaderboard(ISteamUserStats *steamUserStats,
+    const char *pchLeaderboardName)
+  _THIN_WRAPPER(FindLeaderboard, "\"%s\"", pchLeaderboardName)
+
+const char *SteamUserStats_GetLeaderboardName(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard)
+  _THIN_WRAPPER(GetLeaderboardName, "%llu", hSteamLeaderboard)
+
+int SteamUserStats_GetLeaderboardEntryCount(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard)
+  _THIN_WRAPPER(GetLeaderboardEntryCount, "%llu", hSteamLeaderboard)
+
+ELeaderboardSortMethod SteamUserStats_GetLeaderboardSortMethod(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard)
+  _THIN_WRAPPER(GetLeaderboardSortMethod, "%llu", hSteamLeaderboard)
+
+ELeaderboardDisplayType SteamUserStats_GetLeaderboardDisplayType(ISteamUserStats *steamUserStats, 
+    SteamLeaderboard_t hSteamLeaderboard)
+  _THIN_WRAPPER(GetLeaderboardDisplayType, "%llu", hSteamLeaderboard)
+
+SteamAPICall_t SteamUserStats_DownloadLeaderboardEntries(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard, ELeaderboardDataRequest eLeaderboardDataRequest,
+    int nRangeStart, int nRangeEnd)
+  _THIN_WRAPPER(DownloadLeaderboardEntries, "%llu,%i,%i,%i", hSteamLeaderboard,
+      eLeaderboardDataRequest, nRangeStart, nRangeEnd)
+
+SteamAPICall_t SteamUserStats_DownloadLeaderboardEntriesForUsers(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard, CSteamID *prgUsers, int cUsers)
+  _THIN_WRAPPER(DownloadLeaderboardEntriesForUsers, "%llu,%p,%i", hSteamLeaderboard, prgUsers,
+      cUsers)
+
+bool SteamUserStats_GetDownloadedLeaderboardEntry(ISteamUserStats *steamUserStats,
+    SteamLeaderboardEntries_t hSteamLeaderboardEntries, int index,
+    LeaderboardEntry_t *pLeaderboardEntry, int32 *pDetails, int cDetailsMax)
+  _THIN_WRAPPER(GetDownloadedLeaderboardEntry, "%llu,%i,%p,%p,%i", hSteamLeaderboardEntries, index,
+      pLeaderboardEntry, pDetails, cDetailsMax)
+
+SteamAPICall_t SteamUserStats_UploadLeaderboardScore(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard,
+    ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore,
+    const int32 *pScoreDetails, int cScoreDetailsCount)
+  _THIN_WRAPPER(UploadLeaderboardScore, "%llu,%i,%i,%p,%i", hSteamLeaderboard,
+      eLeaderboardUploadScoreMethod, nScore, pScoreDetails, cScoreDetailsCount)
+
+SteamAPICall_t SteamUserStats_AttachLeaderboardUGC(ISteamUserStats *steamUserStats,
+    SteamLeaderboard_t hSteamLeaderboard, UGCHandle_t hUGC)
+  _THIN_WRAPPER(AttachLeaderboardUGC, "%llu,%llu", hSteamLeaderboard, hUGC)
+
+SteamAPICall_t SteamUserStats_GetNumberOfCurrentPlayers(ISteamUserStats *steamUserStats)
+  _THIN_WRAPPER(GetNumberOfCurrentPlayers, "")
+
+SteamAPICall_t SteamUserStats_RequestGlobalAchievementPercentages(ISteamUserStats *steamUserStats)
+  _THIN_WRAPPER(RequestGlobalAchievementPercentages, "")
+
+int SteamUserStats_GetMostAchievedAchievementInfo(ISteamUserStats *steamUserStats, char *pchName,
+    uint32 unNameBufLen, float *pflPercent, bool *pbAchieved)
+  _THIN_WRAPPER(GetMostAchievedAchievementInfo, "%p,%u,%p,%p", pchName, unNameBufLen, pflPercent,
+      pbAchieved)
+
+int SteamUserStats_GetNextMostAchievedAchievementInfo(ISteamUserStats *steamUserStats,
+    int iIteratorPrevious, char *pchName, uint32 unNameBufLen, float *pflPercent, bool *pbAchieved)
+  _THIN_WRAPPER(GetNextMostAchievedAchievementInfo, "%i,%p,%i,%p,%p", iIteratorPrevious, pchName,
+      unNameBufLen, pflPercent, pbAchieved)
+
+bool SteamUserStats_GetAchievementAchievedPercent(ISteamUserStats *steamUserStats,
+    const char *pchName, float *pflPercent)
+  _THIN_WRAPPER(GetAchievementAchievedPercent, "\"%s\",%p", pchName, pflPercent)
+
+SteamAPICall_t SteamUserStats_RequestGlobalStats(ISteamUserStats *steamUserStats, int nHistoryDays)
+  _THIN_WRAPPER(RequestGlobalStats, "%i", nHistoryDays)
+
+bool SteamUserStats_GetGlobalStatI(ISteamUserStats *steamUserStats, const char *pchStatName,
+    int64 *pData)
+  _THIN_WRAPPER(GetGlobalStat, "\"%s\",%p", pchStatName, pData)
+
+bool SteamUserStats_GetGlobalStatD(ISteamUserStats *steamUserStats, const char *pchStatName,
+    double *pData)
+  _THIN_WRAPPER(GetGlobalStat, "\"%s\",%p", pchStatName, pData)
+
+int32 SteamUserStats_GetGlobalStatHistoryI(ISteamUserStats *steamUserStats, const char *pchStatName,
+    int64 *pData, uint32 cubData)
+  _THIN_WRAPPER(GetGlobalStatHistory, "\"%s\",%p,%u", pchStatName, pData, cubData)
+
+int32 SteamUserStats_GetGlobalStatHistoryD(ISteamUserStats *steamUserStats, const char *pchStatName,
+    double *pData, uint32 cubData)
+  _THIN_WRAPPER(GetGlobalStatHistory, "\"%s\",%p,%u", pchStatName, pData, cubData)
+
 } // extern "C"
 
