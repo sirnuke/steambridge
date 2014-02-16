@@ -30,18 +30,16 @@ static void steam_bridge_WarningHookCallback(int severity, const char *message)
   (*func)(severity, message);
 }
 
-STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient()
+STEAM_API_BRIDGE_API ISteamClient *SteamClient_()
 {
   WINE_TRACE("\n");
-
   if (!state) __ABORT("NULL internal state (init not called?)");
-
   __DLSYM_GET(steam_api_SteamClient_t, api, "SteamClient");
   return (*api)();
 }
 
-STEAM_API_BRIDGE_API void steam_bridge_SteamClient_SetWarningMessageHook(
-    ISteamClient *steamClient, steam_bridge_WarningHookFunc func)
+STEAM_API_BRIDGE_API void SteamClient_SetWarningMessageHook(ISteamClient *steamClient,
+    SteamAPIWarningMessageHook_t func)
 {
   WINE_TRACE("(%p,%p)\n", steamClient, func);
 

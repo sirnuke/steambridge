@@ -8,8 +8,8 @@
 @ cdecl SteamAPI_RunCallbacks_()
 
 # SteamClient API Calls
-@ cdecl steam_bridge_SteamClient()
-@ cdecl steam_bridge_SteamClient_SetWarningMessageHook(ptr)
+@ cdecl SteamClient_()
+@ cdecl SteamClient_SetWarningMessageHook(ptr)
 
 # SteamUser API calls
 @ cdecl steam_bridge_SteamUser(str)
