@@ -13,3 +13,4 @@ SteamBridge.suo
 common/pyruntime/config.py
 common/include/config.h
 common/local.sh
+ipch
