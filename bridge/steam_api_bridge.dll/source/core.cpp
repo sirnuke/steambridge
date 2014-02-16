@@ -27,7 +27,7 @@ extern "C"
 // TODO: Would we want/need a wrapper for the straight Init() function?
 //       Maybe one that creates a state that uses the default ISteam*
 //       classes?
-bool steam_bridge_SteamAPI_InitSafe()
+bool SteamAPI_InitSafe()
 {
   WINE_TRACE("\n");
 
@@ -52,7 +52,7 @@ bool steam_bridge_SteamAPI_InitSafe()
   return true;
 }
 
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown()
+void SteamAPI_Shutdown()
 {
   WINE_TRACE("\n");
   if (state == NULL)

@@ -34,8 +34,8 @@ class ISteamUtils;
 extern "C" {
 
 // Core API Calls
-STEAM_API_BRIDGE_API bool steam_bridge_SteamAPI_InitSafe();
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_Shutdown();
+STEAM_API_BRIDGE_API bool SteamAPI_InitSafe();
+STEAM_API_BRIDGE_API void SteamAPI_Shutdown();
 // TODO: Handle callback flags better, probably don't need/want to
 //       return an int here.
 STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(

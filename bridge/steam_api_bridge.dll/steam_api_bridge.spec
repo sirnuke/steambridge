@@ -1,8 +1,8 @@
 # steam_api_bridge Winelib spec file
 
 # Core API calls
-@ cdecl steam_bridge_SteamAPI_InitSafe()
-@ cdecl steam_bridge_SteamAPI_Shutdown()
+@ cdecl SteamAPI_InitSafe()
+@ cdecl SteamAPI_Shutdown()
 @ cdecl steam_bridge_SteamAPI_RegisterCallback(ptr ptr ptr long long)
 @ cdecl steam_bridge_SteamAPI_UnregisterCallback(ptr)
 @ cdecl steam_bridge_SteamAPI_RunCallbacks();
