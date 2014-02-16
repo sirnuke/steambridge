@@ -13,135 +13,91 @@
 
 #include <steam_api_bridge.h>
 
+#define _THIN_WRAPPER(API, TRACE, ...) { \
+  __TRACE("(" TRACE ")", ##__VA_ARGS__); \
+  return SteamUserStats_  ##API(steamUserStats, ##__VA_ARGS__); \
+}
+
 SteamUserStatsWrapper::SteamUserStatsWrapper() : steamUserStats(NULL)
 {
   __TRACE("(this=0x%p)", this);
-  steamUserStats = steam_bridge_SteamUserStats();
+  steamUserStats = SteamUserStats_();
   __LOG("Wrapping ISteamUserStats (0x%p) in (0x%p)", steamUserStats, this);
 }
 
 bool SteamUserStatsWrapper::RequestCurrentStats()
-{
-  __TRACE("()");
-  return steam_bridge_SteamUserStats_RequestCurrentStats(steamUserStats);
-}
+  _THIN_WRAPPER(RequestCurrentStats, "");
 
 bool SteamUserStatsWrapper::GetStat(const char *pchName, int32 *pData)
-{
-  __TRACE("(\"%s\",%p)", pchName, pData);
-  return steam_bridge_SteamUserStats_GetStatI(steamUserStats, pchName, pData);
-}
-
+  _THIN_WRAPPER(GetStatI, "\"%s\",0x%p", pchName, pData)
 
 bool SteamUserStatsWrapper::GetStat(const char *pchName, float *pData)
-{
-  __TRACE("(\"%s\",%p)", pchName, pData);
-  return steam_bridge_SteamUserStats_GetStatF(steamUserStats, pchName, pData);
-}
+  _THIN_WRAPPER(GetStatF, "\"%s\",0x%p", pchName, pData)
 
 bool SteamUserStatsWrapper::SetStat(const char *pchName, int32 nData)
-{
-  __TRACE("(\"%s\",%i)", pchName, nData);
-  return steam_bridge_SteamUserStats_SetStatI(steamUserStats, pchName, nData);
-}
+  _THIN_WRAPPER(SetStatI, "\"%s\",%u", pchName, nData)
 
 bool SteamUserStatsWrapper::SetStat(const char *pchName, float fData)
-{
-  __TRACE("(\"%s\",%i)", pchName, fData);
-  return steam_bridge_SteamUserStats_SetStatF(steamUserStats, pchName, fData);
-}
+  _THIN_WRAPPER(SetStatF, "\"%s\",%f", pchName, fData)
 
-bool SteamUserStatsWrapper::UpdateAvgRateStat(const char *pchName,
-    float flCountThisSession, double dSessionLength)
-{
-  __TRACE("(\"%s\",%f,%f)", pchName, flCountThisSession, dSessionLength);
-  return steam_bridge_SteamUserStats_UpdateAvgRateStat(steamUserStats, pchName,
-    flCountThisSession, dSessionLength);
-}
+bool SteamUserStatsWrapper::UpdateAvgRateStat(const char *pchName, float flCountThisSession,
+    double dSessionLength)
+  _THIN_WRAPPER(UpdateAvgRateStat, "\"%s\",%f,%f", pchName, flCountThisSession, dSessionLength)
 
-bool SteamUserStatsWrapper::GetAchievement(const char *pchName,
-  bool *pbAchieved)
-{
-  __TRACE("(\"%s\",%p)", pchName, pbAchieved);
-  return steam_bridge_SteamUserStats_GetAchievement(steamUserStats, pchName,
-    pbAchieved);
-}
+bool SteamUserStatsWrapper::GetAchievement(const char *pchName, bool *pbAchieved)
+  _THIN_WRAPPER(GetAchievement, "\"%s\",0x%p", pchName, pbAchieved)
 
 bool SteamUserStatsWrapper::SetAchievement(const char *pchName)
-{
-  __TRACE("(\"%s\")", pchName);
-  return steam_bridge_SteamUserStats_SetAchievement(steamUserStats, pchName);
-}
+  _THIN_WRAPPER(SetAchievement, "\"%s\"", pchName)
 
 bool SteamUserStatsWrapper::ClearAchievement(const char *pchName)
-{
-  __TRACE("(\"%s\")", pchName);
-  return steam_bridge_SteamUserStats_ClearAchievement(steamUserStats, pchName);
-}
+  _THIN_WRAPPER(ClearAchievement, "\"%s\"", pchName)
 
-bool SteamUserStatsWrapper::GetAchievementAndUnlockTime(const char *pchName,
-    bool *pbAchieved, uint32 *punUnlockTime)
-{
-  __TRACE("(\"%s\",%p,%p)", pchName, pbAchieved, punUnlockTime);
-  return steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(
-    steamUserStats, pchName, pbAchieved, punUnlockTime);
-}
-
-bool SteamUserStatsWrapper::StoreStats()
-{
-  __TRACE("()");
-  return steam_bridge_SteamUserStats_StoreStats(steamUserStats);
-}
-
-int SteamUserStatsWrapper::GetAchievementIcon(const char *pchName)
-  __STUB("(\"%s\")", pchName)
-
-const char *SteamUserStatsWrapper::GetAchievementDisplayAttribute(
-    const char *pchName, const char *pchKey)
-  __STUB("(\"%s\",\"%s\")", pchName, pchKey)
-
-bool SteamUserStatsWrapper::IndicateAchievementProgress(const char *pchName,
-    uint32 nCurProgress, uint32 nMaxProgress)
-  __STUB("(\"%s\",%u,%u)", pchName, nCurProgress, nMaxProgress)
-
-uint32 SteamUserStatsWrapper::GetNumAchievements()
-{
-  __TRACE("()");
-  return steam_bridge_SteamUserStats_GetNumAchievements(steamUserStats);
-}
-
-const char *SteamUserStatsWrapper::GetAchievementName(uint32 iAchievement)
-{
-  __TRACE("(%u)", iAchievement);
-  return steam_bridge_SteamUserStats_GetAchievementName(steamUserStats, iAchievement);
-}
-
-SteamAPICall_t SteamUserStatsWrapper::RequestUserStats(CSteamID steamIDUser)
-{
-  __TRACE("(%llu)", steamIDUser);
-  return steam_bridge_SteamUserStats_RequestUserStats(steamUserStats,
-    steamIDUser);
-}
-
-bool SteamUserStatsWrapper::GetUserStat(uint64 steamIDUser,
-    const char *pchName, int32 *pData)
-  __STUB("(%lu,\"%s\",0x%p)", steamIDUser, pchName, pData)
-
-bool SteamUserStatsWrapper::GetUserStat(uint64 steamIDUser,
-    const char *pchName, float *pData)
-  __STUB("(%lu,\"%s\",0x%p)", steamIDUser, pchName, pData)
-
-bool SteamUserStatsWrapper::GetUserAchievement(uint64 steamIDUser,
-    const char *pchName, bool *pbAchieved)
-  __STUB("(%lu,\"%s\",0x%p)", steamIDUser, pchName, pbAchieved)
-
-bool SteamUserStatsWrapper::GetUserAchievementAndUnlockTime(uint64 steamIDUser,
-    const char *pchName, bool *pbAchieved, uint32 *punUnlockTime)
-  __STUB("(%lu,\"%s\",0x%p,0x%p)", steamIDUser, pchName, pbAchieved,
+bool SteamUserStatsWrapper::GetAchievementAndUnlockTime(const char *pchName, bool *pbAchieved,
+    uint32 *punUnlockTime)
+  _THIN_WRAPPER(GetAchievementAndUnlockTime, "\"%s\",0x%p,0x%p", pchName, pbAchieved,
       punUnlockTime)
 
+bool SteamUserStatsWrapper::StoreStats()
+  _THIN_WRAPPER(StoreStats, "")
+
+int SteamUserStatsWrapper::GetAchievementIcon(const char *pchName)
+  _THIN_WRAPPER(GetAchievementIcon, "\"%s\"", pchName)
+
+const char *SteamUserStatsWrapper::GetAchievementDisplayAttribute(const char *pchName,
+    const char *pchKey)
+  _THIN_WRAPPER(GetAchievementDisplayAttribute, "\"%s\",\"%s\"", pchName, pchKey)
+
+bool SteamUserStatsWrapper::IndicateAchievementProgress(const char *pchName, uint32 nCurProgress,
+    uint32 nMaxProgress)
+  _THIN_WRAPPER(IndicateAchievementProgress, "\"%s\",%u,%u", pchName, nCurProgress, nMaxProgress)
+
+uint32 SteamUserStatsWrapper::GetNumAchievements()
+  _THIN_WRAPPER(GetNumAchievements, "")
+
+const char *SteamUserStatsWrapper::GetAchievementName(uint32 iAchievement)
+  _THIN_WRAPPER(GetAchievementName, "%u", iAchievement)
+
+SteamAPICall_t SteamUserStatsWrapper::RequestUserStats(CSteamID steamIDUser)
+  _THIN_WRAPPER(RequestUserStats, "%llu", steamIDUser)
+
+bool SteamUserStatsWrapper::GetUserStat(CSteamID steamIDUser, const char *pchName, int32 *pData)
+  _THIN_WRAPPER(GetUserStatI, "%llu,\"%s\",0x%p", steamIDUser, pchName, pData)
+
+bool SteamUserStatsWrapper::GetUserStat(CSteamID steamIDUser, const char *pchName, float *pData)
+  _THIN_WRAPPER(GetUserStatF, "%llu,\"%s\",0x%p", steamIDUser, pchName, pData)
+
+bool SteamUserStatsWrapper::GetUserAchievement(CSteamID steamIDUser, const char *pchName,
+    bool *pbAchieved)
+  _THIN_WRAPPER(GetUserAchievement, "%llu,\"%s\",0x%p", steamIDUser, pchName, pbAchieved)
+
+bool SteamUserStatsWrapper::GetUserAchievementAndUnlockTime(CSteamID steamIDUser,
+    const char *pchName, bool *pbAchieved, uint32 *punUnlockTime)
+  _THIN_WRAPPER(GetUserAchievementAndUnlockTime, "%llu,\"%s\",0x%p,0x%p", steamIDUser, pchName,
+      pbAchieved, punUnlockTime)
+
 bool SteamUserStatsWrapper::ResetAllStats(bool bAchievementsToo)
-  __STUB("(%i)", bAchievementsToo)
+  _THIN_WRAPPER(ResetAllStats, "%i", bAchievementsToo)
 
 SteamAPICall_t SteamUserStatsWrapper::FindOrCreateLeaderboard(
     const char *pchLeaderboardName, int eLeaderboardSortMethod,
@@ -176,7 +132,7 @@ SteamAPICall_t SteamUserStatsWrapper::DownloadLeaderboardEntries(
       nRangeStart, nRangeEnd)
 
 SteamAPICall_t SteamUserStatsWrapper::DownloadLeaderboardEntriesForUsers(
-    SteamLeaderboard_t hSteamLeaderboard, uint64 *prgUsers, int cUsers)
+    SteamLeaderboard_t hSteamLeaderboard, CSteamID *prgUsers, int cUsers)
   __STUB("(%lu,0x%p,%i)", hSteamLeaderboard, prgUsers, cUsers)
 
 bool SteamUserStatsWrapper::GetDownloadedLeaderboardEntry(

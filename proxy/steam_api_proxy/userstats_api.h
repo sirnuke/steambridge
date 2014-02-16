@@ -46,20 +46,16 @@ class SteamUserStatsWrapper
 
     virtual SteamAPICall_t RequestUserStats(CSteamID steamIDUser);
 
-    // bool ... (CSteamID, const char *, int32 *)
-    virtual bool GetUserStat(uint64 steamIDUser, const char *pchName,
+    virtual bool GetUserStat(CSteamID steamIDUser, const char *pchName,
         int32 *pData);
 
-    // bool ... (CSteamID, const char *, float *)
-    virtual bool GetUserStat(uint64 steamIDUser, const char *pchName,
+    virtual bool GetUserStat(CSteamID steamIDUser, const char *pchName,
         float *pData);
 
-    // bool ... (CSteamID, const char *, bool *)
-    virtual bool GetUserAchievement(uint64 steamIDUser, const char *pchName,
+    virtual bool GetUserAchievement(CSteamID steamIDUser, const char *pchName,
         bool *pbAchieved);
 
-    // bool ... (CSteamID, const char *, bool *, uint32 *)
-    virtual bool GetUserAchievementAndUnlockTime(uint64 steamIDUser,
+    virtual bool GetUserAchievementAndUnlockTime(CSteamID steamIDUser,
         const char *pchName, bool *pbAchieved, uint32 *punUnlockTime);
 
     // I approve of this argument's name
@@ -90,9 +86,8 @@ class SteamUserStatsWrapper
         SteamLeaderboard_t hSteamLeaderboard, int eLeaderboardDataRequest,
         int nRangeStart, int nRangeEnd);
 
-    // SteamAPICall_t ... (SteamLeaderboard_t, CSteamID *, int)
     virtual SteamAPICall_t DownloadLeaderboardEntriesForUsers(
-        SteamLeaderboard_t hSteamLeaderboard, uint64 *prgUsers, int cUsers);
+        SteamLeaderboard_t hSteamLeaderboard, CSteamID *prgUsers, int cUsers);
 
     virtual bool GetDownloadedLeaderboardEntry(
         SteamLeaderboardEntries_t hSteamLeaderboardEntries, int index,

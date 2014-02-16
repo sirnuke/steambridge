@@ -15,7 +15,7 @@ static bool SteamAPI_InitReal(bool safeMode)
 {
   __TRACE("(%i)", safeMode);
   state.setSafeMode(safeMode);
-  return steam_bridge_SteamAPI_InitSafe();
+  return SteamAPI_InitSafe_();
 }
 
 extern "C"
@@ -57,9 +57,9 @@ STEAM_API_PROXY_API bool SteamAPI_InitSafe()
 
 STEAM_API_PROXY_API void SteamAPI_Shutdown()
 {
-  __TRACE("");
+  __TRACE("()");
   __LOG("TODO: Shutting down, record this in the state somehow");
-  steam_bridge_SteamAPI_Shutdown();
+  SteamAPI_Shutdown_();
 }
 
 
