@@ -232,12 +232,11 @@ bool State::saveConfiguration()
   std::ofstream out(filename.c_str());
 
   out << "{ ";
-  out << "\"disclaimer : ";
+  out << "\"disclaimer\" : ";
   if (disclaimer)
-    out << "true ";
+    out << "true\n";
   else
-    out << "false ";
-  out << std::endl;
+    out << "false\n";
   out << "}" << std::endl;
 
   WINE_TRACE("Saved the configuration\n");
