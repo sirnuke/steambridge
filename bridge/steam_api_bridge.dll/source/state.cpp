@@ -44,7 +44,7 @@ typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 
 // TODO: We should track userids, and tie disclaimer to it.
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 State::State()
   : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),

@@ -36,7 +36,7 @@ if not os.path.isfile(appdb.workingdir + "/steam_appid.txt"):
 # Change to the installation directory and execute using wine
 os.chdir(appdb.installdir)
 # TODO: wineprefix
-cmd = 'WINEDEBUG="+steam_bridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
+cmd = 'WINEDEBUG="+steambridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
     .format(config.WINELIB_PATH, appdb.executable, appdb.directory(), appdb.directory())
 
 print "DEBUG: execute('{}')".format(cmd)

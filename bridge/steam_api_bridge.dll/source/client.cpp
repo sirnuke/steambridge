@@ -16,7 +16,7 @@
 
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 extern "C"
 {

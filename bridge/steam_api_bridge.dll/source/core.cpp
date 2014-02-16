@@ -16,10 +16,10 @@
 #include "logging.h"
 #include "state.h"
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
-
 typedef bool (*steam_api_InitSafe_t)(void);
 typedef void (*steam_api_Shutdown_t)(void);
+
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 extern "C"
 {

@@ -24,12 +24,12 @@
 //       use WINE_* (WINE_TRACE, WINE_WARN, WINE_ERR, etc).  Also,
 //       unlike the Proxy's logging behavior, WINE_* functions do not
 //       print out a newline.  The passed message must do this.
-//       WINEDEBUG="+steam_bridge" is helpful for debug info.
+//       Run wine with WINEDEBUG="+steambridge" for debugging output.
 
 // TODO: Reallly need to print out more information in abort
 // TODO: Might want a sort of pop-up warning
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 void __abort__(const char *func, const char *msg, ...)
 {

@@ -14,7 +14,7 @@
 #include "logging.h"
 #include "state.h"
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 extern "C"
 {

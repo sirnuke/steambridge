@@ -18,7 +18,7 @@
 #include "logging.h"
 
 
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 const char *steam_bridge_INFO = "Visit " _STEAM_BRIDGE_WEBPAGE 
   " for more information on " _STEAM_BRIDGE_APPNAME "!";

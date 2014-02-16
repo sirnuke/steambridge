@@ -22,8 +22,7 @@ typedef void (*steam_api_RunCallbacks_t)(void);
 typedef void (*steam_api_RegisterCallback_t)(class CCallbackBase *, int);
 typedef void (*steam_api_UnregisterCallback_t)(class CCallbackBase *);
 
-
-WINE_DEFAULT_DEBUG_CHANNEL(steam_bridge);
+WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 //class CallbackImpl : protected CCallbackBase
 // TODO: It's unclear whether making the base public (over private
