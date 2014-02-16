@@ -111,10 +111,17 @@ uint32 SteamUserStatsWrapper::GetNumAchievements()
 }
 
 const char *SteamUserStatsWrapper::GetAchievementName(uint32 iAchievement)
-  __STUB("(%u)", iAchievement)
+{
+  __TRACE("(%u)", iAchievement);
+  return steam_bridge_SteamUserStats_GetAchievementName(steamUserStats, iAchievement);
+}
 
-SteamAPICall_t SteamUserStatsWrapper::RequestUserStats(uint64 steamIDUser)
-  __STUB("(%lu)", steamIDUser)
+SteamAPICall_t SteamUserStatsWrapper::RequestUserStats(CSteamID steamIDUser)
+{
+  __TRACE("(%llu)", steamIDUser);
+  return steam_bridge_SteamUserStats_RequestUserStats(steamUserStats,
+    steamIDUser);
+}
 
 bool SteamUserStatsWrapper::GetUserStat(uint64 steamIDUser,
     const char *pchName, int32 *pData)

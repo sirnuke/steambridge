@@ -56,6 +56,8 @@ extern "C"
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved, uint32 *punUnlockTime) __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(ISteamUserStats *steamUserStats) __STUB__;
   STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(ISteamUserStats *) __STUB__;
+  STEAM_API_BRIDGE_API const char *steam_bridge_SteamUserStats_GetAchievementName(ISteamUserStats *steamUserStats, uint32 iAchievement) __STUB__;
+  STEAM_API_BRIDGE_API SteamAPICall_t steam_bridge_SteamUserStats_RequestUserStats(ISteamUserStats *steamUserStats, CSteamID steamIDUser) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils() __STUB__;
   STEAM_API_BRIDGE_API void steam_bridge_SteamUtils_SetOverlayNotificationPosition(ISteamUtils *, int) __STUB__;

@@ -44,8 +44,7 @@ class SteamUserStatsWrapper
     virtual uint32 GetNumAchievements();
     virtual const char *GetAchievementName(uint32 iAchievement);
 
-    // SteamAPICall_t ... (CSteamID)
-    virtual SteamAPICall_t RequestUserStats(uint64 steamIDUser);
+    virtual SteamAPICall_t RequestUserStats(CSteamID steamIDUser);
 
     // bool ... (CSteamID, const char *, int32 *)
     virtual bool GetUserStat(uint64 steamIDUser, const char *pchName,
