@@ -10,3 +10,5 @@ SteamBridge.opensdf
 SteamBridge.sdf
 SteamBridge.suo
 .*.swp
+common/pyruntime/config.py
+common/include/config.h
