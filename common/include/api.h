@@ -90,8 +90,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
     ISteamApps *steamApps);
 
 // SteamUserStats API Calls
-STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStatsObj();
-
+STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStats();
 STEAM_API_BRIDGE_API bool SteamUserStats_RequestCurrentStats(ISteamUserStats *);
 STEAM_API_BRIDGE_API bool SteamUserStats_GetStatI(ISteamUserStats *, const char *, int32 *);
 STEAM_API_BRIDGE_API bool SteamUserStats_GetStatF(ISteamUserStats *, const char *, float *);

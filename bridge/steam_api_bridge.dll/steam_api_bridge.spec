@@ -34,7 +34,7 @@
 @ cdecl steam_bridge_SteamApps_GetCurrentGameLanguage()
 
 # SteamUserStats API Calls
-@ cdecl SteamUserStatsObj()
+@ cdecl SteamUserStats()
 @ cdecl SteamUserStats_RequestCurrentStats(ptr)
 @ cdecl SteamUserStats_GetStatI(ptr str ptr)
 @ cdecl SteamUserStats_GetStatF(ptr str ptr)

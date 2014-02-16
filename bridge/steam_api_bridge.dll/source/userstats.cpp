@@ -27,7 +27,7 @@ class ISteamUserStats;
 extern "C"
 {
 
-ISteamUserStats *SteamUserStatsObj()
+ISteamUserStats *SteamUserStats()
 {
   WINE_TRACE("\n");
   if (!state)
