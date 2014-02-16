@@ -45,7 +45,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatI(
     ISteamUserStats *steamUserStats, const char *pchName, int32 *pData)
 {
-  WINE_TRACE("(%p,\"%s\",%p)", steamUserStats, pchName, pData);
+  WINE_TRACE("(%p,\"%s\",%p)\n", steamUserStats, pchName, pData);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->GetStat(pchName, pData);
 }
@@ -53,7 +53,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatI(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatF(
     ISteamUserStats *steamUserStats, const char *pchName, float *pData)
 {
-  WINE_TRACE("(%p,\"%s\",%p)", steamUserStats, pchName, pData);
+  WINE_TRACE("(%p,\"%s\",%p)\n", steamUserStats, pchName, pData);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->GetStat(pchName, pData);
 }
@@ -61,7 +61,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatF(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatI(
     ISteamUserStats *steamUserStats, const char *pchName, int32 nData)
 {
-  WINE_TRACE("(%p,\"%s\",%i)", steamUserStats, pchName, nData);
+  WINE_TRACE("(%p,\"%s\",%i)\n", steamUserStats, pchName, nData);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->SetStat(pchName, nData);
 }
@@ -69,7 +69,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatI(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatF(
     ISteamUserStats *steamUserStats, const char *pchName, float fData)
 {
-  WINE_TRACE("(%p,\"%s\",%f)", steamUserStats, pchName, fData);
+  WINE_TRACE("(%p,\"%s\",%f)\n", steamUserStats, pchName, fData);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->SetStat(pchName, fData);
 }
@@ -78,7 +78,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_UpdateAvgRateStat(
     ISteamUserStats *steamUserStats, const char *pchName,
     float flCountThisSession, double dSessionLength)
 {
-  WINE_TRACE("(%p,\"%s\",%f,%f)", steamUserStats, pchName, flCountThisSession,
+  WINE_TRACE("(%p,\"%s\",%f,%f)\n", steamUserStats, pchName, flCountThisSession,
       dSessionLength);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->UpdateAvgRateStat(pchName, flCountThisSession,
@@ -88,7 +88,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_UpdateAvgRateStat(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievement(
     ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved)
 {
-  WINE_TRACE("(%p,\"%s\",%p)", steamUserStats, pchName, pbAchieved);
+  WINE_TRACE("(%p,\"%s\",%p)\n", steamUserStats, pchName, pbAchieved);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->GetAchievement(pchName, pbAchieved);
 }
@@ -96,7 +96,7 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievement(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetAchievement(
     ISteamUserStats *steamUserStats, const char *pchName)
 {
-  WINE_TRACE("(%p,\"%s\")", steamUserStats, pchName);
+  WINE_TRACE("(%p,\"%s\")\n", steamUserStats, pchName);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->SetAchievement(pchName);
 }
@@ -104,9 +104,29 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetAchievement(
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_ClearAchievement(
     ISteamUserStats *steamUserStats, const char *pchName)
 {
-  WINE_TRACE("(%p,\"%s\")", steamUserStats, pchName);
+  WINE_TRACE("(%p,\"%s\")\n", steamUserStats, pchName);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->ClearAchievement(pchName);
+}
+
+STEAM_API_BRIDGE_API bool
+  steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(
+    ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved,
+    uint32 *punUnlockTime)
+{
+  WINE_TRACE("(%p,\"%s\",%p,%p)\n", steamUserStats, pchName, pbAchieved,
+      punUnlockTime);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetAchievementAndUnlockTime(pchName, pbAchieved,
+      punUnlockTime);
+}
+
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(
+    ISteamUserStats *steamUserStats)
+{
+  WINE_TRACE("(%p)\n", steamUserStats);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->StoreStats();
 }
 
 STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(

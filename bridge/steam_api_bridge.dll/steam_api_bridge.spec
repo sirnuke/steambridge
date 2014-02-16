@@ -44,6 +44,8 @@
 @ cdecl steam_bridge_SteamUserStats_GetAchievement(ptr str ptr)
 @ cdecl steam_bridge_SteamUserStats_SetAchievement(ptr str)
 @ cdecl steam_bridge_SteamUserStats_ClearAchievement(ptr str)
+@ cdecl steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(ptr str ptr ptr)
+@ cdecl steam_bridge_SteamUserStats_StoreStats(ptr)
 @ cdecl steam_bridge_SteamUserStats_GetNumAchievements(ptr)
 
 # SteamUtils API Calls

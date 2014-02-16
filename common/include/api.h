@@ -110,6 +110,12 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetAchievement(
     ISteamUserStats *steamUserStats, const char *pchName);
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_ClearAchievement(
     ISteamUserStats *steamUserStats, const char *pchName);
+STEAM_API_BRIDGE_API bool
+  steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(
+    ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved,
+    uint32 *punUnlockTime);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(
+    ISteamUserStats *steamUserStats);
 STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
     ISteamUserStats *steamUserStats);
 
