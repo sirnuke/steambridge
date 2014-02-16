@@ -16,6 +16,9 @@ STEAM_APPS=$STEAM_ROOT/SteamApps/common
 # Root directory of the SteamBridge deployment
 STEAM_BRIDGE_ROOT=$STEAM_ROOT/SteamBridge
 
+# Configuration filename, used by the C++ library
+CONFIG_FILENAME=$STEAM_BRIDGE_ROOT/config.json
+
 # Location of the Win32 native steam_api proxy DLL
 # This is the location when it's deployed
 PROXY_DLL=$STEAM_BRIDGE_ROOT/steam_api_proxy.dll
@@ -31,6 +34,9 @@ STEAM_API_LIB=$STEAM_BRIDGE_ROOT/libsteam_api.so
 
 # Root directory of the internal AppDB
 APPDB_ROOT=$STEAM_BRIDGE_ROOT/appdb
+
+# AppDB configuration filename
+APPDB_CONFIG=appdb.json
 
 # Directory storing the SteamBridge tools
 TOOLS_DIR=$STEAM_BRIDGE_ROOT/bin

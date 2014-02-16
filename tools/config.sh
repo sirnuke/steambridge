@@ -20,8 +20,10 @@ echo "#ifndef ___STEAM_BRIDGE_CONFIG_H___
 #define _STEAM_BRIDGE_VERSION_LONG \"$VERSION_LONG\"
 
 #define _STEAM_BRIDGE_ROOT \"$STEAM_BRIDGE_ROOT\"
+#define _STEAM_BRIDGE_CONFIG \"$CONFIG_FILENAME\"
 #define _STEAM_BRIDGE_API_LIB \"$STEAM_API_LIB\"
 #define _STEAM_BRIDGE_APPDB_ROOT \"$APPDB_ROOT\"
+#define _STEAM_BRIDGE_APPDB_CONFIG \"$APPDB_CONFIG\"
 
 #endif //___STEAM_BRIDGE_CONFIG_H___
 " > common/include/config.h
@@ -42,6 +44,9 @@ STEAM_APPS=\"$STEAM_APPS\"
 # Root directory of the SteamBridge deployment
 STEAM_BRIDGE_ROOT=\"$STEAM_BRIDGE_ROOT\"
 
+# Configuration filename, used by the C++ library
+CONFIG_FILENAME=\"$CONFIG_FILENAME\"
+
 # Location of the Win32 native steam_api proxy DLL
 # This is the location when it's deployed
 PROXY_DLL=\"$PROXY_DLL\"
@@ -57,6 +62,9 @@ STEAM_API_LIB=\"$STEAM_API_LIB\"
 
 # Root directory of the internal AppDB
 APPDB_ROOT=\"$APPDB_ROOT\"
+
+# AppDB configuration filename
+APPDB_CONFIG=\"$APPDB_CONFIG\"
 
 # Directory storing the SteamBridge tools
 TOOLS_DIR=\"$TOOLS_DIR\"
