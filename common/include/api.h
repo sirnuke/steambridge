@@ -104,6 +104,7 @@ STEAM_API_BRIDGE_API bool SteamUserStats_GetAchievementAndUnlockTime(ISteamUserS
 STEAM_API_BRIDGE_API bool SteamUserStats_StoreStats(ISteamUserStats *);
 STEAM_API_BRIDGE_API int SteamUserStats_GetAchievementIcon(ISteamUserStats *, const char *);
 STEAM_API_BRIDGE_API const char *SteamUserStats_GetAchievementDisplayAttribute(ISteamUserStats *, const char *, const char *);
+STEAM_API_BRIDGE_API bool SteamUserStats_IndicateAchievementProgress(ISteamUserStats *, const char *, uint32, uint32);
 STEAM_API_BRIDGE_API uint32 SteamUserStats_GetNumAchievements(ISteamUserStats *);
 STEAM_API_BRIDGE_API const char *SteamUserStats_GetAchievementName(ISteamUserStats *, uint32);
 STEAM_API_BRIDGE_API SteamAPICall_t SteamUserStats_RequestUserStats(ISteamUserStats *, CSteamID);

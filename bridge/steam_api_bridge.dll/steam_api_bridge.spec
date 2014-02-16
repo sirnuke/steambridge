@@ -48,6 +48,7 @@
 @ cdecl SteamUserStats_StoreStats(ptr)
 @ cdecl SteamUserStats_GetAchievementIcon(ptr str)
 @ cdecl SteamUserStats_GetAchievementDisplayAttribute(ptr str str)
+@ cdecl SteamUserStats_IndicateAchievementProgress(ptr str long long)
 @ cdecl SteamUserStats_GetNumAchievements(ptr)
 @ cdecl SteamUserStats_GetAchievementName(ptr long)
 @ cdecl SteamUserStats_RequestUserStats(ptr int64)
