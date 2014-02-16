@@ -36,6 +36,14 @@
 # SteamUserStats API Calls
 @ cdecl steam_bridge_SteamUserStats()
 @ cdecl steam_bridge_SteamUserStats_RequestCurrentStats(ptr)
+@ cdecl steam_bridge_SteamUserStats_GetStatI(ptr str ptr)
+@ cdecl steam_bridge_SteamUserStats_GetStatF(ptr str ptr)
+@ cdecl steam_bridge_SteamUserStats_SetStatI(ptr str long)
+@ cdecl steam_bridge_SteamUserStats_SetStatF(ptr str float)
+@ cdecl steam_bridge_SteamUserStats_UpdateAvgRateStat(ptr str float double)
+@ cdecl steam_bridge_SteamUserStats_GetAchievement(ptr str ptr)
+@ cdecl steam_bridge_SteamUserStats_SetAchievement(ptr str)
+@ cdecl steam_bridge_SteamUserStats_ClearAchievement(ptr str)
 @ cdecl steam_bridge_SteamUserStats_GetNumAchievements(ptr)
 
 # SteamUtils API Calls

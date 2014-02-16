@@ -93,6 +93,23 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
 STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats();
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(
     ISteamUserStats *steamUserStats);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatI(
+    ISteamUserStats *steamUserStats, const char *pchName, int32 *pData);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatF(
+    ISteamUserStats *steamUserStats, const char *pchName, float *pData);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatI(
+    ISteamUserStats *steamUserStats, const char *pchName, int32 nData);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatF(
+    ISteamUserStats *steamUserStats, const char *pchName, float fData);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_UpdateAvgRateStat(
+    ISteamUserStats *steamUserStats, const char *pchName,
+    float flCountThisSession, double dSessionLength);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievement(
+    ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetAchievement(
+    ISteamUserStats *steamUserStats, const char *pchName);
+STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_ClearAchievement(
+    ISteamUserStats *steamUserStats, const char *pchName);
 STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
     ISteamUserStats *steamUserStats);
 
