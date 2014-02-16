@@ -31,12 +31,12 @@
 #include "state.h"
 #include "picojson.h"
 
-#define _STEAM_BRIDGE_ROOT_DIR "/.steam/root/SteamBridge"
-#define _APPDB_DIR "/appdb/"
+#include "config.h"
+
+// TODO: Move these to config.sh!
 #define _APPDB_FILENAME "/appdb.json"
 #define _APPDB_APIVERSIONS "apiversions"
 #define _CONFIGURATION_FILE "/config.cfg"
-#define _STEAM_API_SO "/libsteam_api.so"
 
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 typedef HSteamUser (*steam_api_GetHSteamUser_t)(void);
@@ -158,7 +158,7 @@ void State::checkBridgeDirectory()
 
   if (dir.empty()) __ABORT("Unable to find a valid home directory!");
 
-  steamBridgeRoot = dir + _STEAM_BRIDGE_ROOT_DIR;
+  steamBridgeRoot = dir + _STEAM_BRIDGE_ROOT;
 
   if (stat(steamBridgeRoot.c_str(), &rootDir) != 0)
   {
@@ -177,7 +177,7 @@ void State::loadSteamAPI()
 {
   WINE_TRACE("(this=%p)\n", this);
 
-  std::string libPath = steamBridgeRoot + _STEAM_API_SO;
+  std::string libPath = _STEAM_BRIDGE_API_LIB;
 
   // TODO: RTLD_LAZY?  Not that it likely makes a huge difference.
   steamAPIHandle = dlopen(libPath.c_str(), RTLD_NOW);
@@ -242,7 +242,8 @@ bool State::saveConfiguration()
     out << "true ";
   else
     out << "false ";
-  out << "}";
+  out << std::endl;
+  out << "}" << std::endl;
 
   WINE_TRACE("Saved the configuration\n");
   return true;
@@ -258,7 +259,7 @@ void State::loadSteamAPIVersions()
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
   std::stringstream ss;
-  ss << steamBridgeRoot << _APPDB_DIR << appid << _APPDB_FILENAME;
+  ss << _STEAM_BRIDGE_APPDB_ROOT << "/" << appid << _APPDB_FILENAME;
   std::string filename = ss.str();
 
   std::ifstream in(filename.c_str());
