@@ -11,7 +11,7 @@
 
 #include "logging.h"
 #include "types.h"
-#include <version.h>
+#include <config.h>
 
 #define _STREAM stdout
 #define _VA_PRINT(ARG) { \
@@ -28,7 +28,7 @@ __declspec(noreturn) void __stub__(const char *func, const char *args, ...)
 {
   std::stringstream ss;
   std::stringstream appName;
-  appName << steam_bridge_APP_NAME << " internal error";
+  appName << _STEAM_BRIDGE_APPNAME << " internal error";
   ss << func;
   _VA_PRINT(args);
   ss << ": is a stub!\n";
@@ -47,7 +47,7 @@ __declspec(noreturn) void __cant_implement__(const char *func,
 {
   std::stringstream ss;
   std::stringstream appName;
-  appName << steam_bridge_APP_NAME << " internal error";
+  appName << _STEAM_BRIDGE_APPNAME << " internal error";
   ss << func;
   _VA_PRINT(args);
   ss << ": cannot be implemented!\n";
@@ -83,7 +83,7 @@ __declspec(noreturn) void __abort__(const char *func, const char *msg, ...)
 {
   std::stringstream ss;
   std::stringstream appName;
-  appName << steam_bridge_APP_NAME << " internal error";
+  appName << _STEAM_BRIDGE_APPNAME << " internal error";
   ss << func;
   _VA_PRINT(msg);
   ss << ": has called abort!\n";

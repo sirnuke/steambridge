@@ -7,22 +7,23 @@
 
 #ifdef  ___STEAMBRIDGE_META_API___
 
-#include "version.h"
+#include "config.h"
 
 // TODO: Real versions and info!
-const char *steam_bridge_PROXY_INFO = "See http://github.com/sirnuke/steambridge for more information!";
+const char *steam_bridge_INFO = "Visit " _STEAM_BRIDGE_WEBPAGE 
+  " for more information on " _STEAM_BRIDGE_APPNAME "!";
 
 extern "C"
 {
 
 STEAM_API_PROXY_API const char *Steam_proxy_version_string()
 {
-  return steam_bridge_VERSION_STRING;
+  return _STEAM_BRIDGE_VERSION_LONG;
 }
 
 STEAM_API_PROXY_API const char *Steam_proxy_info_string()
 {
-  return steam_bridge_PROXY_INFO;
+  return steam_bridge_INFO;
 }
 
 } // extern "C"
