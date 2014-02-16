@@ -61,11 +61,14 @@ APPDB_ROOT=\"$APPDB_ROOT\"
 # Directory storing the SteamBridge tools
 TOOLS_DIR=\"$TOOLS_DIR\"
 
+# Directory storing the Python Runtime library
+PYRUNTIME_DIR=\"$PYRUNTIME_DIR\"
+
 # Location of the execute tool script
 EXECUTE_TOOL=\"$EXECUTE_TOOL\"
 
-# The official Public name of the library
-APP_NAME=SteamBridge
+# The official, formal name of the library
+APP_NAME=\"$APP_NAME\"
 
 # Version string information
 VERSION_MAJOR=$VERSION_MAJOR

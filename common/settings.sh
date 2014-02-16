@@ -35,6 +35,9 @@ APPDB_ROOT=$STEAM_BRIDGE_ROOT/appdb
 # Directory storing the SteamBridge tools
 TOOLS_DIR=$STEAM_BRIDGE_ROOT/bin
 
+# Directory storing the Python Runtime library
+PYRUNTIME_DIR=$TOOLS_DIR/pyruntime
+
 # Location of the execute tool script
 EXECUTE_TOOL=$TOOLS_DIR/execute.py
 
