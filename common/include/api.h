@@ -36,18 +36,17 @@ STEAM_API_BRIDGE_API bool SteamAPI_InitSafe_();
 STEAM_API_BRIDGE_API void SteamAPI_Shutdown_();
 // TODO: Handle callback flags better, probably don't need/want to
 //       return an int here.
-STEAM_API_BRIDGE_API int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc run,
-    steam_bridge_CallbackRunArgsFunc runargs, void *object, int callback, int size);
-STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *object);
+STEAM_API_BRIDGE_API int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc, void *, int, int);
+STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *);
 STEAM_API_BRIDGE_API void SteamAPI_RunCallbacks_();
 
 // SteamClient API Calls
 STEAM_API_BRIDGE_API ISteamClient *SteamClient_();
-STEAM_API_BRIDGE_API void SteamClient_SetWarningMessageHook(ISteamClient *steamClient,
-    SteamAPIWarningMessageHook_t func);
+STEAM_API_BRIDGE_API void SteamClient_SetWarningMessageHook(ISteamClient *, SteamAPIWarningMessageHook_t);
 
 // SteamUser API calls
-STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
+STEAM_API_BRIDGE_API ISteamUser *SteamUser_();
+STEAM_API_BRIDGE_API HSteamUser SteamUser_GetHSteamUser(ISteamUser *);
 
 // TODO: This returns a 'CSteamID', which is a set 64-bits.
 //       It's relatively cleanly converted between uint64 and the struct,
@@ -58,16 +57,27 @@ STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser();
 //       The work around is either to return as a 64-bit int, or store
 //       the result in a pointer argument.
 
-STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(
-    ISteamUser *steamUser, CSteamID *id);
-STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(
-    ISteamUser *steamUser);
-STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(
-    ISteamUser *steamUser, void *pAuthBlob, int cbMaxAuthBlob,
-    CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
-    bool bSecure);
-STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(
-    ISteamUser *steamUser, uint32 unIPServer, uint16 usPortServer);
+STEAM_API_BRIDGE_API void SteamUser_GetSteamID(ISteamUser *, CSteamID *);
+STEAM_API_BRIDGE_API bool SteamUser_BLoggedOn(ISteamUser *);
+STEAM_API_BRIDGE_API int SteamUser_InitiateGameConnection(ISteamUser *, void *, int, CSteamID, uint32, uint16, bool);
+STEAM_API_BRIDGE_API void SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16);
+STEAM_API_BRIDGE_API void SteamUser_TrackAppUsageEvent(ISteamUser *, CGameID, int, const char *);
+STEAM_API_BRIDGE_API bool SteamUser_GetUserDataFolder(ISteamUser *, char *, int);
+STEAM_API_BRIDGE_API void SteamUser_StartVoiceRecording(ISteamUser *);
+STEAM_API_BRIDGE_API void SteamUser_StopVoiceRecording(ISteamUser *);
+STEAM_API_BRIDGE_API EVoiceResult SteamUser_GetAvailableVoice(ISteamUser *, uint32 *, uint32 *, uint32);
+STEAM_API_BRIDGE_API EVoiceResult SteamUser_GetVoice(ISteamUser *, bool, void *, uint32, uint32 *, bool , void *, uint32, uint32 *, uint32);
+STEAM_API_BRIDGE_API EVoiceResult SteamUser_DecompressVoice(ISteamUser *, const void *, uint32, void *, uint32, uint32 *, uint32);
+STEAM_API_BRIDGE_API uint32 SteamUser_GetVoiceOptimalSampleRate(ISteamUser *);
+STEAM_API_BRIDGE_API HAuthTicket SteamUser_GetAuthSessionTicket(ISteamUser *, void *, int, uint32 *);
+STEAM_API_BRIDGE_API EBeginAuthSessionResult SteamUser_BeginAuthSession(ISteamUser *, const void *, int, CSteamID);
+STEAM_API_BRIDGE_API void SteamUser_EndAuthSession(ISteamUser *, CSteamID);
+STEAM_API_BRIDGE_API void SteamUser_CancelAuthTicket(ISteamUser *, HAuthTicket);
+STEAM_API_BRIDGE_API EUserHasLicenseForAppResult SteamUser_UserHasLicenseForApp(ISteamUser *, CSteamID, AppId_t);
+STEAM_API_BRIDGE_API bool SteamUser_BIsBehindNAT(ISteamUser *);
+STEAM_API_BRIDGE_API void SteamUser_AdvertiseGame(ISteamUser *, CSteamID, uint32, uint16);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamUser_RequestEncryptedAppTicket(ISteamUser *, void *, int);
+STEAM_API_BRIDGE_API bool SteamUser_GetEncryptedAppTicket(ISteamUser *, void *, int, uint32 *);
 
 // SteamFriends API calls
 STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends();

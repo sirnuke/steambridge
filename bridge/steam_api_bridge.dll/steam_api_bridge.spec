@@ -12,15 +12,33 @@
 @ cdecl SteamClient_SetWarningMessageHook(ptr)
 
 # SteamUser API calls
-@ cdecl steam_bridge_SteamUser(str)
-@ cdecl steam_bridge_SteamUser_GetSteamID(ptr ptr)
-@ cdecl steam_bridge_SteamUser_BLoggedOn(ptr)
+@ cdecl SteamUser_(str)
+@ cdecl SteamUser_GetHSteamUser(ptr)
+@ cdecl SteamUser_GetSteamID(ptr ptr)
+@ cdecl SteamUser_BLoggedOn(ptr)
 #@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long word long)
 # TODO: Second to last parameter is an unsigned short (16-bits) -
 #       Winelib documenation suggests this is still a 'long'
-@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long long long)
+@ cdecl SteamUser_InitiateGameConnection(ptr ptr long int64 long long long)
 #@ cdecl steam_bridge_SteamUser_TerminateGameConnection(ptr long word)
-@ cdecl steam_bridge_SteamUser_TerminateGameConnection(ptr long long)
+@ cdecl SteamUser_TerminateGameConnection(ptr long long)
+@ cdecl SteamUser_TrackAppUsageEvent(ptr int64 long str)
+@ cdecl SteamUser_GetUserDataFolder(ptr ptr long)
+@ cdecl SteamUser_StartVoiceRecording(ptr)
+@ cdecl SteamUser_StopVoiceRecording(ptr)
+@ cdecl SteamUser_GetAvailableVoice(ptr ptr ptr long)
+@ cdecl SteamUser_GetVoice(ptr long ptr long ptr long ptr long ptr long)
+@ cdecl SteamUser_DecompressVoice(ptr ptr long ptr long ptr long)
+@ cdecl SteamUser_GetVoiceOptimalSampleRate(ptr)
+@ cdecl SteamUser_GetAuthSessionTicket(ptr ptr long ptr)
+@ cdecl SteamUser_BeginAuthSession(ptr ptr long int64)
+@ cdecl SteamUser_EndAuthSession(ptr int64)
+@ cdecl SteamUser_CancelAuthTicket(ptr long)
+@ cdecl SteamUser_UserHasLicenseForApp(ptr int64 long)
+@ cdecl SteamUser_BIsBehindNAT(ptr)
+@ cdecl SteamUser_AdvertiseGame(ptr int64 long long)
+@ cdecl -ret64 SteamUser_RequestEncryptedAppTicket(ptr ptr long)
+@ cdecl SteamUser_GetEncryptedAppTicket(ptr ptr long ptr)
 
 # SteamFriends API Calls
 @ cdecl steam_bridge_SteamFriends()
