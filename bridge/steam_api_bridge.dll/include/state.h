@@ -1,4 +1,7 @@
-// state.h - Implements the internal State class.
+// state.h - Implements the internal State class
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #ifndef  ___STEAM_BRIDGE_CORE_H__
 #define  ___STEAM_BRIDGE_CORE_H__

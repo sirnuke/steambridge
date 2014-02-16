@@ -1,4 +1,7 @@
-// Implements code related to various core API calls
+// core.cpp - Implements code related to various core API calls
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <cstdio>
 

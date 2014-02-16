@@ -1,4 +1,7 @@
-// client.cpp - Implements various functions related to the ISteamClient class.
+// client.cpp - Implements various functions related to the ISteamClient class
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <steam_api.h>
 

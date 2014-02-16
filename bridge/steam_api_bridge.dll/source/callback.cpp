@@ -1,4 +1,7 @@
 // callback.cpp - Handles callback API calls
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <cstdio>
 

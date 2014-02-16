@@ -1,4 +1,7 @@
-// meta.cpp - Implements various meta API calls.
+// meta.cpp - Implements various meta API calls
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <cstdio>
 

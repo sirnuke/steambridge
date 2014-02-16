@@ -1,4 +1,7 @@
-// state.h - Implements the internal State class.
+// state.h - Implements the internal State class
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 // C headers
 #include <cstdio>

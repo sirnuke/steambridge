@@ -1,4 +1,7 @@
 // userstats.cpp - Implements various functions related to ISteamUserStats
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <cstdio>
 

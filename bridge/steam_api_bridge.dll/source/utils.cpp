@@ -1,4 +1,7 @@
-// utils.cpp - Implements various functions related to the ISteamUtils class.
+// utils.cpp - Implements various functions related to the ISteamUtils class
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include <cstdio>
 
