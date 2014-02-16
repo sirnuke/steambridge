@@ -177,5 +177,14 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamUserStats_GetAchievementName(
   return steamUserStats->GetAchievementName(iAchievement);
 }
 
+STEAM_API_BRIDGE_API SteamAPICall_t
+  steam_bridge_SteamUserStats_RequestUserStats(ISteamUserStats *steamUserStats,
+      CSteamID steamIDUser)
+{
+  WINE_TRACE("(%p,%llu)\n", steamUserStats, steamIDUser.ConvertToUint64());
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->RequestUserStats(steamIDUser);
+}
+
 } // extern "C"
 

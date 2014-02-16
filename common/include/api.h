@@ -125,6 +125,9 @@ STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
     ISteamUserStats *steamUserStats);
 STEAM_API_BRIDGE_API const char *steam_bridge_SteamUserStats_GetAchievementName(
     ISteamUserStats *steamUserStats, uint32 iAchievement);
+STEAM_API_BRIDGE_API SteamAPICall_t
+  steam_bridge_SteamUserStats_RequestUserStats(ISteamUserStats *steamUserStats,
+      CSteamID steamIDUser);
 
 // SteamUtils API Calls
 STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();

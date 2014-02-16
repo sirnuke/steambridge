@@ -50,6 +50,7 @@
 @ cdecl steam_bridge_SteamUserStats_GetAchievementDisplayAttribute(ptr str str)
 @ cdecl steam_bridge_SteamUserStats_GetNumAchievements(ptr)
 @ cdecl steam_bridge_SteamUserStats_GetAchievementName(ptr long)
+@ cdecl steam_bridge_SteamUserStats_RequestUserStats(ptr int64)
 
 # SteamUtils API Calls
 @ cdecl steam_bridge_SteamUtils()
