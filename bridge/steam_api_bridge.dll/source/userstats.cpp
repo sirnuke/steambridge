@@ -129,12 +129,52 @@ STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(
   return steamUserStats->StoreStats();
 }
 
+STEAM_API_BRIDGE_API int steam_bridge_SteamUserStats_GetAchievementIcon(
+    ISteamUserStats *steamUserStats, const char *pchName)
+{
+  WINE_TRACE("(%p,\"%s\")\n", steamUserStats, pchName);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetAchievementIcon(pchName);
+}
+
+// TODO: Does this function work right?  As I understand, wide-strings
+//       are weird between Windows and Linux, but normal cstrings should
+//       be fine.
+STEAM_API_BRIDGE_API const char *
+  steam_bridge_SteamUserStats_GetAchievementDisplayAttribute(
+    ISteamUserStats *steamUserStats, const char *pchName, const char *pchKey)
+{
+  WINE_TRACE("(%p,\"%s\",\"%s\")\n", steamUserStats, pchName, pchKey);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetAchievementDisplayAttribute(pchName, pchKey);
+}
+
+STEAM_API_BRIDGE_API bool 
+  steam_bridge_SteamUserStats_IndicateAchievementProgress(
+    ISteamUserStats *steamUserStats, const char *pchName, uint32 nCurProgress,
+    uint32 nMaxProgress)
+{
+  WINE_TRACE("(%p,\"%s\",%u,%u)", steamUserStats, pchName, nCurProgress,
+      nMaxProgress);
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->IndicateAchievementProgress(pchName, nCurProgress,
+      nMaxProgress);
+}
+
 STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
     ISteamUserStats *steamUserStats)
 {
   WINE_TRACE("(%p)\n", steamUserStats);
   if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
   return steamUserStats->GetNumAchievements();
+}
+
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamUserStats_GetAchievementName(
+    ISteamUserStats *steamUserStats, uint32 iAchievement)
+{
+  WINE_TRACE("(%p,%u)\n");
+  if (!steamUserStats) __ABORT("NULL steamUserStats pointer!");
+  return steamUserStats->GetAchievementName(iAchievement);
 }
 
 } // extern "C"

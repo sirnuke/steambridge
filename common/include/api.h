@@ -116,8 +116,15 @@ STEAM_API_BRIDGE_API bool
     uint32 *punUnlockTime);
 STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(
     ISteamUserStats *steamUserStats);
+STEAM_API_BRIDGE_API int steam_bridge_SteamUserStats_GetAchievementIcon(
+    ISteamUserStats *steamUserStats, const char *pchName);
+STEAM_API_BRIDGE_API const char *
+  steam_bridge_SteamUserStats_GetAchievementDisplayAttribute(
+    ISteamUserStats *steamUserStats, const char *pchName, const char *pchKey);
 STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(
     ISteamUserStats *steamUserStats);
+STEAM_API_BRIDGE_API const char *steam_bridge_SteamUserStats_GetAchievementName(
+    ISteamUserStats *steamUserStats, uint32 iAchievement);
 
 // SteamUtils API Calls
 STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();
