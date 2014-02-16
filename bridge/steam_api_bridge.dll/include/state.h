@@ -82,7 +82,6 @@ class State
 
     // Basic state variables
     bool initialized;
-    std::string steamBridgeRoot;
     void *steamAPIHandle;
     AppId_t appid;
 

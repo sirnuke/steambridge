@@ -33,10 +33,7 @@
 
 #include "config.h"
 
-// TODO: Move these to config.sh!
-#define _APPDB_FILENAME "/appdb.json"
 #define _APPDB_APIVERSIONS "apiversions"
-#define _CONFIGURATION_FILE "/config.cfg"
 
 typedef ISteamClient *(*steam_api_SteamClient_t)(void);
 typedef HSteamUser (*steam_api_GetHSteamUser_t)(void);
@@ -158,19 +155,17 @@ void State::checkBridgeDirectory()
 
   if (dir.empty()) __ABORT("Unable to find a valid home directory!");
 
-  steamBridgeRoot = dir + _STEAM_BRIDGE_ROOT;
-
-  if (stat(steamBridgeRoot.c_str(), &rootDir) != 0)
+  if (stat(_STEAM_BRIDGE_ROOT, &rootDir) != 0)
   {
     if (errno != ENOENT)
-      __ABORT("Root directory \"%s\" doesn't exist!", steamBridgeRoot.c_str());
+      __ABORT("Root directory \"%s\" doesn't exist!", _STEAM_BRIDGE_ROOT);
     else
       __ABORT("Unable to stat root directory \"%s\": %s\n",
-          steamBridgeRoot.c_str(), strerror(errno));
+          _STEAM_BRIDGE_ROOT, strerror(errno));
   }
   else if (S_ISDIR(rootDir.st_mode) == 0)
     __ABORT("Root directory \"%s\" exists, but isn't a directory!\n",
-        steamBridgeRoot.c_str());
+        _STEAM_BRIDGE_ROOT);
 }
 
 void State::loadSteamAPI()
@@ -193,7 +188,7 @@ bool State::readConfiguration()
 
   disclaimer = false;
 
-  std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
+  std::string filename = _STEAM_BRIDGE_CONFIG;
 
   std::ifstream in(filename.c_str());
 
@@ -232,7 +227,7 @@ bool State::saveConfiguration()
 {
   WINE_TRACE("(this=%p)\n", this);
 
-  std::string filename = steamBridgeRoot + _CONFIGURATION_FILE;
+  std::string filename = _STEAM_BRIDGE_CONFIG;
 
   std::ofstream out(filename.c_str());
 
@@ -259,7 +254,7 @@ void State::loadSteamAPIVersions()
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
   std::stringstream ss;
-  ss << _STEAM_BRIDGE_APPDB_ROOT << "/" << appid << _APPDB_FILENAME;
+  ss << _STEAM_BRIDGE_APPDB_ROOT << "/" << appid << "/" << _STEAM_BRIDGE_APPDB_CONFIG;
   std::string filename = ss.str();
 
   std::ifstream in(filename.c_str());
