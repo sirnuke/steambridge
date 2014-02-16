@@ -3,7 +3,7 @@
 import re
 import os
 
-import filesystem
+import config
 
 class AppManifest:
   def __init__(self, appid):
@@ -11,7 +11,7 @@ class AppManifest:
       print "Invalid appid of {}".format(appid)
       exit(1)
 
-    self._filename = filesystem.STEAM_APPMANIFESTS \
+    self._filename = config.STEAM_APPMANIFESTS \
         + "/appmanifest_{}.acf".format(appid)
     self._name = None
     self._state = None
@@ -56,7 +56,7 @@ class AppManifest:
               self._name = data['value']
 
           elif data['key'] == 'installdir':
-            self._installdir = filesystem.STEAM_APPS \
+            self._installdir = config.STEAM_APPS \
                 + "/{}".format(data['value'])
 
     # For now, only require a state

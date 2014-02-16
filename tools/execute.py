@@ -4,7 +4,7 @@ import argparse
 import shutil
 import os
 
-from pyruntime import filesystem, appdb
+from pyruntime import config, filesystem, appdb
 
 parser = argparse.ArgumentParser()
 parser.add_argument("appid", help="run this Steam game using Wine")
@@ -25,7 +25,7 @@ if not appdb.validate():
   err("{} has an invalid appdb file".format(appdb.appid()))
 
 # Copy the proxy DLL
-shutil.copyfile(filesystem.PROXY_DLL, appdb.workingdir + "/steam_api.dll")
+shutil.copyfile(config.PROXY_DLL, appdb.workingdir + "/steam_api.dll")
 
 # Set appid.txt, if it doesn't already exist
 # TODO: Check to make sure the existing appid.txt has the right value?
@@ -37,7 +37,7 @@ if not os.path.isfile(appdb.workingdir + "/steam_appid.txt"):
 os.chdir(appdb.installdir)
 # TODO: wineprefix
 cmd = 'WINEDEBUG="+steam_bridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
-    .format(filesystem.WINELIB_PATH, appdb.executable, appdb.directory(), appdb.directory())
+    .format(config.WINELIB_PATH, appdb.executable, appdb.directory(), appdb.directory())
 
 print "DEBUG: execute('{}')".format(cmd)
 

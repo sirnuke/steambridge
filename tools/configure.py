@@ -4,7 +4,7 @@ import argparse
 import os
 import shutil
 
-from pyruntime import filesystem, appmanifest, appdb
+from pyruntime import config, filesystem, appmanifest, appdb
 
 parser = argparse.ArgumentParser()
 parser.add_argument("appid", help="the application's id")
@@ -174,11 +174,13 @@ with open(desktop, 'w') as f:
   # TODO: Icon would go here
   f.write("Type=Application\n")
   f.write("Name={} (Wine)\n".format(appdb.name))
-  f.write("Exec={} {}\n".format(filesystem.EXECUTE_TOOL, manifest.appid()))
+  f.write("Exec={} {}\n".format(config.EXECUTE_TOOL, manifest.appid()))
 
 os.chmod(desktop, 0755)
 
 # Note that it's possible to add this to the shortcuts.vdf file
 # located... somewhere... in the Steam install.  Might be a better way to
 # go about this than creating a complete .desktop file.
+
+print "Done.  A newly created .desktop file should be on your desktop."
 

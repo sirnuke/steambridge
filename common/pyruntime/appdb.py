@@ -3,7 +3,7 @@
 import json
 import os
 
-import filesystem
+import config
 
 class Entry:
   def __init__(self, appid):
@@ -12,7 +12,7 @@ class Entry:
     self.executable = None
     self.name = None
     self._appid = appid
-    self._directory = filesystem.APPDB_ROOT + "/" + str(appid)
+    self._directory = config.APPDB_ROOT + "/" + str(appid)
     self._filename = self._directory + "/appdb.json"
     self._apiversions = {}
 
