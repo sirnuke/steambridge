@@ -24,9 +24,12 @@ My test bed is a 13.10 64-bit Ubuntu install.
 On a 64-bit Ubuntu installation, you'll (roughly) want *build-essential*,
 *g++*, *g++-multilib*, *wine1.7*, and *wine1.7-dev*.  32-bit distros
 won't need *g++-multilib*.  Other distros will probably have similar
-requirements.
+requirements.  You'll likely also want *winetricks* in some form.
+Ubuntu has it as a package, which seems to work fine.
 
 Specifically, various components depend on *make*, *strings*,
 *python2.7*,and *bash*.  All of which should be installed out of the box,
-or as part of the previous package list.
+or as part of the previous package list.  *strings* and *python2.7*
+are needed for the Python runtime tools.  At a glance, SteamOS should
+have both out of the box.
 

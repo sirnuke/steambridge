@@ -71,18 +71,42 @@ a .desktop link on your desktop that runs the application.
 
 ### Alright, let's play
 
-1. Download a game through Steam inside of Wine
-2. Backup the game's *steam_api.dll*
-3. Compile *steam_api_proxy.dll* using Visual Studio
-4. Copy *steam_api_proxy.dll* to the Linux source
-6. Compile *steam_api_bridge.dll.so* with **make**
-7. Setup the SteamBridge environment with **make deploy** (no sudo!)
-8. Enter ~/.steam/root/SteamBridge/root/
-9. Download a game using *download.py*
-10. Configure said game (when finished downloading!) with *configure.py*
-11. Run the game using *execute.py*, or the newly created link on
-your desktop
-12. Party wildly
+#### Compilation
+
+1. Configure with **make config**
+2. Compile the Proxy DLL using Visual Studio
+  * If you aren't sharing the same directory, you'll need
+    to copy common/include/config.h to Windows, and copy
+    Release/steam\_api\_proxy.dll back to Linux
+3. Compile the Bridge DLL with **make**
+4. Deploy SteamBridge with **make deploy**
+
+#### Execution
+
+1. Download an application using *download.py*
+  * Look inside ~/.steam/root/SteamBridge/bin, by default
+2. Configure the application using *configure.py*
+3. Run the game using the shortcut placed on your desktop
+  * You can add this shortcut back to Steam as a non-game entry.
+    Note that Steam doesn't add the shortcut correctly, you'll need to
+    manually modify it and add the appid as a parameter to *execute.py*.
+4. Party wildly
+
+#### Notes
+
+Many games cannot be downloaded with *download.py*.  SteamPlay and
+applications using multiple appids seem to be culprits.  You can download
+an application through Windows Steam running inside of Wine, and copy the
+appmanifest\_XXXX.acf and installation to their corresponding directories
+under *~/.steam/root/SteamApps/*.  In the future, downloading through
+Wine will be better handled.
+
+Note that SteamBridge depends on the Visual C++ runtime.  Wine includes
+an implementation of this runtime, which works right most of the time.
+Notably, on my test machine the real runtime is needed when running a
+SteamBridge application through Steam.  The easiest way to get this is
+to download *winetricks* and run **winetricks vcrunXXXX** where XXXX
+corresponds to the version of Visual Studio.
 
 Review the *documentation* directory for more notes
 

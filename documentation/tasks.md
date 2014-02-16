@@ -14,9 +14,17 @@ In no particular order, general things that need to be done:
   handful of C API calls, rather than all C/C++ API calls as it stands
   right now.
 * Write a GUI to handle downloading/configuring/etc of applications.
-* Add configured Windows games as Steam shortcuts automagically (it can
+* Add configured applications as Steam shortcuts automagically (it can
   be done!)
-* Consolidate paths/versions/etc to a single file.  Right now, the
-  location of SteamBridge deployment is hardcoded in various places.
-* Rename various references from 'games' to 'applications'.  More
-  technically accurate, which is the best kind of correct.
+* Handle WINEPREFIXESes.  Right now everything just uses the default one.
+  It may be nice to have everything in it's own PREFIX.
+* Download applications through Wine, and automagically transfer them to
+  Linux Steam.
+* vcrun2010, and friends.  Should be done with some degree automation
+  through SteamBridge, I think.
+* SteamBridge's bridge API as a pure C library?  It shouldn't be that bad
+  to wrap the Wine stuff such that it can be compiled and used stand
+  alone.
+* It'd be nice to compare version string information between the Proxy
+  and Bridge, and warn if they don't reasonably match.
+
