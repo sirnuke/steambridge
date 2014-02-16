@@ -3,9 +3,9 @@
 # Core API calls
 @ cdecl SteamAPI_InitSafe_()
 @ cdecl SteamAPI_Shutdown_()
-@ cdecl steam_bridge_SteamAPI_RegisterCallback(ptr ptr ptr long long)
-@ cdecl steam_bridge_SteamAPI_UnregisterCallback(ptr)
-@ cdecl steam_bridge_SteamAPI_RunCallbacks();
+@ cdecl SteamAPI_RegisterCallback_(ptr ptr ptr long long)
+@ cdecl SteamAPI_UnregisterCallback_(ptr)
+@ cdecl SteamAPI_RunCallbacks_()
 
 # SteamClient API Calls
 @ cdecl steam_bridge_SteamClient()
@@ -62,7 +62,7 @@
 # a struct or 64-bits of data, this should be safe to use with -ret64
 @ cdecl -ret64 SteamUserStats_FindOrCreateLeaderboard(ptr str long long)
 @ cdecl -ret64 SteamUserStats_FindLeaderboard(ptr str)
-@ cdecl SteamUserStats_GetLeaderboardName(str int64);
+@ cdecl SteamUserStats_GetLeaderboardName(str int64)
 @ cdecl SteamUserStats_GetLeaderboardEntryCount(ptr int64)
 @ cdecl SteamUserStats_GetLeaderboardSortMethod(ptr int64)
 @ cdecl SteamUserStats_GetLeaderboardDisplayType(ptr int64)

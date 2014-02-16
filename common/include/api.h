@@ -38,12 +38,10 @@ STEAM_API_BRIDGE_API bool SteamAPI_InitSafe_();
 STEAM_API_BRIDGE_API void SteamAPI_Shutdown_();
 // TODO: Handle callback flags better, probably don't need/want to
 //       return an int here.
-STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
-    steam_bridge_CallbackRunFunc run, steam_bridge_CallbackRunArgsFunc runargs,
-    void *object, int callback, int size);
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
-    void *object);
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks();
+STEAM_API_BRIDGE_API int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc run,
+    steam_bridge_CallbackRunArgsFunc runargs, void *object, int callback, int size);
+STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *object);
+STEAM_API_BRIDGE_API void SteamAPI_RunCallbacks_();
 
 // SteamClient API Calls
 STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient();

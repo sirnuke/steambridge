@@ -49,10 +49,9 @@ class CallbackImpl : protected CCallbackBase
     steam_bridge_CallbackRunFunc run;
     steam_bridge_CallbackRunArgsFunc runargs;
 
-    friend int steam_bridge_SteamAPI_RegisterCallback(
-        steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc,
-        void *, int, int);
-    friend void steam_bridge_SteamAPI_UnregisterCallback(void *cCallbackBase);
+    friend int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc,
+        steam_bridge_CallbackRunArgsFunc, void *, int, int);
+    friend void SteamAPI_UnregisterCallback_(void *cCallbackBase);
 };
 
 CallbackImpl::CallbackImpl(steam_bridge_CallbackRunFunc run,
@@ -149,7 +148,7 @@ int CallbackImpl::GetCallbackSizeBytes()
 extern "C"
 {
 
-void steam_bridge_SteamAPI_RunCallbacks()
+void SteamAPI_RunCallbacks_()
 {
   // Note that this appears to be purely single threaded event checking.
   // All Run(...) executions occur while SteamAPI_RunCallbacks()
@@ -162,9 +161,8 @@ void steam_bridge_SteamAPI_RunCallbacks()
   (*api)();
 }
 
-int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run, 
-    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int callback, 
-    int size)
+int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc run,
+    steam_bridge_CallbackRunArgsFunc runargs, void *cCallbackBase, int callback, int size)
 {
   WINE_TRACE("(%p,%p,%p,%i,%i)\n", run, runargs, cCallbackBase, callback, size);
 
@@ -195,37 +193,32 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
   CCallbackBase *reference = (CCallbackBase *)(cCallbackBase);
   CallbackImpl *wrapper = new CallbackImpl(run, runargs, reference, size);
 
-  WINE_TRACE("Logging callback wrapper "
-      "(%p,%i,%i)->(%p,callback=%i,flags=%i)\n", reference, callback,
-      size, wrapper, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
+  WINE_TRACE("Logging callback wrapper (%p,%i,%i)->(%p,callback=%i,flags=%i)\n", reference,
+      callback, size, wrapper, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
 
   state->addCallback(wrapper, reference);
   __DLSYM_GET(steam_api_RegisterCallback_t, api, "SteamAPI_RegisterCallback");
   (*api)(wrapper, callback);
 
-  WINE_TRACE("Callback registered "
-      "(wrapper=%p,base=%p,callback=%i,flags=%i)\n", wrapper,
-      reference, wrapper->m_iCallback, wrapper->m_nCallbackFlags);
+  WINE_TRACE("Callback registered (wrapper=%p,base=%p,callback=%i,flags=%i)\n", wrapper, reference,
+      wrapper->m_iCallback, wrapper->m_nCallbackFlags);
 
   if (wrapper->m_iCallback != callback)
     __ABORT("Callback doesn't match expected after RegisterCallback! "
-        "(wrapper=%p,base=%p,expected=%i,actual=%i)", wrapper,
-        reference, callback, wrapper->m_iCallback);
+        "(wrapper=%p,base=%p,expected=%i,actual=%i)", wrapper, reference, callback,
+        wrapper->m_iCallback);
 
   return wrapper->m_nCallbackFlags;
 }
 
-STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
-    void *cCallbackBase)
+STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *cCallbackBase)
 {
   WINE_TRACE("(%p)\n", cCallbackBase);
   if (!state) __ABORT("NULL internal state");
 
   CCallbackBase *reference = (CCallbackBase *)(cCallbackBase);
-  CallbackImpl *wrapper
-    = reinterpret_cast<CallbackImpl *>(state->getCallback(reference));
-  __DLSYM_GET(steam_api_UnregisterCallback_t, api,
-      "SteamAPI_UnregisterCallback");
+  CallbackImpl *wrapper = reinterpret_cast<CallbackImpl *>(state->getCallback(reference));
+  __DLSYM_GET(steam_api_UnregisterCallback_t, api, "SteamAPI_UnregisterCallback");
   // TODO: Flaggsss
   (*api)(wrapper);
   state->removeCallback(reference);
@@ -235,5 +228,4 @@ STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(
 }
 
 } // extern "C"
-
 
