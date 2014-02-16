@@ -34,8 +34,8 @@ class ISteamUtils;
 extern "C" {
 
 // Core API Calls
-STEAM_API_BRIDGE_API bool SteamAPI_InitSafe();
-STEAM_API_BRIDGE_API void SteamAPI_Shutdown();
+STEAM_API_BRIDGE_API bool SteamAPI_InitSafe_();
+STEAM_API_BRIDGE_API void SteamAPI_Shutdown_();
 // TODO: Handle callback flags better, probably don't need/want to
 //       return an int here.
 STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(
@@ -90,7 +90,7 @@ STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
     ISteamApps *steamApps);
 
 // SteamUserStats API Calls
-STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStats();
+STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStats_();
 STEAM_API_BRIDGE_API bool SteamUserStats_RequestCurrentStats(ISteamUserStats *);
 STEAM_API_BRIDGE_API bool SteamUserStats_GetStatI(ISteamUserStats *, const char *, int32 *);
 STEAM_API_BRIDGE_API bool SteamUserStats_GetStatF(ISteamUserStats *, const char *, float *);

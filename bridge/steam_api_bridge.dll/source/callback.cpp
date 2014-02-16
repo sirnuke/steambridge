@@ -176,7 +176,7 @@ int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc run,
   if (!state)
   {
     WINE_ERR("Calling SteamAPI_InitSafe in RegisterCallback for the app\n");
-    if (!SteamAPI_InitSafe())
+    if (!SteamAPI_InitSafe_())
       __ABORT("InitSafe failed when called from RegisterCallback!");
   }
 

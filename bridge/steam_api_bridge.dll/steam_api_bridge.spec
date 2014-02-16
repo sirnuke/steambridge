@@ -1,8 +1,8 @@
 # steam_api_bridge Winelib spec file
 
 # Core API calls
-@ cdecl SteamAPI_InitSafe()
-@ cdecl SteamAPI_Shutdown()
+@ cdecl SteamAPI_InitSafe_()
+@ cdecl SteamAPI_Shutdown_()
 @ cdecl steam_bridge_SteamAPI_RegisterCallback(ptr ptr ptr long long)
 @ cdecl steam_bridge_SteamAPI_UnregisterCallback(ptr)
 @ cdecl steam_bridge_SteamAPI_RunCallbacks();
@@ -34,7 +34,7 @@
 @ cdecl steam_bridge_SteamApps_GetCurrentGameLanguage()
 
 # SteamUserStats API Calls
-@ cdecl SteamUserStats()
+@ cdecl SteamUserStats_()
 @ cdecl SteamUserStats_RequestCurrentStats(ptr)
 @ cdecl SteamUserStats_GetStatI(ptr str ptr)
 @ cdecl SteamUserStats_GetStatF(ptr str ptr)
