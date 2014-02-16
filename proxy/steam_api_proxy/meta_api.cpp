@@ -1,4 +1,7 @@
 // meta_api.cpp - Implements meta API additions to steam_api.dll
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

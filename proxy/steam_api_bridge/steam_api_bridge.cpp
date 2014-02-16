@@ -1,5 +1,7 @@
 // steam_api_bridge.cpp - Stub's the public bridge API
+// Copyright (c) 2014 Bryan DeGrendel
 //
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

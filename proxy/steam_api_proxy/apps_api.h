@@ -1,4 +1,7 @@
 // apps_api.h - Header for the apps_api code
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #pragma once
 

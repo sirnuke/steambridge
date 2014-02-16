@@ -1,6 +1,9 @@
-// types.h - Defines various types used project wide.
+// types.h - Defines various types used project wide
 // Note that this is heavily based off of steamtypes.h, plus including
 // various relevant typedefs and whatnot from other Steam headers.
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #pragma once
 

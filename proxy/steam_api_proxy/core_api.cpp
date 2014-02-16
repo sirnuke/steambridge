@@ -1,4 +1,7 @@
-// core_api.cpp - Implements various core (init, shutdown, etc) functions.
+// core_api.cpp - Implements various core (init, shutdown, etc) functions
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

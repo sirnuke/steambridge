@@ -1,4 +1,7 @@
-// friends_api.cpp - Implements the friends wrapper and various related APIs.
+// friends_api.cpp - Implements the friends wrapper and various related APIs
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

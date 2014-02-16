@@ -1,4 +1,7 @@
-// logging.cpp - Handles various logging (and related) utilities.
+// logging.cpp - Handles various logging (and related) utilities
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

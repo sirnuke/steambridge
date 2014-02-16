@@ -1,4 +1,7 @@
 // user_api.h - Header for the user_api code (specifically SteamUserWrapper)
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #pragma once
 

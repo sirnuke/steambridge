@@ -1,4 +1,7 @@
-// steam_api_proxy.h - Defines all the exposed API calls (+variable).
+// steam_api_proxy.h - Defines all the exposed API calls (+variable)
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "types.h"
 

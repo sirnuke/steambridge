@@ -1,6 +1,9 @@
 // state.cpp - Records the state of the app, specifically stuff that's
 //             internal and can't be cleanly tossed back to the app via 
-//             the existing (and expected) classes/interfaces.
+//             the existing (and expected) classes/interfaces
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

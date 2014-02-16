@@ -1,4 +1,7 @@
 // userstats_api.h - Header for the userstats wrapper
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #pragma once
 

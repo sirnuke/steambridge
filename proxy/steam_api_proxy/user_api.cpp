@@ -1,4 +1,8 @@
-// user_api.cpp - Implements the user wrapper and various related APIs.
+// user_api.cpp - Implements the user wrapper and various related APIs
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
+
 #include "stdafx.h"
 
 #include "logging.h"

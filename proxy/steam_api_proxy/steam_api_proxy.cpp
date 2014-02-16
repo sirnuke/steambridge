@@ -1,4 +1,7 @@
-// steam_api_proxy.cpp - Defines the exported functions for the DLL application.
+// steam_api_proxy.cpp - Defines the exported functions for the DLL application
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

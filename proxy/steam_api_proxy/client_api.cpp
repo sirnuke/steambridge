@@ -1,4 +1,7 @@
 // client_api.cpp - Source for the client_api & SteamClientWrapper
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

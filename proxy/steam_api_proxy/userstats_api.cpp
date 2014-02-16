@@ -1,4 +1,7 @@
-// userstats_api.cpp - Implements the userstats wrapper and related APIs.
+// userstats_api.cpp - Implements the userstats wrapper and related APIs
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

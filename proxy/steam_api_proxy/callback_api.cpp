@@ -1,5 +1,8 @@
 // callback_api.cpp - Implements various APIs functionality related to
-//                    Steam callbacks.
+//                    Steam callbacks
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

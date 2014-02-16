@@ -1,4 +1,7 @@
-// apps_api.cpp - Implements the apps wrapper and various related APIs.
+// apps_api.cpp - Implements the apps wrapper and various related APIs
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #include "stdafx.h"
 

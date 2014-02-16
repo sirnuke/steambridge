@@ -1,4 +1,7 @@
 // utils_api.h - Utils API & SteamUtilsWrapper
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 #pragma once
 

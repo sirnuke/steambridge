@@ -1,4 +1,7 @@
 #pragma once
+// Copyright (c) 2014 Bryan DeGrendel
+//
+// See COPYING and license/LICENSE.steambridge for license information
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
 
