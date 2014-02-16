@@ -61,11 +61,9 @@ class SteamUserStatsWrapper
     // I approve of this argument's name
     virtual bool ResetAllStats(bool bAchievementsToo);
 
-    // SteamAPICall_t ... (const char *, ELeaderboardSortMethod,
-    //                     ELeaderboardDisplayType)
-    virtual SteamAPICall_t FindOrCreateLeaderboard(
-        const char *pchLeaderboardName, int eLeaderboardSortMethod,
-        int eLeaderboardDisplayType);
+    virtual SteamAPICall_t FindOrCreateLeaderboard(const char *pchLeaderboardName,
+        ELeaderboardSortMethod eLeaderboardSortMethod,
+        ELeaderboardDisplayType eLeaderboardDisplayType);
 
     virtual SteamAPICall_t FindLeaderboard(const char *pchLeaderboardName);
 
@@ -74,17 +72,12 @@ class SteamUserStatsWrapper
 
     virtual int GetLeaderboardEntryCount(SteamLeaderboard_t hSteamLeaderboard);
 
-    // ELeaderboardSortMethod ... (SteamLeaderboard_t)
-    virtual int GetLeaderboardSortMethod(SteamLeaderboard_t hSteamLeaderboard);
+    virtual ELeaderboardSortMethod GetLeaderboardSortMethod(SteamLeaderboard_t hSteamLeaderboard);
 
-    // ELeaderboardDisplayType ... (SteamLeaderboard_t)
-    virtual int GetLeaderboardDisplayType(SteamLeaderboard_t hSteamLeaderboard);
+    virtual ELeaderboardDisplayType GetLeaderboardDisplayType(SteamLeaderboard_t hSteamLeaderboard);
 
-    // SteamAPICall_t ... (SteamLeaderboard_t, ELeaderboardDataRequest, int,
-    //                     int)
-    virtual SteamAPICall_t DownloadLeaderboardEntries(
-        SteamLeaderboard_t hSteamLeaderboard, int eLeaderboardDataRequest,
-        int nRangeStart, int nRangeEnd);
+    virtual SteamAPICall_t DownloadLeaderboardEntries(SteamLeaderboard_t hSteamLeaderboard, 
+        ELeaderboardDataRequest eLeaderboardDataRequest, int nRangeStart, int nRangeEnd);
 
     virtual SteamAPICall_t DownloadLeaderboardEntriesForUsers(
         SteamLeaderboard_t hSteamLeaderboard, CSteamID *prgUsers, int cUsers);
@@ -94,15 +87,12 @@ class SteamUserStatsWrapper
         LeaderboardEntry_t *pLeaderboardEntry, int32 *pDetails,
         int cDetailsMax);
 
-    // SteamAPICall_t ... (SteamLeaderboard_t, ELeaderboardUploadScoreMethod,
-    //                     int32, const int32 *, int)
-    virtual SteamAPICall_t UploadLeaderboardScore(
-        SteamLeaderboard_t hSteamLeaderboard,
-        int eLeaderboardUploadScoreMethod, int32 nScore,
+    virtual SteamAPICall_t UploadLeaderboardScore(SteamLeaderboard_t hSteamLeaderboard,
+        ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int32 nScore,
         const int32 *pScoreDetails, int cScoreDetailsCount);
 
-    virtual SteamAPICall_t AttachLeaderboardUGC(
-        SteamLeaderboard_t hSteamLeaderboard, UGCHandle_t hUGC);
+    virtual SteamAPICall_t AttachLeaderboardUGC(SteamLeaderboard_t hSteamLeaderboard,
+          UGCHandle_t hUGC);
 
     virtual SteamAPICall_t GetNumberOfCurrentPlayers();
 

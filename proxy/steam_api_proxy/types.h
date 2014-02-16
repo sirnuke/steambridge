@@ -114,6 +114,11 @@ typedef uint64 UGCHandle_t;
 
 extern "C" typedef void (__cdecl *SteamAPIWarningMessageHook_t)(int, const char *);
 
+typedef int ELeaderboardSortMethod;
+typedef int ELeaderboardDisplayType;
+typedef int ELeaderboardDataRequest;
+typedef int ELeaderboardUploadScoreMethod;
+
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?
 #ifdef STEAM_API_PROXY_EXPORTS
