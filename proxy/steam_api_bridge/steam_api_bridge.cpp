@@ -45,6 +45,16 @@ extern "C"
 
   STEAM_API_BRIDGE_API ISteamUserStats *steam_bridge_SteamUserStats() __STUB__;
   STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_RequestCurrentStats(ISteamUserStats *) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatI(ISteamUserStats *steamUserStats, const char *pchName, int32 *pData) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetStatF(ISteamUserStats *steamUserStats, const char *pchName, float *pData) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatI(ISteamUserStats *steamUserStats, const char *pchName, int32 nData) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetStatF(ISteamUserStats *steamUserStats, const char *pchName, float fData) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_UpdateAvgRateStat(ISteamUserStats *steamUserStats, const char *pchName, float flCountThisSession, double dSessionLength) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievement(ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_SetAchievement(ISteamUserStats *steamUserStats, const char *pchName) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_ClearAchievement(ISteamUserStats *steamUserStats, const char *pchName) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_GetAchievementAndUnlockTime(ISteamUserStats *steamUserStats, const char *pchName, bool *pbAchieved, uint32 *punUnlockTime) __STUB__;
+  STEAM_API_BRIDGE_API bool steam_bridge_SteamUserStats_StoreStats(ISteamUserStats *steamUserStats) __STUB__;
   STEAM_API_BRIDGE_API uint32 steam_bridge_SteamUserStats_GetNumAchievements(ISteamUserStats *) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils() __STUB__;
