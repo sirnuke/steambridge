@@ -146,11 +146,26 @@ STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_IsFollowing(ISteamFriends *, CS
 STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_EnumerateFollowingList(ISteamFriends *, uint32);
 
 // SteamApps API Calls
-STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps();
-STEAM_API_BRIDGE_API bool steam_bridge_SteamApps_BIsSubscribedApp(
-    ISteamApps *steamApps, AppId_t appId);
-STEAM_API_BRIDGE_API const char *steam_bridge_SteamApps_GetCurrentGameLanguage(
-    ISteamApps *steamApps);
+STEAM_API_BRIDGE_API ISteamApps *SteamApps_();
+STEAM_API_BRIDGE_API bool SteamApps_BIsSubscribed(ISteamApps *);
+STEAM_API_BRIDGE_API bool SteamApps_BIsLowViolence(ISteamApps *);
+STEAM_API_BRIDGE_API bool SteamApps_BIsCybercafe(ISteamApps *);
+STEAM_API_BRIDGE_API bool SteamApps_BIsVACBanned(ISteamApps *);
+STEAM_API_BRIDGE_API const char *SteamApps_GetCurrentGameLanguage(ISteamApps *);
+STEAM_API_BRIDGE_API const char *SteamApps_GetAvailableGameLanguages(ISteamApps *);
+STEAM_API_BRIDGE_API bool SteamApps_BIsSubscribedApp(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API bool SteamApps_BIsDlcInstalled(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API uint32 SteamApps_GetEarliestPurchaseUnixTime(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API bool SteamApps_BIsSubscribedFromFreeWeekend(ISteamApps *);
+STEAM_API_BRIDGE_API int SteamApps_GetDLCCount(ISteamApps *);
+STEAM_API_BRIDGE_API bool SteamApps_BGetDLCDataByIndex(ISteamApps *, int, AppId_t *, bool *, char *, int);
+STEAM_API_BRIDGE_API void SteamApps_InstallDLC(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API void SteamApps_UninstallDLC(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API void SteamApps_RequestAppProofOfPurchaseKey(ISteamApps *, AppId_t);
+STEAM_API_BRIDGE_API bool SteamApps_GetCurrentBetaName(ISteamApps *, char *, int);
+STEAM_API_BRIDGE_API bool SteamApps_MarkContentCorrupt(ISteamApps *, bool);
+STEAM_API_BRIDGE_API uint32 SteamApps_GetInstalledDepots(ISteamApps *, DepotId_t *, uint32);
+STEAM_API_BRIDGE_API uint32 SteamApps_GetAppInstallDir(ISteamApps *, AppId_t, char *, uint32);
 
 // SteamUserStats API Calls
 STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStats_();
