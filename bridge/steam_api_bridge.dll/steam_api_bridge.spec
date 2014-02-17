@@ -16,11 +16,11 @@
 @ cdecl SteamUser_GetHSteamUser(ptr)
 @ cdecl SteamUser_GetSteamID(ptr ptr)
 @ cdecl SteamUser_BLoggedOn(ptr)
-#@ cdecl steam_bridge_SteamUser_InitiateGameConnection(ptr ptr long int64 long word long)
+#@ cdecl SteamUser_InitiateGameConnection(ptr ptr long int64 long word long)
 # TODO: Second to last parameter is an unsigned short (16-bits) -
 #       Winelib documenation suggests this is still a 'long'
 @ cdecl SteamUser_InitiateGameConnection(ptr ptr long int64 long long long)
-#@ cdecl steam_bridge_SteamUser_TerminateGameConnection(ptr long word)
+#@ cdecl SteamUser_TerminateGameConnection(ptr long word)
 @ cdecl SteamUser_TerminateGameConnection(ptr long long)
 @ cdecl SteamUser_TrackAppUsageEvent(ptr int64 long str)
 @ cdecl SteamUser_GetUserDataFolder(ptr ptr long)
