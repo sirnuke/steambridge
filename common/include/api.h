@@ -80,13 +80,70 @@ STEAM_API_BRIDGE_API SteamAPICall_t SteamUser_RequestEncryptedAppTicket(ISteamUs
 STEAM_API_BRIDGE_API bool SteamUser_GetEncryptedAppTicket(ISteamUser *, void *, int, uint32 *);
 
 // SteamFriends API calls
-STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends();
-STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(
-    ISteamFriends *steamFriends);
-STEAM_API_BRIDGE_API int steam_bridge_SteamFriends_GetFriendCount(
-    ISteamFriends *steamFriends, int iFriendFlags);
-STEAM_API_BRIDGE_API void steam_bridge_SteamFriends_SetPlayedWith(
-    ISteamFriends *steamFriends, CSteamID steamIDUserPlayedWith);
+STEAM_API_BRIDGE_API ISteamFriends *SteamFriends_();
+STEAM_API_BRIDGE_API const char *SteamFriends_GetPersonaName(ISteamFriends *);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_SetPersonaName(ISteamFriends *, const char *);
+STEAM_API_BRIDGE_API EPersonaState SteamFriends_GetPersonaState(ISteamFriends *);
+STEAM_API_BRIDGE_API int SteamFriends_GetFriendCount(ISteamFriends *, int);
+STEAM_API_BRIDGE_API void SteamFriends_GetFriendByIndex(ISteamFriends *, int, int, CSteamID *);
+STEAM_API_BRIDGE_API EFriendRelationship SteamFriends_GetFriendRelationship(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API EPersonaState SteamFriends_GetFriendPersonaState(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetFriendPersonaName(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_GetFriendGamePlayed(ISteamFriends *, CSteamID, FriendGameInfo_t *);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetFriendPersonaNameHistory(ISteamFriends *, CSteamID, int);
+STEAM_API_BRIDGE_API bool SteamFriends_HasFriend(ISteamFriends *, CSteamID, int);
+STEAM_API_BRIDGE_API int SteamFriends_GetClanCount(ISteamFriends *);
+STEAM_API_BRIDGE_API void SteamFriends_GetClanByIndex(ISteamFriends *, int, CSteamID *);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetClanName(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetClanTag(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_GetClanActivityCounts(ISteamFriends *, CSteamID, int *, int *, int *);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_DownloadClanActivityCounts(ISteamFriends *, CSteamID *, int);
+STEAM_API_BRIDGE_API int SteamFriends_GetFriendCountFromSource(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void GetFriendFromSourceByIndex(ISteamFriends *, CSteamID, int, CSteamID *);
+STEAM_API_BRIDGE_API bool SteamFriends_IsUserInSource(ISteamFriends *, CSteamID, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_SetInGameVoiceSpeaking(ISteamFriends *, CSteamID, bool);
+STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlay(ISteamFriends *, const char *);
+STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToUser(ISteamFriends *, const char *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToWebPage(ISteamFriends *, const char *);
+STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToStore(ISteamFriends *, AppId_t, EOverlayToStoreFlag);
+STEAM_API_BRIDGE_API STEAM_API_BRIDGE_API void SteamFriends_SetPlayedWith(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayInviteDialog(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API int SteamFriends_GetSmallFriendAvatar(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API int SteamFriends_GetMediumFriendAvatar(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API int SteamFriends_GetLargeFriendAvatar(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_RequestUserInformation(ISteamFriends *, CSteamID, bool);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_RequestClanOfficerList(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_GetClanOwner(ISteamFriends *steamFriends, CSteamID, CSteamID *);
+STEAM_API_BRIDGE_API int SteamFriends_GetClanOfficerCount(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_GetClanOfficerByIndex(ISteamFriends *, CSteamID, int, CSteamID *);
+STEAM_API_BRIDGE_API uint32 SteamFriends_GetUserRestrictions(ISteamFriends *);
+STEAM_API_BRIDGE_API bool SteamFriends_SetRichPresence(ISteamFriends *, const char *, const char *);
+STEAM_API_BRIDGE_API void SteamFriends_ClearRichPresence(ISteamFriends *);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetFriendRichPresence(ISteamFriends *, CSteamID, const char *);
+STEAM_API_BRIDGE_API int SteamFriends_GetFriendRichPresenceKeyCount(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API const char *SteamFriends_GetFriendRichPresenceKeyByIndex(ISteamFriends *, CSteamID, int);
+STEAM_API_BRIDGE_API void SteamFriends_RequestFriendRichPresence(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_InviteUserToGame(ISteamFriends *, CSteamID, const char *);
+STEAM_API_BRIDGE_API int SteamFriends_GetCoplayFriendCount(ISteamFriends *);
+STEAM_API_BRIDGE_API void SteamFriends_GetCoplayFriend(ISteamFriends *, int, CSteamID *);
+STEAM_API_BRIDGE_API int SteamFriends_GetFriendCoplayTime(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API AppId_t SteamFriends_GetFriendCoplayGame(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_JoinClanChatRoom(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_LeaveClanChatRoom(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API int SteamFriends_GetClanChatMemberCount(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_GetChatMemberByIndex(ISteamFriends *, CSteamID, int, CSteamID *);
+STEAM_API_BRIDGE_API bool SteamFriends_SendClanChatMessage(ISteamFriends *, CSteamID, const char *);
+STEAM_API_BRIDGE_API int SteamFriends_GetClanChatMessage(ISteamFriends *, CSteamID, int, void *, int, EChatEntryType *, CSteamID *);
+STEAM_API_BRIDGE_API bool SteamFriends_IsClanChatAdmin(ISteamFriends *, CSteamID, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_IsClanChatWindowOpenInSteam(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_OpenClanChatWindowInSteam(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_CloseClanChatWindowInSteam(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API bool SteamFriends_SetListenForFriendsMessages(ISteamFriends *, bool);
+STEAM_API_BRIDGE_API bool SteamFriends_ReplyToFriendMessage(ISteamFriends *, CSteamID, const char *);
+STEAM_API_BRIDGE_API int SteamFriends_GetFriendMessage(ISteamFriends *, CSteamID, int, void *, int, EChatEntryType *);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_GetFollowerCount(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_IsFollowing(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_EnumerateFollowingList(ISteamFriends *, uint32);
 
 // SteamApps API Calls
 STEAM_API_BRIDGE_API ISteamApps *steam_bridge_SteamApps();
