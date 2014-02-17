@@ -118,6 +118,9 @@ typedef int ELeaderboardSortMethod;
 typedef int ELeaderboardDisplayType;
 typedef int ELeaderboardDataRequest;
 typedef int ELeaderboardUploadScoreMethod;
+typedef int EVoiceResult;
+typedef int EBeginAuthSessionResult;
+typedef int EUserHasLicenseForAppResult;
 
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?

@@ -21,18 +21,36 @@ extern "C"
 {
   STEAM_API_BRIDGE_API bool SteamAPI_InitSafe_() __STUB__;
   STEAM_API_BRIDGE_API void SteamAPI_Shutdown_() __STUB__;
-  STEAM_API_BRIDGE_API int steam_bridge_SteamAPI_RegisterCallback(steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc, void *, int, int) __STUB__;
-  STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_UnregisterCallback(void *) __STUB__;
-  STEAM_API_BRIDGE_API void steam_bridge_SteamAPI_RunCallbacks() __STUB__;
+  STEAM_API_BRIDGE_API int SteamAPI_RegisterCallback_(steam_bridge_CallbackRunFunc, steam_bridge_CallbackRunArgsFunc, void *, int, int) __STUB__;
+  STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *) __STUB__;
+  STEAM_API_BRIDGE_API void SteamAPI_RunCallbacks_() __STUB__;
 
-  STEAM_API_BRIDGE_API ISteamClient *steam_bridge_SteamClient() __STUB__;
-  STEAM_API_BRIDGE_API void steam_bridge_SteamClient_SetWarningMessageHook(ISteamClient *, SteamAPIWarningMessageHook_t) __STUB__;
+  STEAM_API_BRIDGE_API ISteamClient *SteamClient_() __STUB__;
+  STEAM_API_BRIDGE_API void SteamClient_SetWarningMessageHook(ISteamClient *, SteamAPIWarningMessageHook_t) __STUB__;
 
-  STEAM_API_BRIDGE_API ISteamUser *steam_bridge_SteamUser() __STUB__;
-  STEAM_API_BRIDGE_API void steam_bridge_SteamUser_GetSteamID(ISteamUser *, CSteamID *) __STUB__;
-  STEAM_API_BRIDGE_API bool steam_bridge_SteamUser_BLoggedOn(ISteamUser *) __STUB__;
-  STEAM_API_BRIDGE_API int steam_bridge_SteamUser_InitiateGameConnection(ISteamUser *, void *, int, CSteamID, uint32, uint16, bool) __STUB__;
-  STEAM_API_BRIDGE_API void steam_bridge_SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16) __STUB__;
+  STEAM_API_BRIDGE_API ISteamUser *SteamUser_() __STUB__;
+  STEAM_API_BRIDGE_API HSteamUser SteamUser_GetHSteamUser(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_GetSteamID(ISteamUser *, CSteamID *) __STUB__;
+  STEAM_API_BRIDGE_API bool SteamUser_BLoggedOn(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API int SteamUser_InitiateGameConnection(ISteamUser *, void *, int, CSteamID, uint32, uint16, bool) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_TerminateGameConnection(ISteamUser *, uint32, uint16) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_TrackAppUsageEvent(ISteamUser *, CGameID, int, const char *) __STUB__;
+  STEAM_API_BRIDGE_API bool SteamUser_GetUserDataFolder(ISteamUser *, char *, int) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_StartVoiceRecording(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_StopVoiceRecording(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API EVoiceResult SteamUser_GetAvailableVoice(ISteamUser *, uint32 *, uint32 *, uint32) __STUB__;
+  STEAM_API_BRIDGE_API EVoiceResult SteamUser_GetVoice(ISteamUser *, bool, void *, uint32, uint32 *, bool , void *, uint32, uint32 *, uint32) __STUB__;
+  STEAM_API_BRIDGE_API EVoiceResult SteamUser_DecompressVoice(ISteamUser *, const void *, uint32, void *, uint32, uint32 *, uint32) __STUB__;
+  STEAM_API_BRIDGE_API uint32 SteamUser_GetVoiceOptimalSampleRate(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API HAuthTicket SteamUser_GetAuthSessionTicket(ISteamUser *, void *, int, uint32 *) __STUB__;
+  STEAM_API_BRIDGE_API EBeginAuthSessionResult SteamUser_BeginAuthSession(ISteamUser *, const void *, int, CSteamID) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_EndAuthSession(ISteamUser *, CSteamID) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_CancelAuthTicket(ISteamUser *, HAuthTicket) __STUB__;
+  STEAM_API_BRIDGE_API EUserHasLicenseForAppResult SteamUser_UserHasLicenseForApp(ISteamUser *, CSteamID, AppId_t) __STUB__;
+  STEAM_API_BRIDGE_API bool SteamUser_BIsBehindNAT(ISteamUser *) __STUB__;
+  STEAM_API_BRIDGE_API void SteamUser_AdvertiseGame(ISteamUser *, CSteamID, uint32, uint16) __STUB__;
+  STEAM_API_BRIDGE_API SteamAPICall_t SteamUser_RequestEncryptedAppTicket(ISteamUser *, void *, int) __STUB__;
+  STEAM_API_BRIDGE_API bool SteamUser_GetEncryptedAppTicket(ISteamUser *, void *, int, uint32 *) __STUB__;
 
   STEAM_API_BRIDGE_API ISteamFriends *steam_bridge_SteamFriends() __STUB__;
   STEAM_API_BRIDGE_API const char *steam_bridge_SteamFriends_GetPersonaName(ISteamFriends *) __STUB__;

@@ -28,8 +28,7 @@ class SteamUserWrapper
     virtual int InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob,
         CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer,
         bool bSecure);
-    virtual void TerminateGameConnection(uint32 unIPServer,
-        uint16 usPortServer);
+    virtual void TerminateGameConnection(uint32 unIPServer, uint16 usPortServer);
 
     // CGameID appears to be similar to CSteamID, except for gameIDs.
     // It's a set 128 bits long, so can probably just pass a uint128 around.
@@ -41,49 +40,36 @@ class SteamUserWrapper
     virtual void StartVoiceRecording();
     virtual void StopVoiceRecording();
 
-    // EVoiceResult ... (uint32 *, uint32 *, uint32)
-    virtual int GetAvailableVoice(uint32 *pcbCompressed,
+    virtual EVoiceResult GetAvailableVoice(uint32 *pcbCompressed,
         uint32 *pcbUncompressed, uint32 nUncompressedVoiceDesiredSampleRate);
 
-    // EVoiceResult ... (bool, void *, uint32, uint32 *, bool, void *, uint32,
-    //                   uint32 *, uint32)
-    virtual int GetVoice(bool bWantCompressed, void *pDestBuffer,
-        uint32 cbDestBufferSize, uint32 *nBytesWritten, bool bWantUncompressed,
-        void *pUncompressedDestBuffer, uint32 cbUncompressedDestBufferSize,
-        uint32 *nUncompressBytesWritten,
+    virtual EVoiceResult GetVoice(bool bWantCompressed, void *pDestBuffer, uint32 cbDestBufferSize,
+        uint32 *nBytesWritten, bool bWantUncompressed, void *pUncompressedDestBuffer,
+        uint32 cbUncompressedDestBufferSize, uint32 *nUncompressBytesWritten,
         uint32 nUncompressedVoiceDesiredSampleRate);
 
-    // EVoiceResult ... (const void *, uint32, void *, uint32, uint32 *, uint32)
-    virtual int DecompressVoice(const void *pCompressed, uint32 cbCompressed,
+    virtual EVoiceResult DecompressVoice(const void *pCompressed, uint32 cbCompressed,
         void *pDestBuffer, uint32 cbDestBufferSize, uint32 *nBytesWritten,
         uint32 nDesiredSampleRate);
 
     virtual uint32 GetVoiceOptimalSampleRate();
-    virtual HAuthTicket GetAuthSessionTicket(void *pTicket, int cbMaxTicket,
-        uint32 *pcbTicket);
+    virtual HAuthTicket GetAuthSessionTicket(void *pTicket, int cbMaxTicket, uint32 *pcbTicket);
 
-    // EBeginAuthSessionResult ... (const void *, int, CSteamID)
-    virtual int BeginAuthSession(const void *pAuthTicket, int cbAuthTicket,
-        uint64 steamID);
+    virtual EBeginAuthSessionResult BeginAuthSession(const void *pAuthTicket, int cbAuthTicket,
+        CSteamID steamID);
 
-    // void ... (CSteamID)
-    virtual void EndAuthSession(uint64 steamID);
+    virtual void EndAuthSession(CSteamID steamID);
 
     virtual void CancelAuthTicket(HAuthTicket hAuthTicket);
 
-    // EUserHasLicenseForAppResult ... (CSteamID, AppId_t)
-    virtual int UserHasLicenseForApp(uint64 steamID, AppId_t appID);
+    virtual EUserHasLicenseForAppResult UserHasLicenseForApp(CSteamID steamID, AppId_t appID);
 
     virtual bool BIsBehindNAT();
 
-    // void ... (CSteamID, uint32, uint16)
-    virtual void AdvertiseGame(uint64 steamIDGameServer, uint32 unIPServer,
-        uint16 usPortServer);
+    virtual void AdvertiseGame(CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer);
 
-    virtual SteamAPICall_t RequestEncryptedAppTicket(void *pDataToInclude,
-        int cbDataToInclude);
-    virtual bool GetEncryptedAppTicket(void *pTicket, int cbMaxTicket,
-        uint32 *pcbTicket);
+    virtual SteamAPICall_t RequestEncryptedAppTicket(void *pDataToInclude, int cbDataToInclude);
+    virtual bool GetEncryptedAppTicket(void *pTicket, int cbMaxTicket, uint32 *pcbTicket);
 
   private:
     // TODO: This function technically changes the size/composition of

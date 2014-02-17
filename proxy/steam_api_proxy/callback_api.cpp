@@ -84,19 +84,17 @@ void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 {
   __TRACE("()");
-  steam_bridge_SteamAPI_RunCallbacks();
+  SteamAPI_RunCallbacks_();
 }
 
-STEAM_API_PROXY_API void SteamAPI_RegisterCallback(
-    class CCallbackBase *pCallback, int iCallback)
+STEAM_API_PROXY_API void SteamAPI_RegisterCallback(class CCallbackBase *pCallback, int iCallback)
 {
   __TRACE("(0x%p,%i)", pCallback, iCallback);
-  __LOG("Registering Callback (0x%p) iCallback (%i) size (%i)",
-    pCallback, iCallback, pCallback->GetCallbackSizeBytes());
+  __LOG("Registering Callback (0x%p) iCallback (%i) size (%i)", pCallback, iCallback,
+     pCallback->GetCallbackSizeBytes());
 
   state.addCallback(pCallback);
-  int flags = steam_bridge_SteamAPI_RegisterCallback(&callback_run, 
-      &callback_run_args, pCallback, iCallback,
+  int flags = SteamAPI_RegisterCallback_(&callback_run, &callback_run_args, pCallback, iCallback,
       pCallback->GetCallbackSizeBytes());
 
   __LOG("Done registering callback (0x%p) old-flags=%i new-flags=%i; old-callbackid=%i new-callbackid=%i",
@@ -119,7 +117,7 @@ STEAM_API_PROXY_API void SteamAPI_UnregisterCallback(class CCallbackBase *pCallb
   __TRACE("(0x%p)", pCallback);
   __LOG("Unregistering callback (0x%p)", pCallback);
   // TODO: Update flags or something, anything?
-  steam_bridge_SteamAPI_UnregisterCallback(pCallback);
+  SteamAPI_UnregisterCallback_(pCallback);
 }
 
 }

@@ -16,7 +16,7 @@
 SteamClientWrapper::SteamClientWrapper() : steamClient(NULL)
 {
   __TRACE("(this=0x%p)", this);
-  steamClient = steam_bridge_SteamClient();
+  steamClient = SteamClient_();
   __LOG("Wrapping ISteamClient (0x%p) into (0x%p)", steamClient, this);
 }
 
@@ -103,7 +103,7 @@ void SteamClientWrapper::SetWarningMessageHook(
     SteamAPIWarningMessageHook_t pFunction)
 {
   __TRACE("(0x%p)", pFunction);
-  steam_bridge_SteamClient_SetWarningMessageHook(steamClient, pFunction);
+  SteamClient_SetWarningMessageHook(steamClient, pFunction);
 }
 
 bool SteamClientWrapper::BShutdownIfAllPipesClosed()
