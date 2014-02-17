@@ -214,9 +214,31 @@ STEAM_API_BRIDGE_API int32 SteamUserStats_GetGlobalStatHistoryI(ISteamUserStats 
 STEAM_API_BRIDGE_API int32 SteamUserStats_GetGlobalStatHistoryD(ISteamUserStats *, const char *, double *, uint32);
 
 // SteamUtils API Calls
-STEAM_API_BRIDGE_API ISteamUtils *steam_bridge_SteamUtils();
-STEAM_API_BRIDGE_API void steam_bridge_SteamUtils_SetOverlayNotificationPosition(
-    ISteamUtils *steamUtils, int eNotificationPosition);
+STEAM_API_BRIDGE_API ISteamUtils *SteamUtils_();
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetSecondsSinceAppActive(ISteamUtils *);
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetSecondsSinceComputerActive(ISteamUtils *);
+STEAM_API_BRIDGE_API EUniverse SteamUtils_GetConnectedUniverse(ISteamUtils *);
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetServerRealTime(ISteamUtils *);
+STEAM_API_BRIDGE_API const char *SteamUtils_GetIPCountry(ISteamUtils *);
+STEAM_API_BRIDGE_API bool SteamUtils_GetImageSize(ISteamUtils *, int, uint32 *, uint32 *);
+STEAM_API_BRIDGE_API bool SteamUtils_GetImageRGBA(ISteamUtils *, int, uint8 *, int);
+STEAM_API_BRIDGE_API bool SteamUtils_GetCSERIPPort(ISteamUtils *, uint32 *, uint16 *);
+STEAM_API_BRIDGE_API uint8 SteamUtils_GetCurrentBatteryPower(ISteamUtils *);
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetAppID(ISteamUtils *);
+STEAM_API_BRIDGE_API void SteamUtils_SetOverlayNotificationPosition(ISteamUtils *, ENotificationPosition);
+STEAM_API_BRIDGE_API bool SteamUtils_IsAPICallCompleted(ISteamUtils *, SteamAPICall_t, bool *);
+STEAM_API_BRIDGE_API ESteamAPICallFailure SteamUtils_GetAPICallFailureReason(ISteamUtils *, SteamAPICall_t);
+STEAM_API_BRIDGE_API bool SteamUtils_GetAPICallResult(ISteamUtils *, SteamAPICall_t, void *, int, int, bool *);
+STEAM_API_BRIDGE_API void SteamUtils_RunFrame(ISteamUtils *);
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetIPCCallCount(ISteamUtils *);
+STEAM_API_BRIDGE_API void SteamUtils_SetWarningMessageHook(ISteamUtils *, SteamAPIWarningMessageHook_t);
+STEAM_API_BRIDGE_API bool SteamUtils_IsOverlayEnabled(ISteamUtils *);
+STEAM_API_BRIDGE_API bool SteamUtils_BOverlayNeedsPresent(ISteamUtils *);
+STEAM_API_BRIDGE_API SteamAPICall_t SteamUtils_CheckFileSignature(ISteamUtils *, const char *);
+STEAM_API_BRIDGE_API bool SteamUtils_ShowGamepadTextInput(ISteamUtils *, EGamepadTextInputMode, EGamepadTextInputLineMode, const char *, uint32);
+STEAM_API_BRIDGE_API uint32 SteamUtils_GetEnteredGamepadTextLength(ISteamUtils *);
+STEAM_API_BRIDGE_API bool SteamUtils_GetEnteredGamepadTextInput(ISteamUtils *, char *, uint32);
+STEAM_API_BRIDGE_API const char *SteamUtils_GetSteamUILanguage(ISteamUtils *);
 
 // Meta API Calls
 STEAM_API_BRIDGE_API const char *steam_bridge_version_string();
