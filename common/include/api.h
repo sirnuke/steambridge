@@ -241,8 +241,8 @@ STEAM_API_BRIDGE_API bool SteamUtils_GetEnteredGamepadTextInput(ISteamUtils *, c
 STEAM_API_BRIDGE_API const char *SteamUtils_GetSteamUILanguage(ISteamUtils *);
 
 // Meta API Calls
-STEAM_API_BRIDGE_API const char *steam_bridge_version_string();
-STEAM_API_BRIDGE_API const char *steam_bridge_info_string();
+STEAM_API_BRIDGE_API const char *steambridge_version_string();
+STEAM_API_BRIDGE_API const char *steambridge_info_string();
 
 } // extern "C"
 

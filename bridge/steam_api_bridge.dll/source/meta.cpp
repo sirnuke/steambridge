@@ -20,22 +20,22 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
-const char *steam_bridge_INFO = "Visit " _STEAM_BRIDGE_WEBPAGE 
+const char *steambridge_INFO = "Visit " _STEAM_BRIDGE_WEBPAGE 
   " for more information on " _STEAM_BRIDGE_APPNAME "!";
 
 extern "C"
 {
 
-STEAM_API_BRIDGE_API const char *steam_bridge_version_string()
+STEAM_API_BRIDGE_API const char *steambridge_version_string()
 {
   WINE_TRACE("\n");
   return _STEAM_BRIDGE_VERSION_LONG;
 }
 
-STEAM_API_BRIDGE_API const char *steam_bridge_info_string()
+STEAM_API_BRIDGE_API const char *steambridge_info_string()
 {
   WINE_TRACE("\n");
-  return steam_bridge_INFO;
+  return steambridge_INFO;
 }
 
 }

@@ -205,5 +205,5 @@
 @ cdecl SteamUtils_GetSteamUILanguage(ptr)
 
 # Meta API calls
-@ cdecl steam_bridge_version_string()
-@ cdecl steam_bridge_info_string()
+@ cdecl steambridge_version_string()
+@ cdecl steambridge_info_string()
