@@ -131,6 +131,7 @@ typedef int ENotificationPosition;
 typedef int EOverlayToStoreFlag;
 typedef int EGamepadTextInputMode;
 typedef int EGamepadTextInputLineMode;
+typedef int EAccountType;
 
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?

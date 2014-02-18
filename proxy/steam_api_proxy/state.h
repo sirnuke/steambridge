@@ -9,7 +9,7 @@
 
 #include <deque>
 
-class SteamClientWrapper;
+class SteamClient;
 class SteamUser;
 class SteamFriends;
 class SteamApps;
@@ -30,7 +30,7 @@ class AppState
 
     void addCallback(class CCallbackBase *callback);
 
-    SteamClientWrapper *getSteamClient();
+    SteamClient *getSteamClient();
     SteamUser *getSteamUser();
     SteamFriends *getSteamFriends();
     SteamApps *getSteamApps();
@@ -44,7 +44,7 @@ class AppState
 
     std::deque<class CCallbackBase *> callbacks;
 
-    SteamClientWrapper *steamClient;
+    SteamClient *steamClient;
     SteamUser *steamUser;
     SteamFriends *steamFriends;
     SteamApps *steamApps;

@@ -44,12 +44,12 @@ void AppState::addCallback(class CCallbackBase *callback)
   callbacks.push_back(callback);
 }
 
-SteamClientWrapper *AppState::getSteamClient()
+SteamClient *AppState::getSteamClient()
 {
   __TRACE("()");
   if (!steamClient)
   {
-    steamClient = new SteamClientWrapper();
+    steamClient = new SteamClient();
     __LOG("Created ISteamClient wrapper (0x%p)", steamClient);
   }
   return steamClient;

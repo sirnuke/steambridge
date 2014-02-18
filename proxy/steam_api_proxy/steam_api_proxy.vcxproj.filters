@@ -112,5 +112,8 @@
     <None Include="user_api_code.inc">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="client_api_code.inc">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
