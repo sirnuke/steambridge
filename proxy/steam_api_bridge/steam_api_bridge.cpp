@@ -71,7 +71,7 @@ extern "C"
   STEAM_API_BRIDGE_API bool SteamFriends_GetClanActivityCounts(ISteamFriends *, CSteamID, int *, int *, int *) __STUB__;
   STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_DownloadClanActivityCounts(ISteamFriends *, CSteamID *, int) __STUB__;
   STEAM_API_BRIDGE_API int SteamFriends_GetFriendCountFromSource(ISteamFriends *, CSteamID) __STUB__;
-  STEAM_API_BRIDGE_API void GetFriendFromSourceByIndex(ISteamFriends *, CSteamID, int, CSteamID *) __STUB__;
+  STEAM_API_BRIDGE_API void SteamFriends_GetFriendFromSourceByIndex(ISteamFriends *, CSteamID, int, CSteamID *) __STUB__;
   STEAM_API_BRIDGE_API bool SteamFriends_IsUserInSource(ISteamFriends *, CSteamID, CSteamID) __STUB__;
   STEAM_API_BRIDGE_API void SteamFriends_SetInGameVoiceSpeaking(ISteamFriends *, CSteamID, bool) __STUB__;
   STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlay(ISteamFriends *, const char *) __STUB__;

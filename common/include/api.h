@@ -99,7 +99,7 @@ STEAM_API_BRIDGE_API const char *SteamFriends_GetClanTag(ISteamFriends *, CSteam
 STEAM_API_BRIDGE_API bool SteamFriends_GetClanActivityCounts(ISteamFriends *, CSteamID, int *, int *, int *);
 STEAM_API_BRIDGE_API SteamAPICall_t SteamFriends_DownloadClanActivityCounts(ISteamFriends *, CSteamID *, int);
 STEAM_API_BRIDGE_API int SteamFriends_GetFriendCountFromSource(ISteamFriends *, CSteamID);
-STEAM_API_BRIDGE_API void GetFriendFromSourceByIndex(ISteamFriends *, CSteamID, int, CSteamID *);
+STEAM_API_BRIDGE_API void SteamFriends_GetFriendFromSourceByIndex(ISteamFriends *, CSteamID, int, CSteamID *);
 STEAM_API_BRIDGE_API bool SteamFriends_IsUserInSource(ISteamFriends *, CSteamID, CSteamID);
 STEAM_API_BRIDGE_API void SteamFriends_SetInGameVoiceSpeaking(ISteamFriends *, CSteamID, bool);
 STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlay(ISteamFriends *, const char *);
