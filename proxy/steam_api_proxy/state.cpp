@@ -66,12 +66,12 @@ SteamUserWrapper *AppState::getSteamUser()
   return steamUser; 
 }
 
-SteamFriendsWrapper *AppState::getSteamFriends()
+SteamFriends *AppState::getSteamFriends()
 {
   __TRACE("()");
   if (!steamFriends)
   {
-    steamFriends = new SteamFriendsWrapper();
+    steamFriends = new SteamFriends();
     __LOG("Creating ISteamFriends wrapper (0x%p)", steamFriends);
   }
   return steamFriends;
