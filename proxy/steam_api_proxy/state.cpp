@@ -55,12 +55,12 @@ SteamClientWrapper *AppState::getSteamClient()
   return steamClient;
 }
 
-SteamUserWrapper *AppState::getSteamUser()
+SteamUser *AppState::getSteamUser()
 {
   __TRACE("()");
   if (!steamUser)
   { 
-    steamUser = new SteamUserWrapper();
+    steamUser = new SteamUser();
     __LOG("Creating ISteamUser wrapper (0x%p)", steamUser);
   }
   return steamUser; 

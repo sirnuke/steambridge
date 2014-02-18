@@ -120,6 +120,7 @@
     <None Include="apps_api_code.inc" />
     <None Include="friends_api_code.inc" />
     <None Include="userstats_api_code.inc" />
+    <None Include="user_api_code.inc" />
     <None Include="utils_api_code.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
