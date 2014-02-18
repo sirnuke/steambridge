@@ -109,6 +109,8 @@ typedef uint64 SteamLeaderboardEntries_t;
 // This is a work around for the LeaderboardEntry_t, as it's only used
 // as a pointer (void*)
 typedef void LeaderboardEntry_t;
+// Same thing for FriendGameInfo;
+typedef void FriendGameInfo_t;
 
 typedef uint64 UGCHandle_t;
 
@@ -121,6 +123,15 @@ typedef int ELeaderboardUploadScoreMethod;
 typedef int EVoiceResult;
 typedef int EBeginAuthSessionResult;
 typedef int EUserHasLicenseForAppResult;
+typedef int EPersonaState;
+typedef int EFriendRelationship;
+typedef int EChatEntryType;
+typedef int EUniverse;
+typedef int ESteamAPICallFailure;
+typedef int ENotificationPosition;
+typedef int EOverlayToStoreFlag;
+typedef int EGamepadTextInputMode;
+typedef int EGamepadTextInputLineMode;
 
 // TODO: Would we ever want an import?  Should we explictly say __cdecl
 //       somewhere/somehow?
