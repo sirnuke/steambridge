@@ -83,7 +83,7 @@ void callback_run_args(void *callback, int flags, void *data, bool ioFailure,
 
 STEAM_API_PROXY_API void SteamAPI_RunCallbacks()
 {
-  __TRACE("()");
+  //__TRACE("()");
   SteamAPI_RunCallbacks_();
 }
 
