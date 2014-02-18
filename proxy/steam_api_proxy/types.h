@@ -22,8 +22,7 @@ typedef unsigned __int32 uintp;
 
 struct CGameID
 {
-  uint64 a;
-  uint64 b;
+  uint64 id;
 };
 
 struct CSteamID
