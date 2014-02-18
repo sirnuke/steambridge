@@ -47,12 +47,12 @@ typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 State::State()
-  : steamUser(NULL), steamFriends(NULL), steamUtils(NULL),
-    steamMatchmaking(NULL), steamUserStats(NULL), steamApps(NULL),
-    steamMatchmakingServers(NULL), steamNetworking(NULL),
+  : steamClient(NULL), steamUser(NULL), steamFriends(NULL),
+    steamUtils(NULL), steamMatchmaking(NULL), steamUserStats(NULL),
+    steamApps(NULL), steamMatchmakingServers(NULL), steamNetworking(NULL),
     steamRemoteStorage(NULL), steamScreenshots(NULL), steamHTTP(NULL),
     steamUnifiedMessages(NULL), initialized(false), steamAPIHandle(NULL),
-    appid(0), disclaimer(false), warningHookFunction(NULL)
+    appid(0), disclaimer(false)
 {
   WINE_TRACE("(this=%p)\n", this);
   getAppId();
@@ -251,7 +251,7 @@ void State::loadSteamAPIVersions()
   WINE_TRACE("(%p)\n", this);
 
   __DLSYM_GET(steam_api_SteamClient_t, api_SteamClient, "SteamClient");
-  ISteamClient *steamClient = (*api_SteamClient)();
+  steamClient = (*api_SteamClient)();
   if (!steamClient)
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 

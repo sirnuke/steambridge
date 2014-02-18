@@ -22,6 +22,8 @@ class State
     State();
     ~State();
 
+    class ISteamClient              *getSteamClient()
+      { return steamClient; }
     class ISteamUser                *getSteamUser()
       { return steamUser; }
     class ISteamFriends             *getSteamFriends()
@@ -55,11 +57,6 @@ class State
     CCallbackBase *getCallback(CCallbackBase *reference);
     void removeCallback(CCallbackBase *reference);
 
-    void setWarningHookFunction(SteamAPIWarningMessageHook_t function)
-      { warningHookFunction = function; }
-    SteamAPIWarningMessageHook_t getWarningHookFunction()
-      { return warningHookFunction; }
-
   private:
     // Internal functions
     void getAppId();
@@ -70,6 +67,7 @@ class State
     void loadSteamAPIVersions();
 
     // Pointers to the Steam API Classes
+    class ISteamClient              *steamClient;
     class ISteamUser                *steamUser;
     class ISteamFriends             *steamFriends;
     class ISteamUtils               *steamUtils;
