@@ -99,12 +99,12 @@ SteamUserStatsWrapper *AppState::getSteamUserStats()
   return steamUserStats;
 }
 
-SteamUtilsWrapper *AppState::getSteamUtils()
+SteamUtils *AppState::getSteamUtils()
 {
   __TRACE("()");
   if (!steamUtils)
   {
-    steamUtils = new SteamUtilsWrapper();
+    steamUtils = new SteamUtils();
     __LOG("Creating ISteamUtils wrapper (0x%p)", steamUtils);
   }
   return steamUtils;
