@@ -106,7 +106,7 @@ STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlay(ISteamFriends *, cons
 STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToUser(ISteamFriends *, const char *, CSteamID);
 STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToWebPage(ISteamFriends *, const char *);
 STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayToStore(ISteamFriends *, AppId_t, EOverlayToStoreFlag);
-STEAM_API_BRIDGE_API STEAM_API_BRIDGE_API void SteamFriends_SetPlayedWith(ISteamFriends *, CSteamID);
+STEAM_API_BRIDGE_API void SteamFriends_SetPlayedWith(ISteamFriends *, CSteamID);
 STEAM_API_BRIDGE_API void SteamFriends_ActivateGameOverlayInviteDialog(ISteamFriends *, CSteamID);
 STEAM_API_BRIDGE_API int SteamFriends_GetSmallFriendAvatar(ISteamFriends *, CSteamID);
 STEAM_API_BRIDGE_API int SteamFriends_GetMediumFriendAvatar(ISteamFriends *, CSteamID);
