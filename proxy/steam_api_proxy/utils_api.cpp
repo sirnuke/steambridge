@@ -13,104 +13,105 @@
 
 #include <steam_api_bridge.h>
 
+#define _THIN_WRAPPER(API, TRACE, ...) { \
+  __TRACE("" TRACE "", ##__VA_ARGS__); \
+  return SteamUtils_  ##API(steamUtils, ##__VA_ARGS__); \
+}
+
 SteamUtilsWrapper::SteamUtilsWrapper() : steamUtils(NULL)
 {
   __TRACE("(this=0x%p)", this);
-  steamUtils = steam_bridge_SteamUtils();
+  steamUtils = SteamUtils_();
   __LOG("Wrapping ISteamUtils (0x%p) into (0x%p)", steamUtils, this);
 }
 
 uint32 SteamUtilsWrapper::GetSecondsSinceAppActive()
-  __STUB("")
+  _THIN_WRAPPER(GetSecondsSinceAppActive, "")
 
 uint32 SteamUtilsWrapper::GetSecondsSinceComputerActive()
-  __STUB("")
+  _THIN_WRAPPER(GetSecondsSinceComputerActive, "")
 
 int SteamUtilsWrapper::GetConnectedUniverse()
-  __STUB("")
+  _THIN_WRAPPER(GetConnectedUniverse, "")
 
 uint32 SteamUtilsWrapper::GetServerRealTime()
-  __STUB("")
+  _THIN_WRAPPER(GetServerRealTime, "")
 
 const char *SteamUtilsWrapper::GetIPCountry()
-  __STUB("")
+  _THIN_WRAPPER(GetIPCountry, "")
 
 bool SteamUtilsWrapper::GetImageSize(int iImage, uint32 *pnWidth,
     uint32 *pnHeight)
-  __STUB("(%i,0x%p,0x%p)", iImage, pnWidth, pnHeight)
+  _THIN_WRAPPER(GetImageSize, "%i,0x%p,0x%p", iImage, pnWidth, pnHeight)
 
 bool SteamUtilsWrapper::GetImageRGBA(int iImage, uint8 *pubDest,
     int nDestBufferSize)
-  __STUB("(%i,0x%p,%i)", iImage, pubDest, nDestBufferSize)
+  _THIN_WRAPPER(GetImageRGBA, "%i,0x%p,%i", iImage, pubDest, nDestBufferSize)
 
 bool SteamUtilsWrapper::GetCSERIPPort(uint32 *unIP, uint16 *usPort)
-  __STUB("(0x%p,0x%p)", unIP, usPort)
+  _THIN_WRAPPER(GetCSERIPPort, "0x%p,0x%p", unIP, usPort)
 
 uint8 SteamUtilsWrapper::GetCurrentBatteryPower()
-  __STUB("")
+  _THIN_WRAPPER(GetCurrentBatteryPower, "")
 
 uint32 SteamUtilsWrapper::GetAppID()
-  __STUB("")
+  _THIN_WRAPPER(GetAppID, "")
 
 void SteamUtilsWrapper::SetOverlayNotificationPosition(
     int eNotificationPosition)
-{
-  __TRACE("(%i)", eNotificationPosition);
-  steam_bridge_SteamUtils_SetOverlayNotificationPosition(steamUtils,
-    eNotificationPosition);
-}
+  _THIN_WRAPPER(SetOverlayNotificationPosition, "%i", eNotificationPosition)
 
 bool SteamUtilsWrapper::IsAPICallCompleted(SteamAPICall_t hSteamAPICall,
     bool *pbFailed)
-  __STUB("(%llu,0x%p)", hSteamAPICall, pbFailed)
+  _THIN_WRAPPER(IsAPICallCompleted, "%llu,0x%p", hSteamAPICall, pbFailed)
 
 int SteamUtilsWrapper::GetAPICallFailureReason(SteamAPICall_t hSteamAPICall)
-  __STUB("(%llu)", hSteamAPICall)
+  _THIN_WRAPPER(GetAPICallFailureReason, "%llu", hSteamAPICall)
 
 bool SteamUtilsWrapper::GetAPICallResult(SteamAPICall_t hSteamAPICall,
     void *pCallback, int cubCallback, int iCallbackExpected, bool *pbFailed)
-  __STUB("(%llu,0x%p,%i,%i,0x%p)", hSteamAPICall, pCallback, cubCallback,
+  _THIN_WRAPPER(GetAPICallResult, "%llu,0x%p,%i,%i,0x%p", hSteamAPICall, pCallback, cubCallback,
       iCallbackExpected, pbFailed)
 
 void SteamUtilsWrapper::RunFrame()
-  __STUB("")
+  _THIN_WRAPPER(RunFrame, "")
 
 uint32 SteamUtilsWrapper::GetIPCCallCount()
-  __STUB("")
+  _THIN_WRAPPER(GetIPCCallCount, "")
 
 void SteamUtilsWrapper::SetWarningMessageHook(
     SteamAPIWarningMessageHook_t pFunction)
-  __STUB("(0x%p)", pFunction)
+  _THIN_WRAPPER(SetWarningMessageHook, "0x%p", pFunction)
 
 bool SteamUtilsWrapper::IsOverlayEnabled()
-  __STUB("")
+  _THIN_WRAPPER(IsOverlayEnabled, "")
 
 bool SteamUtilsWrapper::BOverlayNeedsPresent()
-  __STUB("")
+  _THIN_WRAPPER(BOverlayNeedsPresent, "")
 
 SteamAPICall_t SteamUtilsWrapper::CheckFileSignature(const char *szFileName)
-  __STUB("(\"%s\")", szFileName)
+  _THIN_WRAPPER(CheckFileSignature, "\"%s\"", szFileName)
 
 bool SteamUtilsWrapper::ShowGamepadTextInput(int eInputMode, int eLineInputMode,
     const char *pchDescription, uint32 unCharMax)
-  __STUB("(%i,%i,\"%s\",%u)", eInputMode, eLineInputMode, pchDescription,
+  _THIN_WRAPPER(ShowGamepadTextInput, "%i,%i,\"%s\",%u", eInputMode, eLineInputMode, pchDescription,
       unCharMax)
 
 uint32 SteamUtilsWrapper::GetEnteredGamepadTextLength()
-  __STUB("")
+  _THIN_WRAPPER(GetEnteredGamepadTextLength, "")
 
 bool SteamUtilsWrapper::GetEnteredGamepadTextInput(char *pchText, uint32 cchText)
-  __STUB("(0x%p,%u)", pchText, cchText)	
+  _THIN_WRAPPER(GetEnteredGamepadTextInput, "0x%p,%u", pchText, cchText)	
 
 const char *SteamUtilsWrapper::GetSteamUILanguage()
-  __STUB("")
+  _THIN_WRAPPER(GetSteamUILanguage, "")
 
 extern "C"
 {
 
 STEAM_API_PROXY_API void *SteamUtils()
 {
-  __TRACE("()");
+  __TRACE("");
   return state.getSteamUtils();
 }
 
