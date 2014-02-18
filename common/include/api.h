@@ -43,6 +43,7 @@ STEAM_API_BRIDGE_API void SteamAPI_RunCallbacks_();
 // Get ISteam* API Calls
 STEAM_API_BRIDGE_API ISteamClient *SteamClient_();
 STEAM_API_BRIDGE_API ISteamUser *SteamUser_();
+STEAM_API_BRIDGE_API ISteamFriends *SteamFriends_();
 STEAM_API_BRIDGE_API ISteamApps *SteamApps_();
 STEAM_API_BRIDGE_API ISteamUserStats *SteamUserStats_();
 STEAM_API_BRIDGE_API ISteamUtils *SteamUtils_();
