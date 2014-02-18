@@ -12,8 +12,8 @@
 class SteamClientWrapper;
 class SteamUserWrapper;
 class SteamFriends;
-class SteamAppsWrapper;
-class SteamUserStatsWrapper;
+class SteamApps;
+class SteamUserStats;
 class SteamUtils;
 
 class AppState
@@ -33,8 +33,8 @@ class AppState
     SteamClientWrapper *getSteamClient();
     SteamUserWrapper *getSteamUser();
     SteamFriends *getSteamFriends();
-    SteamAppsWrapper *getSteamApps();
-    SteamUserStatsWrapper *getSteamUserStats();
+    SteamApps *getSteamApps();
+    SteamUserStats *getSteamUserStats();
     SteamUtils *getSteamUtils();
 
   private:
@@ -47,8 +47,8 @@ class AppState
     SteamClientWrapper *steamClient;
     SteamUserWrapper *steamUser;
     SteamFriends *steamFriends;
-    SteamAppsWrapper *steamApps;
-    SteamUserStatsWrapper *steamUserStats;
+    SteamApps *steamApps;
+    SteamUserStats *steamUserStats;
     SteamUtils *steamUtils;
 };
 

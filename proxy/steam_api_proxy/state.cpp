@@ -77,23 +77,23 @@ SteamFriends *AppState::getSteamFriends()
   return steamFriends;
 }
 
-SteamAppsWrapper *AppState::getSteamApps()
+SteamApps *AppState::getSteamApps()
 {
   __TRACE("()");
   if (!steamApps)
   {
-    steamApps = new SteamAppsWrapper();
+    steamApps = new SteamApps();
     __LOG("Creating ISteamApps wrapper (0x%p)", steamApps);
   }
   return steamApps;
 }
 
-SteamUserStatsWrapper *AppState::getSteamUserStats()
+SteamUserStats *AppState::getSteamUserStats()
 {
   __TRACE("()");
   if (!steamUserStats)
   {
-    steamUserStats = new SteamUserStatsWrapper();
+    steamUserStats = new SteamUserStats();
     __LOG("Creating ISteamUserStats wrapper (0x%p)", steamUserStats);
   }
   return steamUserStats;

@@ -103,5 +103,11 @@
     <None Include="friends_api_code.inc">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="userstats_api_code.inc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="apps_api_code.inc">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
