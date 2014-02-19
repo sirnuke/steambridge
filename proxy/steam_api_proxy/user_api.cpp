@@ -75,26 +75,47 @@ CSteamID SteamUser::GetSteamID()
 {
   __TRACE("()");
   CSteamID result;
+  void *value = 0;
+  printf("Sizeof CSteamID is %lu, location is 0x%p\n", sizeof(result), &result);
   __asm
   {
+    // Hidden struct
+    lea edx, [esp-8]
+    sub esp, 8
     // Push Linux-side 'this'
     mov eax, [this]
     mov eax, [eax]this.steamUser
     push eax
+    // Push hidden pointer to result struct
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
     mov eax, [eax+8]
     // Call that memory location
     call eax
-    // Move the returned value into the result
+    // Copy hidden struct to result
     lea ecx, result
-    mov [ecx+0], eax
+    mov value, ecx
+    mov edx, [eax+0]
+    mov [ecx+0], edx
+    mov edx, [eax+4]
     mov [ecx+4], edx
+    // Move the returned value into the result
+    // (Return value is a hidden struct, should already be set)
     // restore stack
     // including this pointer
+    // Hidden struct
     pop eax
+    pop eax
+    // This
+    pop eax
+    // Hidden struct pointer
+    // should be popped by Linux
+    //pop eax
   }
+  __TRACE("Pointers are 0x%p,0x%p", &result, value);
+  __TRACE("Result is %llu", result);
   return result;
 }
 
