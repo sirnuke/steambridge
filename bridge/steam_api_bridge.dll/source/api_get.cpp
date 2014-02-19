@@ -36,6 +36,7 @@ ISteamUser *SteamUser_()
     WINE_ERR("NULL internal state (init not called?)\n");
     return NULL;
   }
+  WINE_ERR("CSteamID is %llu\n", state->getSteamUser()->GetSteamID());
   return state->getSteamUser();
 }
 
