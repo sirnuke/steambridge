@@ -40,8 +40,7 @@ HSteamUser SteamUser::GetHSteamUser()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -65,8 +64,7 @@ bool SteamUser::BLoggedOn()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -78,25 +76,25 @@ CSteamID SteamUser::GetSteamID()
   CSteamID *result = &data;
   __asm
   {
-    // pointer to the result data
-    mov edx, result
-    // linux side this
+    // Push Linux-side 'this'
     mov eax, [this]
     mov eax, [eax]this.steamUser
     push eax
-    // Push hidden pointer to result
+    // Push hidden pointer to result struct
+    mov edx, result
     push edx
-    // Get the vtable (pointer located at Linux this)
+    // Get the vtable (pointer at this)
     mov eax, [eax]
-    // Lookup the pointer
+    // Lookup the pointer in the vtable
     mov eax, [eax+8]
-    // call Linux GetSteamID
+    // Call that memory location
     call eax
-    // restore the stack (linux this)
-    // (GCC pops the hidden pointer for us, I guess because REASONS)
+    // Move the returned value into the result
+    // (Return value is a hidden struct, should already be set)
+    // restore stack
     add esp, 4
   }
-  __TRACE("Result is %llu", data);
+  __TRACE("Return value is %llu", data);
   return data;
 }
 
@@ -140,15 +138,7 @@ int SteamUser::InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob, CSteam
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 32
   }
   return result;
 }
@@ -176,10 +166,7 @@ void SteamUser::TerminateGameConnection(uint32 unIPServer, uint16 usPortServer)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -212,12 +199,7 @@ void SteamUser::TrackAppUsageEvent(CGameID gameID, int eAppUsageEvent, const cha
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
 }
 
@@ -246,10 +228,7 @@ bool SteamUser::GetUserDataFolder(char *pchBuffer, int cubBuffer)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -271,8 +250,7 @@ void SteamUser::StartVoiceRecording()
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
 }
 
@@ -293,8 +271,7 @@ void SteamUser::StopVoiceRecording()
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
 }
 
@@ -326,11 +303,7 @@ EVoiceResult SteamUser::GetAvailableVoice(uint32 *pcbCompressed, uint32 *pcbUnco
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -381,17 +354,7 @@ EVoiceResult SteamUser::GetVoice(bool bWantCompressed, void *pDestBuffer, uint32
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 40
   }
   return result;
 }
@@ -433,14 +396,7 @@ EVoiceResult SteamUser::DecompressVoice(const void *pCompressed, uint32 cbCompre
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 28
   }
   return result;
 }
@@ -464,8 +420,7 @@ uint32 SteamUser::GetVoiceOptimalSampleRate()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -498,11 +453,7 @@ HAuthTicket SteamUser::GetAuthSessionTicket(void *pTicket, int cbMaxTicket, uint
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -538,12 +489,7 @@ EBeginAuthSessionResult SteamUser::BeginAuthSession(const void *pAuthTicket, int
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -571,10 +517,7 @@ void SteamUser::EndAuthSession(CSteamID steamID)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -598,9 +541,7 @@ void SteamUser::CancelAuthTicket(HAuthTicket hAuthTicket)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -632,11 +573,7 @@ EUserHasLicenseForAppResult SteamUser::UserHasLicenseForApp(CSteamID steamID, Ap
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -660,8 +597,7 @@ bool SteamUser::BIsBehindNAT()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -695,12 +631,7 @@ void SteamUser::AdvertiseGame(CSteamID steamIDGameServer, uint32 unIPServer, uin
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
 }
 
@@ -731,10 +662,7 @@ SteamAPICall_t SteamUser::RequestEncryptedAppTicket(void *pDataToInclude, int cb
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -767,11 +695,7 @@ bool SteamUser::GetEncryptedAppTicket(void *pTicket, int cbMaxTicket, uint32 *pc
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
