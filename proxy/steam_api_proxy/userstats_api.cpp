@@ -40,8 +40,7 @@ bool SteamUserStats::RequestCurrentStats()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -71,10 +70,7 @@ bool SteamUserStats::GetStat(const char *pchName, int32 *pData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -104,10 +100,7 @@ bool SteamUserStats::GetStat(const char *pchName, float *pData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -137,10 +130,7 @@ bool SteamUserStats::SetStat(const char *pchName, int32 nData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -170,10 +160,7 @@ bool SteamUserStats::SetStat(const char *pchName, float fData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -209,12 +196,7 @@ bool SteamUserStats::UpdateAvgRateStat(const char *pchName, float flCountThisSes
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -244,10 +226,7 @@ bool SteamUserStats::GetAchievement(const char *pchName, bool *pbAchieved)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -274,9 +253,7 @@ bool SteamUserStats::SetAchievement(const char *pchName)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -303,9 +280,7 @@ bool SteamUserStats::ClearAchievement(const char *pchName)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -338,11 +313,7 @@ bool SteamUserStats::GetAchievementAndUnlockTime(const char *pchName, bool *pbAc
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -366,8 +337,7 @@ bool SteamUserStats::StoreStats()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -394,9 +364,7 @@ int SteamUserStats::GetAchievementIcon(const char *pchName)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -404,7 +372,7 @@ int SteamUserStats::GetAchievementIcon(const char *pchName)
 const char *SteamUserStats::GetAchievementDisplayAttribute(const char *pchName, const char *pchKey)
 {
   __TRACE("(\"%s\",\"%s\",)", pchName, pchKey);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -426,10 +394,7 @@ const char *SteamUserStats::GetAchievementDisplayAttribute(const char *pchName, 
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -462,11 +427,7 @@ bool SteamUserStats::IndicateAchievementProgress(const char *pchName, uint32 nCu
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -490,8 +451,7 @@ uint32 SteamUserStats::GetNumAchievements()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -499,7 +459,7 @@ uint32 SteamUserStats::GetNumAchievements()
 const char *SteamUserStats::GetAchievementName(uint32 iAchievement)
 {
   __TRACE("(%u,)", iAchievement);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -518,9 +478,7 @@ const char *SteamUserStats::GetAchievementName(uint32 iAchievement)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -552,10 +510,7 @@ SteamAPICall_t SteamUserStats::RequestUserStats(CSteamID steamIDUser)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -591,12 +546,7 @@ bool SteamUserStats::GetUserStat(CSteamID steamIDUser, const char *pchName, int3
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -632,12 +582,7 @@ bool SteamUserStats::GetUserStat(CSteamID steamIDUser, const char *pchName, floa
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -673,12 +618,7 @@ bool SteamUserStats::GetUserAchievement(CSteamID steamIDUser, const char *pchNam
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -717,13 +657,7 @@ bool SteamUserStats::GetUserAchievementAndUnlockTime(CSteamID steamIDUser, const
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 24
   }
   return result;
 }
@@ -750,9 +684,7 @@ bool SteamUserStats::ResetAllStats(bool bAchievementsToo)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -787,11 +719,7 @@ SteamAPICall_t SteamUserStats::FindOrCreateLeaderboard(const char *pchLeaderboar
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -820,9 +748,7 @@ SteamAPICall_t SteamUserStats::FindLeaderboard(const char *pchLeaderboardName)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -830,7 +756,7 @@ SteamAPICall_t SteamUserStats::FindLeaderboard(const char *pchLeaderboardName)
 const char *SteamUserStats::GetLeaderboardName(SteamLeaderboard_t hSteamLeaderboard)
 {
   __TRACE("(%llu,)", hSteamLeaderboard);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -852,10 +778,7 @@ const char *SteamUserStats::GetLeaderboardName(SteamLeaderboard_t hSteamLeaderbo
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -885,10 +808,7 @@ int SteamUserStats::GetLeaderboardEntryCount(SteamLeaderboard_t hSteamLeaderboar
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -918,10 +838,7 @@ ELeaderboardSortMethod SteamUserStats::GetLeaderboardSortMethod(SteamLeaderboard
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -951,10 +868,7 @@ ELeaderboardDisplayType SteamUserStats::GetLeaderboardDisplayType(SteamLeaderboa
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -995,13 +909,7 @@ SteamAPICall_t SteamUserStats::DownloadLeaderboardEntries(SteamLeaderboard_t hSt
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 24
   }
   return result;
 }
@@ -1039,12 +947,7 @@ SteamAPICall_t SteamUserStats::DownloadLeaderboardEntriesForUsers(SteamLeaderboa
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -1086,14 +989,7 @@ bool SteamUserStats::GetDownloadedLeaderboardEntry(SteamLeaderboardEntries_t hSt
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 28
   }
   return result;
 }
@@ -1137,14 +1033,7 @@ SteamAPICall_t SteamUserStats::UploadLeaderboardScore(SteamLeaderboard_t hSteamL
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 28
   }
   return result;
 }
@@ -1182,12 +1071,7 @@ SteamAPICall_t SteamUserStats::AttachLeaderboardUGC(SteamLeaderboard_t hSteamLea
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -1213,8 +1097,7 @@ SteamAPICall_t SteamUserStats::GetNumberOfCurrentPlayers()
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -1240,8 +1123,7 @@ SteamAPICall_t SteamUserStats::RequestGlobalAchievementPercentages()
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -1277,12 +1159,7 @@ int SteamUserStats::GetMostAchievedAchievementInfo(char *pchName, uint32 unNameB
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -1321,13 +1198,7 @@ int SteamUserStats::GetNextMostAchievedAchievementInfo(int iIteratorPrevious, ch
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 24
   }
   return result;
 }
@@ -1357,10 +1228,7 @@ bool SteamUserStats::GetAchievementAchievedPercent(const char *pchName, float *p
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1389,9 +1257,7 @@ SteamAPICall_t SteamUserStats::RequestGlobalStats(int nHistoryDays)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -1421,10 +1287,7 @@ bool SteamUserStats::GetGlobalStat(const char *pchStatName, int64 *pData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1454,10 +1317,7 @@ bool SteamUserStats::GetGlobalStat(const char *pchStatName, double *pData)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1490,11 +1350,7 @@ int32 SteamUserStats::GetGlobalStatHistory(const char *pchStatName, int64 *pData
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1527,11 +1383,7 @@ int32 SteamUserStats::GetGlobalStatHistory(const char *pchStatName, double *pDat
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
