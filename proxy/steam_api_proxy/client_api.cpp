@@ -40,8 +40,7 @@ HSteamPipe SteamClient::CreateSteamPipe()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -68,9 +67,7 @@ bool SteamClient::BReleaseSteamPipe(HSteamPipe hSteamPipe)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -97,9 +94,7 @@ HSteamUser SteamClient::ConnectToGlobalUser(HSteamPipe hSteamPipe)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -129,10 +124,7 @@ HSteamUser SteamClient::CreateLocalUser(HSteamPipe *phSteamPipe, EAccountType eA
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -160,10 +152,7 @@ void SteamClient::ReleaseUser(HSteamPipe hSteamPipe, HSteamUser hUser)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -196,10 +185,7 @@ void SteamClient::SetLocalIPBinding(uint32 unIP, uint16 usPort)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -254,8 +240,7 @@ void SteamClient::RunFrame()
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
 }
 
@@ -278,8 +263,7 @@ uint32 SteamClient::GetIPCCallCount()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -304,9 +288,7 @@ void SteamClient::SetWarningMessageHook(SteamAPIWarningMessageHook_t pFunction)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -329,8 +311,7 @@ bool SteamClient::BShutdownIfAllPipesClosed()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
