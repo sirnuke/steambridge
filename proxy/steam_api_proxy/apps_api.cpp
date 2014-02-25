@@ -40,8 +40,7 @@ bool SteamApps::BIsSubscribed()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -65,8 +64,7 @@ bool SteamApps::BIsLowViolence()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -90,8 +88,7 @@ bool SteamApps::BIsCybercafe()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -115,8 +112,7 @@ bool SteamApps::BIsVACBanned()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -124,7 +120,7 @@ bool SteamApps::BIsVACBanned()
 const char *SteamApps::GetCurrentGameLanguage()
 {
   __TRACE("()");
-  char *result;
+  const char *result;
   __asm
   {
     // Push Linux-side 'this'
@@ -140,8 +136,7 @@ const char *SteamApps::GetCurrentGameLanguage()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -149,7 +144,7 @@ const char *SteamApps::GetCurrentGameLanguage()
 const char *SteamApps::GetAvailableGameLanguages()
 {
   __TRACE("()");
-  char *result;
+  const char *result;
   __asm
   {
     // Push Linux-side 'this'
@@ -165,8 +160,7 @@ const char *SteamApps::GetAvailableGameLanguages()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -193,9 +187,7 @@ bool SteamApps::BIsSubscribedApp(AppId_t appID)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -222,9 +214,7 @@ bool SteamApps::BIsDlcInstalled(AppId_t appID)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -251,9 +241,7 @@ uint32 SteamApps::GetEarliestPurchaseUnixTime(AppId_t nAppID)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -277,8 +265,7 @@ bool SteamApps::BIsSubscribedFromFreeWeekend()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -302,8 +289,7 @@ int SteamApps::GetDLCCount()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -342,13 +328,7 @@ bool SteamApps::BGetDLCDataByIndex(int iDLC, AppId_t *pAppID, bool *pbAvailable,
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 24
   }
   return result;
 }
@@ -373,9 +353,7 @@ void SteamApps::InstallDLC(AppId_t nAppID)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -399,9 +377,7 @@ void SteamApps::UninstallDLC(AppId_t nAppID)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -425,9 +401,7 @@ void SteamApps::RequestAppProofOfPurchaseKey(AppId_t nAppID)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -456,10 +430,7 @@ bool SteamApps::GetCurrentBetaName(char *pchName, int cchNameBufferSize)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -486,9 +457,7 @@ bool SteamApps::MarkContentCorrupt(bool bMissingFilesOnly)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -518,10 +487,7 @@ uint32 SteamApps::GetInstalledDepots(DepotId_t *pvecDepots, uint32 cMaxDepots)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -554,11 +520,7 @@ uint32 SteamApps::GetAppInstallDir(AppId_t appID, char *pchFolder, uint32 cchFol
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
