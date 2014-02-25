@@ -24,7 +24,7 @@ SteamFriends::SteamFriends() : steamFriends(NULL)
 const char *SteamFriends::GetPersonaName()
 {
   __TRACE("()");
-  char *result;
+  const char *result;
   __asm
   {
     // Push Linux-side 'this'
@@ -40,8 +40,7 @@ const char *SteamFriends::GetPersonaName()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -70,9 +69,7 @@ SteamAPICall_t SteamFriends::SetPersonaName(const char *pchPersonaName)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -96,8 +93,7 @@ EPersonaState SteamFriends::GetPersonaState()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -124,9 +120,7 @@ int SteamFriends::GetFriendCount(int iFriendFlags)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -134,7 +128,8 @@ int SteamFriends::GetFriendCount(int iFriendFlags)
 CSteamID SteamFriends::GetFriendByIndex(int iFriend, int iFriendFlags)
 {
   __TRACE("(%i,%i,)", iFriend, iFriendFlags);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -147,6 +142,9 @@ CSteamID SteamFriends::GetFriendByIndex(int iFriend, int iFriendFlags)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -154,16 +152,12 @@ CSteamID SteamFriends::GetFriendByIndex(int iFriend, int iFriendFlags)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 EFriendRelationship SteamFriends::GetFriendRelationship(CSteamID steamIDFriend)
@@ -191,10 +185,7 @@ EFriendRelationship SteamFriends::GetFriendRelationship(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -224,10 +215,7 @@ EPersonaState SteamFriends::GetFriendPersonaState(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -235,7 +223,7 @@ EPersonaState SteamFriends::GetFriendPersonaState(CSteamID steamIDFriend)
 const char *SteamFriends::GetFriendPersonaName(CSteamID steamIDFriend)
 {
   __TRACE("(%llu,)", steamIDFriend);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -257,10 +245,7 @@ const char *SteamFriends::GetFriendPersonaName(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -293,11 +278,7 @@ bool SteamFriends::GetFriendGamePlayed(CSteamID steamIDFriend, FriendGameInfo_t 
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -305,7 +286,7 @@ bool SteamFriends::GetFriendGamePlayed(CSteamID steamIDFriend, FriendGameInfo_t 
 const char *SteamFriends::GetFriendPersonaNameHistory(CSteamID steamIDFriend, int iPersonaName)
 {
   __TRACE("(%llu,%i,)", steamIDFriend, iPersonaName);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -330,11 +311,7 @@ const char *SteamFriends::GetFriendPersonaNameHistory(CSteamID steamIDFriend, in
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -367,11 +344,7 @@ bool SteamFriends::HasFriend(CSteamID steamIDFriend, int iFriendFlags)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -395,8 +368,7 @@ int SteamFriends::GetClanCount()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -404,7 +376,8 @@ int SteamFriends::GetClanCount()
 CSteamID SteamFriends::GetClanByIndex(int iClan)
 {
   __TRACE("(%i,)", iClan);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -414,6 +387,9 @@ CSteamID SteamFriends::GetClanByIndex(int iClan)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -421,21 +397,18 @@ CSteamID SteamFriends::GetClanByIndex(int iClan)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 const char *SteamFriends::GetClanName(CSteamID steamIDClan)
 {
   __TRACE("(%llu,)", steamIDClan);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -457,10 +430,7 @@ const char *SteamFriends::GetClanName(CSteamID steamIDClan)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -468,7 +438,7 @@ const char *SteamFriends::GetClanName(CSteamID steamIDClan)
 const char *SteamFriends::GetClanTag(CSteamID steamIDClan)
 {
   __TRACE("(%llu,)", steamIDClan);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -490,10 +460,7 @@ const char *SteamFriends::GetClanTag(CSteamID steamIDClan)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -532,13 +499,7 @@ bool SteamFriends::GetClanActivityCounts(CSteamID steamIDClan, int *pnOnline, in
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 24
   }
   return result;
 }
@@ -570,10 +531,7 @@ SteamAPICall_t SteamFriends::DownloadClanActivityCounts(CSteamID *psteamIDClans,
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -603,10 +561,7 @@ int SteamFriends::GetFriendCountFromSource(CSteamID steamIDSource)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -614,7 +569,8 @@ int SteamFriends::GetFriendCountFromSource(CSteamID steamIDSource)
 CSteamID SteamFriends::GetFriendFromSourceByIndex(CSteamID steamIDSource, int iFriend)
 {
   __TRACE("(%llu,%i,)", steamIDSource, iFriend);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -630,6 +586,9 @@ CSteamID SteamFriends::GetFriendFromSourceByIndex(CSteamID steamIDSource, int iF
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -637,17 +596,12 @@ CSteamID SteamFriends::GetFriendFromSourceByIndex(CSteamID steamIDSource, int iF
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 bool SteamFriends::IsUserInSource(CSteamID steamIDUser, CSteamID steamIDSource)
@@ -681,12 +635,7 @@ bool SteamFriends::IsUserInSource(CSteamID steamIDUser, CSteamID steamIDSource)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -717,11 +666,7 @@ void SteamFriends::SetInGameVoiceSpeaking(CSteamID steamIDUser, bool bSpeaking)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
 }
 
@@ -745,9 +690,7 @@ void SteamFriends::ActivateGameOverlay(const char *pchDialog)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -777,11 +720,7 @@ void SteamFriends::ActivateGameOverlayToUser(const char *pchDialog, CSteamID ste
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
 }
 
@@ -805,9 +744,7 @@ void SteamFriends::ActivateGameOverlayToWebPage(const char *pchURL)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -834,10 +771,7 @@ void SteamFriends::ActivateGameOverlayToStore(AppId_t nAppID, EOverlayToStoreFla
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -864,10 +798,7 @@ void SteamFriends::SetPlayedWith(CSteamID steamIDUserPlayedWith)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -894,10 +825,7 @@ void SteamFriends::ActivateGameOverlayInviteDialog(CSteamID steamIDLobby)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -926,10 +854,7 @@ int SteamFriends::GetSmallFriendAvatar(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -959,10 +884,7 @@ int SteamFriends::GetMediumFriendAvatar(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -992,10 +914,7 @@ int SteamFriends::GetLargeFriendAvatar(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1028,11 +947,7 @@ bool SteamFriends::RequestUserInformation(CSteamID steamIDUser, bool bRequireNam
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1064,10 +979,7 @@ SteamAPICall_t SteamFriends::RequestClanOfficerList(CSteamID steamIDClan)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1075,7 +987,8 @@ SteamAPICall_t SteamFriends::RequestClanOfficerList(CSteamID steamIDClan)
 CSteamID SteamFriends::GetClanOwner(CSteamID steamIDClan)
 {
   __TRACE("(%llu,)", steamIDClan);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -1088,6 +1001,9 @@ CSteamID SteamFriends::GetClanOwner(CSteamID steamIDClan)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -1095,16 +1011,12 @@ CSteamID SteamFriends::GetClanOwner(CSteamID steamIDClan)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 int SteamFriends::GetClanOfficerCount(CSteamID steamIDClan)
@@ -1132,10 +1044,7 @@ int SteamFriends::GetClanOfficerCount(CSteamID steamIDClan)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1143,7 +1052,8 @@ int SteamFriends::GetClanOfficerCount(CSteamID steamIDClan)
 CSteamID SteamFriends::GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer)
 {
   __TRACE("(%llu,%i,)", steamIDClan, iOfficer);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -1159,6 +1069,9 @@ CSteamID SteamFriends::GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -1166,17 +1079,12 @@ CSteamID SteamFriends::GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 uint32 SteamFriends::GetUserRestrictions()
@@ -1198,8 +1106,7 @@ uint32 SteamFriends::GetUserRestrictions()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -1229,10 +1136,7 @@ bool SteamFriends::SetRichPresence(const char *pchKey, const char *pchValue)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1254,15 +1158,14 @@ void SteamFriends::ClearRichPresence()
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
 }
 
 const char *SteamFriends::GetFriendRichPresence(CSteamID steamIDFriend, const char *pchKey)
 {
   __TRACE("(%llu,\"%s\",)", steamIDFriend, pchKey);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -1287,11 +1190,7 @@ const char *SteamFriends::GetFriendRichPresence(CSteamID steamIDFriend, const ch
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1321,10 +1220,7 @@ int SteamFriends::GetFriendRichPresenceKeyCount(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1332,7 +1228,7 @@ int SteamFriends::GetFriendRichPresenceKeyCount(CSteamID steamIDFriend)
 const char *SteamFriends::GetFriendRichPresenceKeyByIndex(CSteamID steamIDFriend, int iKey)
 {
   __TRACE("(%llu,%i,)", steamIDFriend, iKey);
-  char *result;
+  const char *result;
   __asm
   {
     // Push function arguments
@@ -1357,11 +1253,7 @@ const char *SteamFriends::GetFriendRichPresenceKeyByIndex(CSteamID steamIDFriend
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1389,10 +1281,7 @@ void SteamFriends::RequestFriendRichPresence(CSteamID steamIDFriend)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
 }
 
@@ -1424,11 +1313,7 @@ bool SteamFriends::InviteUserToGame(CSteamID steamIDFriend, const char *pchConne
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1452,8 +1337,7 @@ int SteamFriends::GetCoplayFriendCount()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -1461,7 +1345,8 @@ int SteamFriends::GetCoplayFriendCount()
 CSteamID SteamFriends::GetCoplayFriend(int iCoplayFriend)
 {
   __TRACE("(%i,)", iCoplayFriend);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -1471,6 +1356,9 @@ CSteamID SteamFriends::GetCoplayFriend(int iCoplayFriend)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -1478,15 +1366,12 @@ CSteamID SteamFriends::GetCoplayFriend(int iCoplayFriend)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 int SteamFriends::GetFriendCoplayTime(CSteamID steamIDFriend)
@@ -1514,10 +1399,7 @@ int SteamFriends::GetFriendCoplayTime(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1547,10 +1429,7 @@ AppId_t SteamFriends::GetFriendCoplayGame(CSteamID steamIDFriend)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1582,10 +1461,7 @@ SteamAPICall_t SteamFriends::JoinClanChatRoom(CSteamID steamIDClan)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1615,10 +1491,7 @@ bool SteamFriends::LeaveClanChatRoom(CSteamID steamIDClan)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1648,10 +1521,7 @@ int SteamFriends::GetClanChatMemberCount(CSteamID steamIDClan)
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1659,7 +1529,8 @@ int SteamFriends::GetClanChatMemberCount(CSteamID steamIDClan)
 CSteamID SteamFriends::GetChatMemberByIndex(CSteamID steamIDClan, int iUser)
 {
   __TRACE("(%llu,%i,)", steamIDClan, iUser);
-  CSteamID result;
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
     // Push function arguments
@@ -1675,6 +1546,9 @@ CSteamID SteamFriends::GetChatMemberByIndex(CSteamID steamIDClan, int iUser)
     mov eax, [this]
     mov eax, [eax]this.steamFriends
     push eax
+    // Push hidden pointer to result struct
+    mov edx, result
+    push edx
     // Get the vtable (pointer at this)
     mov eax, [eax]
     // Lookup the pointer in the vtable
@@ -1682,17 +1556,12 @@ CSteamID SteamFriends::GetChatMemberByIndex(CSteamID steamIDClan, int iUser)
     // Call that memory location
     call eax
     // Move the returned value into the result
-    lea ecx, result
-    mov [ecx+0], eax
-    mov [ecx+4], edx
+    // (Return value is a hidden struct, should already be set)
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
-  return result;
+  __TRACE("Return value is %llu", data);
+  return data;
 }
 
 bool SteamFriends::SendClanChatMessage(CSteamID steamIDClanChat, const char *pchText)
@@ -1723,11 +1592,7 @@ bool SteamFriends::SendClanChatMessage(CSteamID steamIDClanChat, const char *pch
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -1772,15 +1637,7 @@ int SteamFriends::GetClanChatMessage(CSteamID steamIDClanChat, int iMessage, voi
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 32
   }
   return result;
 }
@@ -1816,12 +1673,7 @@ bool SteamFriends::IsClanChatAdmin(CSteamID steamIDClanChat, CSteamID steamIDUse
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -1851,10 +1703,7 @@ bool SteamFriends::IsClanChatWindowOpenInSteam(CSteamID steamIDClanChat)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1884,10 +1733,7 @@ bool SteamFriends::OpenClanChatWindowInSteam(CSteamID steamIDClanChat)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1917,10 +1763,7 @@ bool SteamFriends::CloseClanChatWindowInSteam(CSteamID steamIDClanChat)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -1947,9 +1790,7 @@ bool SteamFriends::SetListenForFriendsMessages(bool bInterceptEnabled)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -1982,11 +1823,7 @@ bool SteamFriends::ReplyToFriendMessage(CSteamID steamIDFriend, const char *pchM
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -2028,14 +1865,7 @@ int SteamFriends::GetFriendMessage(CSteamID steamIDFriend, int iMessageID, void 
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 28
   }
   return result;
 }
@@ -2067,10 +1897,7 @@ SteamAPICall_t SteamFriends::GetFollowerCount(CSteamID steamID)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -2102,10 +1929,7 @@ SteamAPICall_t SteamFriends::IsFollowing(CSteamID steamID)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -2134,9 +1958,7 @@ SteamAPICall_t SteamFriends::EnumerateFollowingList(uint32 unStartIndex)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
