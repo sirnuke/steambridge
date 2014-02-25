@@ -27,9 +27,9 @@ won't need *g++-multilib*.  Other distros will probably have similar
 requirements.  You'll likely also want *winetricks* in some form.
 Ubuntu has it as a package.
 
-Specifically, various components depend on *make*, *strings*,
-*python2.7*,and *bash*.  All of which should be installed out of the box,
-or as part of the previous package list.  *strings* and *python2.7*
-are needed for the Python runtime tools.  At a glance, SteamOS should
-have both out of the box.
+Specifically, various components depend on *make*, *strings*, *python2.7*,
+and *bash*.  All of these should be installed already, either out of the
+box or as part of build-essential (binutils).  *strings* and *python2.7*
+are needed for the Python runtime.  At a glance, SteamOS should have
+both by default.
 

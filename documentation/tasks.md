@@ -8,7 +8,7 @@ In no particular order, general things that need to be done:
 * Write a decoder for appcache/appinfo.vdf.  appinfo stores information
   related to the executable and icon.
 * Better determine whether 'weird' variable types are handled by the
-  Proxy assembler correctly.
+  Proxy assembler correctly.  Floats, doubles, long longs, etc.
 * Write a GUI to handle downloading/configuring/etc of applications.
 * Add configured applications as Steam shortcuts automagically (it can
   be done!)

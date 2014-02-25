@@ -26,7 +26,7 @@ Steam client.
 
 ## A few words of warning
 
-### Will using SteamBridge get me banned?
+### Will using SteamBridge get my Steam account banned?
 
 Don't know!  It arguably breaks the letter of the Steam Subscriber
 Agreement, though not the spirit.  Unless Valve clarifies, don't use
@@ -54,12 +54,12 @@ Unknown Steam DLLs?  That's a paddlin'.  Non-VAC games should be safe.
 ### Compiling the Windows Proxy DLL
 
 Proxy needs a Windows environment with Visual Studio.  Visual Studio
-2010 Express was used for development, and may be the best choice.
+2010 Express was used for development, and is a good, safe, free choice.
 
 ### Compiling the Linux Bridge Library
 
-Bridge needs a Linux environment that can compile 32-bit binaries.
-You'll also need g++ & friends, plus Wine & its development headers.
+Bridge needs a Linux environment that can compile 32-bit binaries.  You'll
+also need the normal build tools, plus Wine & its development headers.
 The root Makefile handles configuration, compilation, and deployment.
 
 Once deployed, various helpful tools are installed to
