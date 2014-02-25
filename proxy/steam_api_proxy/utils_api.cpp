@@ -40,8 +40,7 @@ uint32 SteamUtils::GetSecondsSinceAppActive()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -65,8 +64,7 @@ uint32 SteamUtils::GetSecondsSinceComputerActive()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -90,8 +88,7 @@ EUniverse SteamUtils::GetConnectedUniverse()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -115,8 +112,7 @@ uint32 SteamUtils::GetServerRealTime()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -124,7 +120,7 @@ uint32 SteamUtils::GetServerRealTime()
 const char *SteamUtils::GetIPCountry()
 {
   __TRACE("()");
-  char *result;
+  const char *result;
   __asm
   {
     // Push Linux-side 'this'
@@ -140,8 +136,7 @@ const char *SteamUtils::GetIPCountry()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -174,11 +169,7 @@ bool SteamUtils::GetImageSize(int iImage, uint32 *pnWidth, uint32 *pnHeight)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -211,11 +202,7 @@ bool SteamUtils::GetImageRGBA(int iImage, uint8 *pubDest, int nDestBufferSize)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -245,10 +232,7 @@ bool SteamUtils::GetCSERIPPort(uint32 *unIP, uint16 *usPort)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -272,8 +256,7 @@ uint8 SteamUtils::GetCurrentBatteryPower()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -297,8 +280,7 @@ uint32 SteamUtils::GetAppID()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -323,9 +305,7 @@ void SteamUtils::SetOverlayNotificationPosition(ENotificationPosition eNotificat
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -357,11 +337,7 @@ bool SteamUtils::IsAPICallCompleted(SteamAPICall_t hSteamAPICall, bool *pbFailed
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 16
   }
   return result;
 }
@@ -391,10 +367,7 @@ ESteamAPICallFailure SteamUtils::GetAPICallFailureReason(SteamAPICall_t hSteamAP
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -436,14 +409,7 @@ bool SteamUtils::GetAPICallResult(SteamAPICall_t hSteamAPICall, void *pCallback,
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 28
   }
   return result;
 }
@@ -465,8 +431,7 @@ void SteamUtils::RunFrame()
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
 }
 
@@ -489,8 +454,7 @@ uint32 SteamUtils::GetIPCCallCount()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -515,9 +479,7 @@ void SteamUtils::SetWarningMessageHook(SteamAPIWarningMessageHook_t pFunction)
     call eax
     // Move the returned value into the result
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
 }
 
@@ -540,8 +502,7 @@ bool SteamUtils::IsOverlayEnabled()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -565,8 +526,7 @@ bool SteamUtils::BOverlayNeedsPresent()
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -595,9 +555,7 @@ SteamAPICall_t SteamUtils::CheckFileSignature(const char *szFileName)
     mov [ecx+0], eax
     mov [ecx+4], edx
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
+    add esp, 8
   }
   return result;
 }
@@ -633,12 +591,7 @@ bool SteamUtils::ShowGamepadTextInput(EGamepadTextInputMode eInputMode, EGamepad
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
-    pop eax
-    pop eax
+    add esp, 20
   }
   return result;
 }
@@ -662,8 +615,7 @@ uint32 SteamUtils::GetEnteredGamepadTextLength()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
@@ -693,10 +645,7 @@ bool SteamUtils::GetEnteredGamepadTextInput(char *pchText, uint32 cchText)
     // Move the returned value into the result
     mov result, al
     // restore stack
-    // including this pointer
-    pop eax
-    pop eax
-    pop eax
+    add esp, 12
   }
   return result;
 }
@@ -704,7 +653,7 @@ bool SteamUtils::GetEnteredGamepadTextInput(char *pchText, uint32 cchText)
 const char *SteamUtils::GetSteamUILanguage()
 {
   __TRACE("()");
-  char *result;
+  const char *result;
   __asm
   {
     // Push Linux-side 'this'
@@ -720,8 +669,7 @@ const char *SteamUtils::GetSteamUILanguage()
     // Move the returned value into the result
     mov result, eax
     // restore stack
-    // including this pointer
-    pop eax
+    add esp, 4
   }
   return result;
 }
