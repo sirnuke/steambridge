@@ -74,49 +74,30 @@ bool SteamUser::BLoggedOn()
 CSteamID SteamUser::GetSteamID()
 {
   __TRACE("()");
-  CSteamID result;
-  void *value = 0;
-  printf("Sizeof CSteamID is %lu, location is 0x%p\n", sizeof(result), &result);
+  CSteamID data;
+  CSteamID *result = &data;
   __asm
   {
-    // Hidden struct
-    lea edx, [esp-8]
-    sub esp, 8
-    // Push Linux-side 'this'
+    // pointer to the result data
+    mov edx, result
+    // linux side this
     mov eax, [this]
     mov eax, [eax]this.steamUser
     push eax
-    // Push hidden pointer to result struct
+    // Push hidden pointer to result
     push edx
-    // Get the vtable (pointer at this)
+    // Get the vtable (pointer located at Linux this)
     mov eax, [eax]
-    // Lookup the pointer in the vtable
+    // Lookup the pointer
     mov eax, [eax+8]
-    // Call that memory location
+    // call Linux GetSteamID
     call eax
-    // Copy hidden struct to result
-    lea ecx, result
-    mov value, ecx
-    mov edx, [eax+0]
-    mov [ecx+0], edx
-    mov edx, [eax+4]
-    mov [ecx+4], edx
-    // Move the returned value into the result
-    // (Return value is a hidden struct, should already be set)
-    // restore stack
-    // including this pointer
-    // Hidden struct
-    pop eax
-    pop eax
-    // This
-    pop eax
-    // Hidden struct pointer
-    // should be popped by Linux
-    //pop eax
+    // restore the stack (linux this)
+    // (GCC pops the hidden pointer for us, I guess because REASONS)
+    add esp, 4
   }
-  __TRACE("Pointers are 0x%p,0x%p", &result, value);
-  __TRACE("Result is %llu", result);
-  return result;
+  __TRACE("Result is %llu", data);
+  return data;
 }
 
 int SteamUser::InitiateGameConnection(void *pAuthBlob, int cbMaxAuthBlob, CSteamID steamIDGameServer, uint32 unIPServer, uint16 usPortServer, bool bSecure)
