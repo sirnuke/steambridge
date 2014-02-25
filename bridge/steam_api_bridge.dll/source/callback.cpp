@@ -75,7 +75,7 @@ CallbackImpl::~CallbackImpl()
 // This doesn't work across the Wine->Linux boundary.  Interestingly enough,
 // the Win32 code running in Wine calls the correct Linux virtual function,
 // but thiscall is considerably different between GCC and Visual Studio.
-// Noticeably, Visual Studio uses callee and LTR (!) arguments, and GCC uses
+// Noticeably, Visual Studio uses callee cleanup and LTR (!) arguments, and GCC uses
 // C-style caller and RTL arguments.  While the right function executes,
 // the arguments are messed up and it's unlikely you'd be able to get the
 // function to return correctly.
@@ -85,12 +85,12 @@ CallbackImpl::~CallbackImpl()
 // compiled in the same form as the real DLL, versus this bridge library that
 // compiles classes in the GCC/Linux fashion for the Linux steam_api.so.
 // For most functions, a wrapping C interface is fine, if slightly painful
-// to write all the glue code.  However, there's isn't a super logical way
+// to write all the glue code.  However, there's isn't an easy way
 // to call functions on the Wine side from the Winelib DLL.  Winelib DLLs
 // are effectively entirely Linux code, and cannot link against Win32 DLLs.
 // Fortunately, C-style calls are nearly identical on GCC/Linux and VS/Win32.
 // At a glance of various Internet documents, it seems like returning
-// values would be trouble, but arguments are handled in the same way.
+// values could be trouble, but arguments are handled in the same way.
 // Note that GCC has a 16-byte stack alignment behavior that Visual Studio
 // may or may not have.  Thanks to caller cleanup and the simple nature of
 // the callback arguments (pointers, ints, and int64) this shouldn't cause
@@ -101,12 +101,6 @@ CallbackImpl::~CallbackImpl()
 // and Windows.  It's extremely brittle, and liable to break into a
 // million pieces if you so much look at it the wrong way, or really think
 // about it.
-//
-// On a side note, despite the "Let's take a moment and fix a few annoying
-// things, such as the lack of general purpose registers" nature of x86-64,
-// the default conventions are still different in the magical 64-bit land.
-// Microsoft went with a stdcall style LTR argument order, but cdecl style
-// caller cleanup.  GCC uses straight cdecl.  Wheee...
 
 
 void CallbackImpl::Run(void *pvParam)
@@ -223,7 +217,7 @@ STEAM_API_BRIDGE_API void SteamAPI_UnregisterCallback_(void *cCallbackBase)
   (*api)(wrapper);
   state->removeCallback(reference);
   // TODO: Research destructors, there's nothing defined by steam_api.h -
-  //       so this probabbbllly works right, but G++ complains (rightfully).
+  //       so this probabbbllly works right, but G++ complains
   delete wrapper;
 }
 
