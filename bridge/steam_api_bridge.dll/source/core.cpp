@@ -45,7 +45,7 @@ bool SteamAPI_InitSafe_()
 
     state->initialize();
 
-    WINE_TRACE("Created internal state (0x%p)\n", state);
+    WINE_TRACE("Created internal state (%p)\n", state);
   }
   else
     WINE_WARN("Init called twice (perhaps internally the first time)\n");
