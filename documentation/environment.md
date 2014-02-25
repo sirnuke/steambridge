@@ -2,7 +2,7 @@
 
 You'll need a Windows setup with Visual Studio installed.  I'm using
 2010 Express on Windows 7 64-bit.  Other modern versions of Visual Studio
-and Windows are probably fine.
+and Windows are likely fine, though may come with their own quirks.
 
 Visual Studio 2010 is the latest and recommend Windows compiler. [See this
 document](https://developer.valvesoftware.com/wiki/Compiler_Choices).
@@ -25,7 +25,7 @@ On a 64-bit Ubuntu installation, you'll (roughly) want *build-essential*,
 *g++*, *g++-multilib*, *wine1.7*, and *wine1.7-dev*.  32-bit distros
 won't need *g++-multilib*.  Other distros will probably have similar
 requirements.  You'll likely also want *winetricks* in some form.
-Ubuntu has it as a package, which seems to work fine.
+Ubuntu has it as a package.
 
 Specifically, various components depend on *make*, *strings*,
 *python2.7*,and *bash*.  All of which should be installed out of the box,
