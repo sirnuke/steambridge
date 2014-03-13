@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./common/settings.sh
+. ./tools/settings.sh
 
 echo "#ifndef ___STEAM_BRIDGE_CONFIG_H___
 #define ___STEAM_BRIDGE_CONFIG_H___

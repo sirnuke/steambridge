@@ -1,13 +1,13 @@
 #!/bin/bash
 
-. ./common/settings.sh
+. ./tools/settings.sh
 
 # Files
 bridgelib=bridge/steam_api_bridge.dll/steam_api_bridge.dll.so
 steamapilib=common/steam/libsteam_api.so
 proxydllname=steam_api_proxy.dll
 pylib=`find common/pyruntime/ -name *.py`
-tools=`find tools/ -name *.py`
+tools=`find runtime -name *.py`
 
 # Argument settings
 clean=false
