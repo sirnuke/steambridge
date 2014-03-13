@@ -60,7 +60,7 @@ WEBPAGE=https://github.com/sirnuke/steambridge/
 # Base version string
 VERSION_MAJOR=0
 VERSION_MINOR=0
-VERSION_PATCH=1
+VERSION_PATCH=2
 
 # Bit of data about the build
 GIT_HEAD=`git rev-parse HEAD`
