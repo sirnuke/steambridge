@@ -1,0 +1,8 @@
+* Basic GTK framework (but keep the cmd interface).
+* Write to shortcuts.vdf
+* Python library to read VDF files.
+* Write physical letter to Valve overlords asking for forgiveness.
+* Clean up the Ruby conversion script.  Consider for a bit about converting to Python for consistency, before rejecting as that'd be a lot of work for little payoff.
+* Add support for tracking WINEPREFIXes, including setting up new ones (installing Windows Steam, vcrun2010, etc).
+* Get some sort of SteamOS setup going and test SteamBridge there.
+
