@@ -3,11 +3,10 @@
 #
 # See COPYING and license/LICENSE.steambridge for license information
 
-# Returns an array mapping directories, file locations, and a few filenames
-# Parameters override the default prefix, local, and steam root directories, if set
-
 import subprocess
 
+# Returns an array mapping directories, file locations, and a few filenames
+# Parameters override the default prefix, local, and steam root directories, if set
 def directories(prefix = None, local = None, steam_root = None):
     if not steam_root:
         steam_root = '~/.steam/root'
