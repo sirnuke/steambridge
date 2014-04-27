@@ -5,6 +5,9 @@
 
 # Returns an array mapping directories, file locations, and a few filenames
 # Parameters override the default prefix, local, and steam root directories, if set
+
+import subprocess
+
 def directories(prefix = None, local = None, steam_root = None):
     if not steam_root:
         steam_root = '~/.steam/root'
@@ -77,6 +80,8 @@ def settings():
     version_major = '0'
     version_minor = '0'
     version_patch = '2dev'
+    config_time = execute('date')
+    git_head = execute('git rev-parse HEAD')
     return  {
                 'app_name': 'SteamBridge',
                 'copyright': 'Bryan DeGrendel (c) 2014',
@@ -87,6 +92,8 @@ def settings():
                     'minor': version_minor,
                     'patch': version_patch,
                     'short': '{}.{}.{}'.format(version_major, version_minor, version_patch),
+                    'long' : '{}.{}.{} (git-head:{}, config-time:{})'.format(version_major,
+                        version_minor, version_patch, git_head, config_time),
                 },
             }
 
