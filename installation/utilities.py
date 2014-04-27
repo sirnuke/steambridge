@@ -1,4 +1,7 @@
-# settings.py
+# utilities.py - Utility code shared between various configuration and installation scripts
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 def directories(prefix = None, local = None, steam_root = None):
     if not steam_root:
