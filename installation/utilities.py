@@ -76,11 +76,12 @@ def directories(prefix = None, local = None, steam_root = None):
 
 # Returns an array mapping various settings
 def settings():
-    version_major = '0'
-    version_minor = '0'
-    version_patch = '2dev'
-    config_time = execute('date')
-    git_head = execute('git rev-parse HEAD')
+    version_major = 0
+    version_minor = 0
+    version_patch = 2
+    version_extra = 'dev'
+    config_time = execute('date').strip()
+    git_head = execute('git rev-parse HEAD').strip()
     return  {
                 'app_name': 'SteamBridge',
                 'copyright': 'Bryan DeGrendel (c) 2014',
@@ -90,9 +91,11 @@ def settings():
                     'major': version_major,
                     'minor': version_minor,
                     'patch': version_patch,
-                    'short': '{}.{}.{}'.format(version_major, version_minor, version_patch),
-                    'long' : '{}.{}.{} (git-head:{}, config-time:{})'.format(version_major,
-                        version_minor, version_patch, git_head, config_time),
+                    'extra': version_extra,
+                    'short': '{}.{}.{}-{}'.format(version_major, version_minor, version_patch,
+                        version_extra),
+                    'long' : '{}.{}.{}-{} (git-head:{}, config-time:{})'.format(version_major,
+                        version_minor, version_patch, version_extra, git_head, config_time),
                 },
             }
 
