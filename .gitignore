@@ -9,9 +9,9 @@ proxy/steam_api_proxy/Debug/*
 SteamBridge.opensdf
 SteamBridge.sdf
 SteamBridge.suo
-.*.swp
-common/pyruntime/config.py
+.*.sw*
+interface/pysteambridge/config.py
 common/include/config.h
-common/local.sh
 ipch
 steam_api_proxy.dll
+*.pyc
