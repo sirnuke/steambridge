@@ -6,8 +6,9 @@
 
 import utilities
 
-settings = utilities.settings()
-directories = utilities.directories()
+options = utilities.defaults()
+settings = utilities.settings(options)
+directories = utilities.directories(options)
 
 config_header = open('common/include/config.h', 'w')
 

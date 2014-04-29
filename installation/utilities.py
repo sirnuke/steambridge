@@ -5,15 +5,20 @@
 
 import subprocess
 
+# Returns an array of the default options
+def defaults():
+    return  {
+                'steam_root': '/.steam/root',
+                'prefix'    : '/usr/local',
+                'local'     : '/.steam/root/SteamBridge',
+            }
+
 # Returns an array mapping directories, file locations, and a few filenames
 # Parameters override the default prefix, local, and steam root directories, if set
-def directories(prefix = None, local = None, steam_root = None):
-    if not steam_root:
-        steam_root = '~/.steam/root'
-    if not prefix:
-        prefix = '/usr/local'
-    if not local:
-        local = steam_root + '/SteamBridge'
+def directories(options):
+    steam_root = options['steam_root']
+    prefix = options['prefix']
+    local = options['local']
     shared = prefix + '/share/steambridge'
     doc = prefix + '/share/doc/steambridge'
     _bin = prefix + '/bin'
@@ -75,7 +80,7 @@ def directories(prefix = None, local = None, steam_root = None):
             }
 
 # Returns an array mapping various settings
-def settings():
+def settings(options):
     version_major = 0
     version_minor = 0
     version_patch = 2
