@@ -4,9 +4,16 @@
 #
 # See COPYING and license/LICENSE.steambridge for license information
 
+import json
+
 import utilities
 
 options = utilities.defaults()
+
+options_cache = open('.configuration.json', 'w')
+json.dump(options, options_cache)
+options_cache.close()
+
 settings = utilities.settings(options)
 directories = utilities.directories(options)
 
