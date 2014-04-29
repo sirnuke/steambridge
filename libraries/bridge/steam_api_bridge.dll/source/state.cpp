@@ -46,6 +46,31 @@ typedef HSteamPipe (*steam_api_GetHSteamPipe_t)(void);
 
 WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
+static std::string _state_convert_path(const std::string &source)
+{
+  std::string result = source;
+  if (!source.empty() && source.at(0) == '~')
+  {
+    std::string home;
+    char *homeStr = NULL;
+
+    if ((homeStr = getenv("HOME")) == NULL)
+    {
+      // Harumph
+      struct passwd *pw = getpwuid(getuid());
+      if (!pw) __ABORT("getpwuid failed (!): %s", strerror(errno));
+      home = pw->pw_dir;
+    }
+    else
+      home = homeStr;
+
+    if (home.empty()) __ABORT("Unable to find a valid home directory!");
+
+    result = home + result.substr(0);
+  }
+  return result;
+}
+
 State::State()
   : steamClient(NULL), steamUser(NULL), steamFriends(NULL),
     steamUtils(NULL), steamMatchmaking(NULL), steamUserStats(NULL),
@@ -144,38 +169,26 @@ void State::checkBridgeDirectory()
   WINE_TRACE("(this=%p)\n", this);
   struct stat rootDir;
   std::string dir;
-  char *home = NULL;
+  std::string local = _state_convert_path(_STEAM_BRIDGE_LOCAL);
 
-  if ((home = getenv("HOME")) == NULL)
-  {
-    // Harumph
-    struct passwd *pw = getpwuid(getuid());
-    if (!pw) __ABORT("getpwuid failed (!): %s", strerror(errno));
-    dir = pw->pw_dir;
-  }
-  else
-    dir = home;
-
-  if (dir.empty()) __ABORT("Unable to find a valid home directory!");
-
-  if (stat(_STEAM_BRIDGE_ROOT, &rootDir) != 0)
+  if (stat(local.c_str(), &rootDir) != 0)
   {
     if (errno != ENOENT)
-      __ABORT("Root directory \"%s\" doesn't exist!", _STEAM_BRIDGE_ROOT);
+      __ABORT("Local directory \"%s\" doesn't exist!", _STEAM_BRIDGE_LOCAL);
     else
-      __ABORT("Unable to stat root directory \"%s\": %s\n",
-          _STEAM_BRIDGE_ROOT, strerror(errno));
+      __ABORT("Unable to stat local directory \"%s\": %s\n",
+          _STEAM_BRIDGE_LOCAL, strerror(errno));
   }
   else if (S_ISDIR(rootDir.st_mode) == 0)
-    __ABORT("Root directory \"%s\" exists, but isn't a directory!\n",
-        _STEAM_BRIDGE_ROOT);
+    __ABORT("Local directory \"%s\" exists, but isn't a directory!\n",
+        _STEAM_BRIDGE_LOCAL);
 }
 
 void State::loadSteamAPI()
 {
   WINE_TRACE("(this=%p)\n", this);
 
-  std::string libPath = _STEAM_BRIDGE_API_LIB;
+  std::string libPath = _state_convert_path(_STEAM_BRIDGE_API_LIB);
 
   // TODO: RTLD_LAZY?  Not that it likely makes a huge difference.
   steamAPIHandle = dlopen(libPath.c_str(), RTLD_NOW);
@@ -191,7 +204,7 @@ bool State::readConfiguration()
 
   disclaimer = false;
 
-  std::string filename = _STEAM_BRIDGE_CONFIG;
+  std::string filename = _state_convert_path(_STEAM_BRIDGE_CONFIG);
 
   std::ifstream in(filename.c_str());
 
@@ -230,7 +243,7 @@ bool State::saveConfiguration()
 {
   WINE_TRACE("(this=%p)\n", this);
 
-  std::string filename = _STEAM_BRIDGE_CONFIG;
+  std::string filename = _state_convert_path(_STEAM_BRIDGE_CONFIG);
 
   std::ofstream out(filename.c_str());
 
@@ -256,7 +269,8 @@ void State::loadSteamAPIVersions()
     __ABORT("SteamClient() returns NULL! (InitSafe not called?)");
 
   std::stringstream ss;
-  ss << _STEAM_BRIDGE_APPDB_ROOT << "/" << appid << "/" << _STEAM_BRIDGE_APPDB_CONFIG;
+  ss << _state_convert_path(_STEAM_BRIDGE_APPDB_ROOT) << "/" << appid << "/"
+     << _STEAM_BRIDGE_APPDB_CONFIG;
   std::string filename = ss.str();
 
   std::ifstream in(filename.c_str());
