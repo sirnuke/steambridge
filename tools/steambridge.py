@@ -2,4 +2,7 @@
 
 import sys, os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../share/steambridge/'))
+SHARED_DIRECTORY = "$SHARED$"
+
+sys.path.append(os.path.join(os.path.dirname(__file__), SHARED_DIRECTORY))
+

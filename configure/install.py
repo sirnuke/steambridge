@@ -37,10 +37,12 @@ try:
   execute(cp.format(build['bridge_lib'], prefix['bridge_lib']))
   execute(cp.format(build['proxy_dll'], prefix['proxy_dll']))
   execute(cp.format(build['steam_api_lib'], prefix['steam_api_lib']))
-  execute(cp.format(build['executable'], prefix['executable']))
   execute(cp.format(build['pysteambridge'], prefix['pysteambridge']))
   execute(cp.format(build['documentation'], prefix['documentation']))
   execute(cp.format(build['licenses'], prefix['licenses']))
+
+  execute("sed 's,\$SHARED\$,{},' {} > {}".format(prefix['shared'], build['executable'],
+    prefix['executable']))
 
   # Set permissions
   execute('chmod +x {}'.format(prefix['executable']))
