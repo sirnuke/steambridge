@@ -10,9 +10,10 @@ import subprocess
 class Options:
   def __init__(self):
     self._data =  {
-                    'steam_root': '~/.steam/root',
-                    'prefix'    : '/usr/local',
-                    'local'     : '~/.steam/root/SteamBridge',
+                    'steam_root' : '~/.steam/root',
+                    'prefix'     : '/usr/local',
+                    'local'      : '~/.steam/root/SteamBridge',
+                    'proxy_dll'  : 'libraries/Release/steam_api_proxy.dll',
                   }
     self._filename = '.configuration.json'
     self._version = [0, 0, 2, 'dev']
@@ -52,7 +53,9 @@ class Options:
     steam_root = self.get('steam_root')
     prefix = self.get('prefix')
     local = self.get('local')
+    proxydll = self.get('proxy_dll')
     shared = prefix + '/share/steambridge'
+    winedllpath = shared
     doc = prefix + '/share/doc/steambridge'
     _bin = prefix + '/bin'
 
@@ -91,6 +94,16 @@ class Options:
                   'long' : '{}.{}.{}-{} (git-head:{}, config-time:{})'.format(version_major,
                     version_minor, version_patch, version_extra, git_head, config_time),
                 },
+                'build':
+                {
+                  'bridge_lib'   : 'libraries/bridge/steam_api_bridge.dll/steam_api_bridge.dll.so',
+                  'proxy_dll'    : proxydll,
+                  'steam_api_lib': 'libraries/common/steam/libsteam_api.so',
+                  'executable'   : 'tools/steambridge.py',
+                  'pysteambridge': 'tools/pysteambridge/*.py',
+                  'licenses'     : 'documentation/licenses/*',
+                  'documentation': 'README.md COPYING documentation/*.md',
+                },
                 # 'local' scope defines locations modified and used by the current user.
                 'local':
                 {
@@ -111,11 +124,15 @@ class Options:
                   # Shared directory storing non-executable files.
                   'shared': shared,
                   # Absolute path to add to WINEDLLPATH
-                  'winedllpath': shared,
+                  'winedllpath': winedllpath,
+                  # Absolute path to the base documentation directory
+                  'documentation': doc,
+                  # Absolute path to the licenses directory
+                  'licenses': doc + '/licenses',
+                  # File storing the installed SteamBridge version
+                  'version': doc + '/steam-bridge-version.txt',
                   # Location to install the Winelib Bridge library.
-                  # This MUST be in the same directory as winedllpath.  In the future we'll
-                  # handle this better.
-                  'bridge_lib': shared + '/steam_api_bridge.dll.so',
+                  'bridge_lib': winedllpath + '/steam_api_bridge.dll.so',
                   # Location to store the distributed copy of Steam's API Linux library.
                   # Do NOT install this file anywhere ld.so will find it.  It may interfere
                   # with native Steam applications, who package their own copy.
