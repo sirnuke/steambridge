@@ -1,4 +1,7 @@
-# __init__.py - Makes pyruntime a module!
+# __init__.py - pysteambridge module
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 import filesystem
 
