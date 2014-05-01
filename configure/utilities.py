@@ -4,6 +4,7 @@
 # See COPYING and license/LICENSE.steambridge for license information
 
 import json
+import os
 import subprocess
 
 class Options:
@@ -19,20 +20,24 @@ class Options:
   # Attempt to load the options
   # Returns False on error (typically means source file isn't found)
   def load(self):
+    if not os.path.isfile(self._filename):
+      error("Options", "'{}' isn't readable! (did you run 'make config'?)".format(self._filename))
     try:
       options_cache = open(self._filename, 'r')
       self._data = json.load(options_cache)
       options_cache.close()
-      return True
-    except IOError:
-      return False
+    except IOError, e:
+      error("Options", "IOError while reading '{}': {}".format(self._filename, e))
 
   # Save the options
   # Does NOT save the generated configuration values
   def save(self):
-    options_cache = open(self._filename, 'w')
-    json.dump(self._data, options_cache)
-    options_cache.close()
+    try:
+      options_cache = open(self._filename, 'w')
+      json.dump(self._data, options_cache)
+      options_cache.close()
+    except IOError, e:
+      error("Options", "IOError while writing '{}': {}".format(self._filename, e))
 
   # Return the value for an option
   def get(self, key):
@@ -143,4 +148,8 @@ def execute(command, ignore_results = False):
       return subprocess.check_output(command, shell=True)
     except subprocess.CalledProcessError as e:
       return e.output
+
+def error(tag, message):
+  print "Error! [{}]: {}".format(tag, message)
+  exit(1)
 
