@@ -17,7 +17,6 @@ class FilesystemException(Exception):
   def __str__(self):
     return "Missing {} path '{}'".format(self._type, self._path)
 
-# TODO: Handle error cases better.  Exceptionz
 def validate():
   for i in _STEAM_DIRS:
     if not os.path.isdir(i):
