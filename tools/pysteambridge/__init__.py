@@ -5,8 +5,5 @@
 
 import filesystem
 
-try:
-  filesystem.validate()
-except FilesystemException, e:
-  raise Exception(str(e))
+filesystem.validate()
 
