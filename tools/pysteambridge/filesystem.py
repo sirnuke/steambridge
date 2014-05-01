@@ -31,7 +31,6 @@ def validate():
     if not os.path.isdir(i):
       os.makedirs(i)
 
-
 def execute(command, ignore_results = False):
   if not ignore_results:
     return subprocess.check_output(command, shell=True)
