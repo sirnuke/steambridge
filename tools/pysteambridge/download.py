@@ -14,7 +14,7 @@ class DownloadException:
     return self._message
 
 def help():
-  print '{} download: --appid APPID'.format(config.APP_NAME)
+  print 'USAGE: {} download --appid appid'.format(config.APP_NAME)
   exit(0)
 
 def error(message):
