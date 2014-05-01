@@ -6,34 +6,31 @@ import subprocess
 import config
 
 _STEAM_DIRS = [config.STEAM_ROOT, config.STEAM_APPMANIFESTS, config.STEAM_APPS]
-_STEAM_FILES = []
-_BRIDGE_DIRS = [config.STEAM_BRIDGE_ROOT, config.APPDB_ROOT, config.TOOLS_DIR]
-_BRIDGE_FILES = [config.PROXY_DLL, config.BRIDGE_LIB, config.STEAM_API_LIB,
-    config.EXECUTE_TOOL]
+_BRIDGE_DIRS = [config.STEAM_BRIDGE_LOCAL, config.APPDB_ROOT] 
+_BRIDGE_FILES = [config.PROXY_DLL, config.BRIDGE_LIB, config.STEAM_API_LIB]
+
+class FilesystemException(Exception):
+  def __init__(self, type, path):
+    self._type = type
+    self._path = path
+
+  def __str__(self):
+    return "Missing {} path '{}'".format(self._type, self._path)
 
 # TODO: Handle error cases better.  Exceptionz
 def validate():
   for i in _STEAM_DIRS:
     if not os.path.isdir(i):
-      print "Missing expected Steam directory {}".format(i)
-      return False
-
-  for i in _STEAM_FILES:
-    if not os.path.isfile(i):
-      print "Missing expected Steam file {}".format(i)
-      return False
-
-  for i in _BRIDGE_DIRS:
-    if not os.path.isdir(i):
-      print "Missing expected SteamBridge directory {}".format(i)
-      return False
+      raise FilesystemException('steam', i)
 
   for i in _BRIDGE_FILES:
     if not os.path.isfile(i):
-      print "Missing expected SteamBridge file {}".format(i)
-      return False
+      raise FilesystemException('steambridge', i)
 
-  return True
+  for i in _BRIDGE_DIRS:
+    if not os.path.isdir(i):
+      os.makedirs(i)
+
 
 def execute(command, ignore_results = False):
   if not ignore_results:
