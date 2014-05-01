@@ -5,5 +5,8 @@
 
 import filesystem
 
-if not filesystem.validate():
-  exit(1)
+try:
+  filesystem.validate()
+except FilesystemException, e:
+  raise Exception(str(e))
+
