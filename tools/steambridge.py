@@ -6,3 +6,5 @@ SHARED_DIRECTORY = "$SHARED$"
 
 sys.path.append(os.path.join(os.path.dirname(__file__), SHARED_DIRECTORY))
 
+from pysteambridge import *
+
