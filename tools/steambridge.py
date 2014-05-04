@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 
-import sys, os
+import argparse, sys, os
 
 SHARED_DIRECTORY = "$SHARED$"
 APP_NAME="steambridge"
@@ -21,18 +21,31 @@ except filesystem.FilesystemException, e:
 
 def help():
   print "USAGE: {} command [arguments]".format(APP_NAME)
+  print
+  print "Where command is one of the following:"
+  print "  download     Download an application"
+  print
   exit(0)
+
+class CLI:
+  def download(self, args):
+    parser = argparse.ArgumentParser(prog='{} download'.format(config.APP_NAME))
+    #parser.add_argument('appid', type=int, required=True, help='the AppID that will be downloaded')
+    parser.add_argument('appid', type=int, help='the AppID that will be downloaded')
+    args = parser.parse_args(args)
+    download.do(args.appid)
 
 if len(sys.argv) < 2:
   # TODO: This will mean GUI, in the future
   error("Requires a command")
 
 cmd = sys.argv[1].lower()
+cli = CLI()
 
 if cmd == '--help' or cmd == '-h':
   help()
 elif cmd == 'download':
-  download.cli(sys.argv[2:])
+  cli.download(sys.argv[2:])
 else:
   if len(cmd) >= 2 and cmd[0:2] == '--':
     error("Unexpected flag '{}', expected --help or command".format(sys.argv[1]))
