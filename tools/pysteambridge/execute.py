@@ -1,4 +1,7 @@
-#!/usr/bin/env python2.7
+# execute.py - API for running an application
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 import os, shutil
 
@@ -15,12 +18,12 @@ class ExecuteException(Exception):
 def do(appid):
   app = appdb.Entry(appid)
   if not app.exists():
-    raise ExecuteException("{} isn't configured (steambridge configure {})".format(appid, appid))
+    raise ExecuteException("{} isn't configured (steambridge setup {})".format(appid, appid))
 
   app.load()
 
   if not app.validate():
-    raise ExecuteException("{} has an invalid internal configuration, try rerunning configure" \
+    raise ExecuteException("{} has an invalid internal configuration, try rerunning setup" \
         .format(appid))
 
   # Copy the proxy DLL

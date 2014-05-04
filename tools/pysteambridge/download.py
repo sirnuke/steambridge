@@ -1,4 +1,7 @@
-#!/usr/bin/env python2.7
+# download.py - API for downloading an application
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 import appmanifest, config
 

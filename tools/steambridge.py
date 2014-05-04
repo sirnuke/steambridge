@@ -1,4 +1,8 @@
 #!/usr/bin/env python2.7
+# steambridge.py - Tool for interacting with a SteamBridge installation
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 import argparse, sys, os
 
@@ -24,6 +28,8 @@ def help():
   print
   print "Where command is one of the following:"
   print "  download     Download an application"
+  print "  setup        Setup a downloaded application"
+  print "  execute      Run an application"
   print
   exit(0)
 

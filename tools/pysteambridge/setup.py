@@ -1,4 +1,7 @@
-#!/usr/bin/env python2.7
+# setup.py - API for setting up an application for use with SteamBridge
+# Copyright (c) 2014 Bryan DeGrendel
+#
+# See COPYING and license/LICENSE.steambridge for license information
 
 import os, shutil
 
