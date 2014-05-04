@@ -13,7 +13,7 @@ def error(message):
 
 try:
   from pysteambridge import config, filesystem
-  from pysteambridge import download, execute
+  from pysteambridge import download, execute, setup
   APP_NAME = config.APP_NAME
 except filesystem.FilesystemException, e:
   error(e)
@@ -34,6 +34,12 @@ class CLI:
     args = parser.parse_args(args)
     download.do(args.appid)
 
+  def setup(self, args):
+    parser = argparse.ArgumentParser(prog='{} setup'.format(config.APP_NAME))
+    parser.add_argument('appid', type=int, help='the AppID to setup')
+    args = parser.parse_args(args)
+    setup.do(args.appid)
+
   def execute(self, args):
     parser = argparse.ArgumentParser(prog='{} execute'.format(config.APP_NAME))
     parser.add_argument('appid', type=int, help='the AppID to execute')
@@ -42,7 +48,7 @@ class CLI:
 
 if len(sys.argv) < 2:
   # TODO: This will mean GUI, in the future
-  error("Requires a command")
+  error('Requires a command')
 
 cmd = sys.argv[1].lower()
 cli = CLI()
@@ -51,6 +57,8 @@ if cmd == '--help' or cmd == '-h':
   help()
 elif cmd == 'download':
   cli.download(sys.argv[2:])
+elif cmd == 'setup':
+  cli.setup(sys.argv[2:])
 elif cmd == 'execute':
   cli.execute(sys.argv[2:])
 else:
