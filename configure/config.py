@@ -4,12 +4,23 @@
 #
 # See COPYING and license/LICENSE.steambridge for license information
 
+import argparse
+
 import utilities
 
 options = utilities.Options()
+parser = argparse.ArgumentParser()
+parser.add_argument('--prefix',
+        help='base prefix for installation; default is {}'.format(options.get('prefix')))
+parser.add_argument('--proxy',
+        help='location of the Win32 Proxy DLL; default is {}'.format(options.get('proxy_dll')))
+args = parser.parse_args()
 
-# TODO: Check arguments here
-# TODO: Check environmental variables here
+if args.prefix:
+    options.set('prefix', args.prefix)
+
+if args.proxy:
+    options.set('proxy_dll', args.proxy)
 
 options.save()
 
