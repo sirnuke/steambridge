@@ -13,13 +13,13 @@
   object pointers from the Bridge library, and uses black magic assembler
   translates to and from GCCspeak.
 * Converting from Steam headers to a Win32 C++ source is done by
-  convert-steam-header.rb (in tools/).  It takes a single argument,
-  the Steam header file, and generates a mostly correctly C++ source &
-  header file for use in Visual C++.  Note that the original header will
-  need to be tweaked a bit in some cases (isteamclient.h).  This automatic
-  conversion handles the grunt work of wrapping around a GCC thiscall.
-  It's only necessary to run this script when implementing an entirely
-  new Steam class.
+  convert-steam-header.rb (in libraries/common/development/).  It takes a
+  single argument, the Steam header file, and generates a mostly correctly
+  C++ source & header file for use in Visual C++.  Note that the original
+  header will need to be tweaked a bit in some cases (isteamclient.h).
+  This automatic conversion handles the grunt work of wrapping around a
+  GCC thiscall.  It's only necessary to run this script when implementing
+  an entirely new Steam class.
   * It requires modern version of Ruby, of course.  Ruby is not needed
     by anything else in SteamBridge.
   * The conversion script is pretty ugly. Expected ch-ch-ch-changes.
@@ -35,9 +35,9 @@
 * Returning structs by value is a fairly involved endeavour, even when
   it's a well defined, set 64-bits (CSteamID).  GCC expects a hidden
   pointer pushed last (after this) of where to store the value.
-  Despite otherwise being 100% caller stack cleanup, GCC functions
-  will pop (!) this hidden pointer.  The value of the hidden pointer
-  is returned in EAX, but who cares.
+  Despite otherwise being 100% caller stack cleanup, GCC functions will
+  pop (!) this hidden pointer.  The location of the hidden pointer is
+  returned in EAX, but who cares.
 * Visual Studio 2010 seems to have a bug where it optimizes the local
   struct out of the function (using the same hidden struct passes by the
   caller), which isn't reflected in *lea <reg>, <local_storage_variable>*.
@@ -51,7 +51,8 @@
 * Proxy and Bridge are mostly independent of each other.  Proxy only
   needs to be rebuild when the Bridge API changes.
 * Re-run the winemaker.sh script when creating new Bridge source files
-  to update the Makefile.
+  to update the Bridge Makefile.  **make winemaker** performs this
+  for you.
 * Callbacks are bit of a tricky task.  Winelib cannot directly link
   to Win32 code.  At the moment, Proxy wraps around them, offering pure
   C functions for the bridge.  Bridge takes advantage of the C calling
