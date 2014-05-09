@@ -21,7 +21,7 @@ def do(appid):
   manifest = appmanifest.AppManifest(appid)
 
   if manifest.exists():
-    raise DownloadException("{} already has a manifest!".format(appid))
+    raise DownloadException("Can't download because {} already has a manifest!".format(appid))
 
   with open(manifest.filename(), 'w') as f:
     f.write('"AppState"\n')

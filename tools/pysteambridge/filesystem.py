@@ -15,16 +15,17 @@ class FilesystemException(Exception):
     self._path = path
 
   def __str__(self):
-    return "Missing {} path '{}'".format(self._type, self._path)
+    return "{} may not be corrupt because '{}' is missing" \
+        .format(self._type, self._path)
 
 def validate():
   for i in _STEAM_DIRS:
     if not os.path.isdir(i):
-      raise FilesystemException('steam', i)
+      raise FilesystemException('Steam', i)
 
   for i in _BRIDGE_FILES:
     if not os.path.isfile(i):
-      raise FilesystemException('steambridge', i)
+      raise FilesystemException(config.APP_NAME, i)
 
   for i in _BRIDGE_DIRS:
     if not os.path.isdir(i):

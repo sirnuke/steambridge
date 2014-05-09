@@ -20,8 +20,7 @@ class Entry:
       os.mkdir(self._directory)
 
   def validate(self):
-    if not self.installdir or not self.workingdir or not self.name \
-        or not self.executable:
+    if not self.installdir or not self.workingdir or not self.name or not self.executable:
       return False
     return True
 
@@ -39,7 +38,7 @@ class Entry:
     with open(self._filename, 'r') as f:
       data = json.load(f)
     if self._appid != str(data['appid']):
-      print "Warning, {}'s appid of {} doesn't match the expected value" \
+      print "Warning: {}'s appdb file has the wrong appid value of {}" \
           .format(data['appid'], self._appid)
     self.name = data['name']
     self.installdir = data['installdir']

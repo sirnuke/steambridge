@@ -6,6 +6,8 @@
 
 import argparse, sys, os
 
+# This string is replaced by the installation script to be the root
+# directory of the shared directory
 SHARED_DIRECTORY = "$SHARED$"
 APP_NAME="steambridge"
 
@@ -36,7 +38,7 @@ def help():
 class CLI:
   def download(self, args):
     parser = argparse.ArgumentParser(prog='{} download'.format(config.APP_NAME))
-    parser.add_argument('appid', type=int, help='the AppID that will be downloaded')
+    parser.add_argument('appid', type=int, help='the AppID to download')
     args = parser.parse_args(args)
     download.do(args.appid)
 
@@ -54,7 +56,7 @@ class CLI:
 
 if len(sys.argv) < 2:
   # TODO: This will mean GUI, in the future
-  error('Requires a command')
+  error('Need a command')
 
 cmd = sys.argv[1].lower()
 cli = CLI()

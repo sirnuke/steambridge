@@ -18,12 +18,12 @@ class ExecuteException(Exception):
 def do(appid):
   app = appdb.Entry(appid)
   if not app.exists():
-    raise ExecuteException("{} isn't configured (steambridge setup {})".format(appid, appid))
+    raise ExecuteException("Can't run {} because it isn't configured".format(appid, appid))
 
   app.load()
 
   if not app.validate():
-    raise ExecuteException("{} has an invalid internal configuration, try rerunning setup" \
+    raise ExecuteException("Can't run {} because it has an invalid internal configuration" \
         .format(appid))
 
   # Copy the proxy DLL

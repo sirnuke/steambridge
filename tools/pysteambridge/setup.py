@@ -19,16 +19,16 @@ def do(appid):
   manifest = appmanifest.AppManifest(appid)
 
   if not manifest.exists():
-    raise SetupException('{} lacks a manifest (try steambridge download {})'.format(appid, appid))
+    raise SetupException('Cannot setup {} because it lacks a manifest'.format(appid))
 
   if not manifest.parse():
-    raise SetupException('Unable to parse the manifest for {}, it may be corrupted'.format(appid))
+    raise SetupException('Cannot setup {} because the manifest appears corrupted'.format(appid))
 
   if not manifest.is_ready():
-    raise SetupException('{} is not fully downloaded yet'.format(appid))
+    raise SetupException('Cannot setup {} because is not finished downloading'.format(appid))
 
   if not manifest.is_valid():
-    raise SetupException('{} lacks the full manifest data'.format(appid))
+    raise SetupException('Cannot setup {} because the manifest lacks required data'.format(appid))
 
   app = app.Entry(manifest.appid())
   app.installdir = manifest.installdir()
@@ -45,7 +45,7 @@ def do(appid):
 
   # Find the main executable
   app.executable = os.path.abspath(app.installdir + '/' + _find_executable(app.installdir))
-  print "WARN: Using a temporary algorithm to find the main executable, found {}" \
+  print 'WARN: Using a temporary algorithm to find the main executable, found {}' \
       .format(app.executable)
 
   # Find the steam_api.dll and back it up
@@ -53,9 +53,11 @@ def do(appid):
       .format(app.installdir)))
 
   if st == -1:
-    raise SetupException("Didn't find a steam_api.dll in {}".format(app.installdir))
+    raise SetupException('Cannot setup {} because it lacks a steam_api.dll in {}' \
+        .format(appid, app.installdir))
   elif st == -2:
-    raise SetupException('Found mulitple steam_api.dlls in {}'.format(app.installdir))
+    raise SetupException('Cannot setup {} because it has mulitple steam_api.dlls in {}' \
+        .format(appid, app.installdir))
 
   dll = os.path.abspath(dll)
   appdb.workingdir = os.path.dirname(dll)
@@ -63,7 +65,7 @@ def do(appid):
   if not os.path.isfile(dllorig):
     shutil.copyfile(dll, dllorig)
   else:
-    print "steam_api.dll.original already exists, not backing up..."
+    print 'steam_api.dll.original already exists, not backing up...'
 
   # Get the API versions from the native steam_api.dll (Yuck, but it works consistently)
   app.setapiversion('user', _find_version(dllorig, \
