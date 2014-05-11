@@ -16,11 +16,11 @@ complaints that masochism isn't covered by Work's Comp.
 
 ### AND
 
-SteamBridge lets you run Steam applications on Linux using Wine, but
-while still using the native Steam client.  The long term goal is to allow
-Linux users access to their Windows library without switching clients.
+SteamBridge lets you run Steam applications on Linux using Wine, while
+still using the native Steam client.  The goal is allowing Linux users
+access to their Windows library without having to switch clients.
 
-More technically, SteamBridge is primarly a two part recreation of
+More technically, SteamBridge is primarily a two part recreation of
 the Steam API DLL that acts a proxy between Wine and the Linux-native
 Steam client.
 
