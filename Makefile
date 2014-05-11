@@ -16,8 +16,8 @@ winemaker :
 	cd $(BRIDGE_ROOT) && ./winemaker.sh
 
 install :
-	./configure/install.py
+	./buildhelper/install.py
 
 uninstall:
-	./configure/uninstall.py
+	./buildhelper/uninstall.py
 
