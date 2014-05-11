@@ -70,7 +70,8 @@ execute* will run it.
 
 #### Compilation
 
-1. Configure with **make config**
+1. Configure with **configure**
+  * Run with **configure --help** to see configurable options
 2. Compile the Proxy DLL using Visual Studio
   * You'll need to copy libraries/common/include/config.h to Windows,
     and copy Release/steam\_api\_proxy.dll back to Linux
@@ -78,7 +79,7 @@ execute* will run it.
 3. Compile the Bridge DLL with **make**
 4. Deploy SteamBridge with **make install**
   * As a change from the first release, SteamBridge now installs to the
-    system by default, rather than just your home directory.
+    system by default, rather than just your home directory
 
 #### Execution
 
