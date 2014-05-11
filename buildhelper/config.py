@@ -9,7 +9,8 @@ import argparse
 import utilities
 
 options = utilities.Options()
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog='configure',
+    description='Configures SteamBridge source for compilation and installation')
 parser.add_argument('--prefix',
         help='base prefix for installation; default is {}'.format(options.get('prefix')))
 parser.add_argument('--proxy',

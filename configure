@@ -1,0 +1,8 @@
+#!/bin/sh
+# Reroutes to the Python configuration script
+# Yes, this isn't an automake system but LALALA I CAN'T HEAR YOU
+# More seriously, adding this script to make this more familar for the average UNIX user
+
+./buildhelper/config.py $*
+
+

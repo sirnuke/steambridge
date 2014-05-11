@@ -1,7 +1,7 @@
 BRIDGE_ROOT=libraries/bridge
 BRIDGE_DIR=libraries/bridge/steam_api_bridge.dll
 
-.PHONY : all clean rebuild winemaker config install uninstall
+.PHONY : all clean rebuild winemaker install uninstall
 
 all :
 	cd $(BRIDGE_DIR) && $(MAKE)
@@ -14,9 +14,6 @@ rebuild : clean
 
 winemaker :
 	cd $(BRIDGE_ROOT) && ./winemaker.sh
-
-config :
-	./configure/config.py
 
 install :
 	./configure/install.py
