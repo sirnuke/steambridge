@@ -61,7 +61,7 @@ if len(sys.argv) < 2:
 cmd = sys.argv[1].lower()
 cli = CLI()
 
-if cmd == '--help' or cmd == '-h':
+if cmd == '--help' or cmd == '-h' or cmd == 'help':
   help()
 elif cmd == 'download':
   cli.download(sys.argv[2:])
