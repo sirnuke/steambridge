@@ -37,7 +37,7 @@ this with a real account.  I recommend taking the SteamBridge User pledge:
 I, *[state your name]*, have done many stupid things, such as:
 
 * Buying a game at full price half way through December.
-* Taking a payday loan, because, hey, it's free money, right?
+* Taking a payday loan because hey, it's free money, right?
 * Purchasing a used car without driving it.
 * Telling my significant other that what they are upset about "isn't a
   big deal."
