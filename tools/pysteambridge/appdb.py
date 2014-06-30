@@ -37,7 +37,7 @@ class Entry:
   def load(self):
     with open(self._filename, 'r') as f:
       data = json.load(f)
-    if self._appid != str(data['appid']):
+    if self._appid != data['appid']:
       print "Warning: {}'s appdb file has the wrong appid value of {}" \
           .format(data['appid'], self._appid)
     self.name = data['name']
