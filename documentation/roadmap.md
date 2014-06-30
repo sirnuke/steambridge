@@ -17,13 +17,12 @@
 
 ## 0.0.4
 
-* Create a Gtk2 (Gtk3?) GUI for configuration games.
+* Add support for downloading games using SteamCMD, which is a clean
+  and mostly painless method for downloading games from the command line.
 
 ## 0.0.5
 
-* Support automagically downloading games from Wine-Steam.  This definitely
-  requires a lot of blood, sweat, and tears; unfortunately, but it'll
-  be necessary for a lot of games to Just Work.
+* Create a Gtk2 (Gtk3?) GUI for configuration games.
 
 ## 0.1.0
 
@@ -36,10 +35,10 @@
 * Cleanup in various C++ code.  *bridge/state* is a notable location.
 * More vigorous testing of whether assembly black magic works in all cases.
 * Compare version data of Proxy and Bridge.  Warn if they don't match.
-* Configure script doesn't take options, yet.  Also needs --help output.
-  Might need to extract config from the Makefile, as make is an outdated
-  tool that survives on shear momentum.
 * configure/utilities.py generates different long version data each time
   it is run!
 * Some files may still need license/info headers.
+* Remove Windows dependency on generated common header.
+* OS X support!  Someday!
+* Test SteamBridge on SteamOS.
 
