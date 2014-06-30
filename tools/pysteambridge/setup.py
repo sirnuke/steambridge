@@ -30,7 +30,7 @@ def do(appid):
   if not manifest.is_valid():
     raise SetupException('Cannot setup {} because the manifest lacks required data'.format(appid))
 
-  app = app.Entry(manifest.appid())
+  app = appdb.Entry(manifest.appid())
   app.installdir = manifest.installdir()
   app.name = manifest.name()
 
@@ -60,7 +60,7 @@ def do(appid):
         .format(appid, app.installdir))
 
   dll = os.path.abspath(dll)
-  appdb.workingdir = os.path.dirname(dll)
+  app.workingdir = os.path.dirname(dll)
   dllorig = dll + ".original"
   if not os.path.isfile(dllorig):
     shutil.copyfile(dll, dllorig)
@@ -98,7 +98,8 @@ def do(appid):
       "STEAMUGC_INTERFACE_VERSION[[:digit:]]\{3\}", "SteamUGC"))
 
   if not app.validate():
-    err("Invalid appdb object! (internal error?)")
+    raise SetupException('Cannot setup {} because of an invalid appdb object (internal error?)' \
+        .format(appid))
 
   # Save the appdb file
   app.save()
@@ -131,10 +132,11 @@ def _process_output(stdout):
   return True, res
 
 def _find_version(dll, search, name):
-  st, api = process_output(filesystem.execute( \
+  st, api = _process_output(filesystem.execute( \
     'strings "{}" | grep "^{}$" || true'.format(dll, search)))
   if st == False and api == 'Multiple':
-    err("Found multiple API version strings for '{}'".format(name))
+    raise SetupException("Cannot setup {} because multiple API versions found for '{}'" \
+        .format(appid, name))
   if st == False:
     return None
   return api
@@ -153,7 +155,8 @@ def _find_executable(search):
     exes = filesystem.execute('ls -R "{}" | grep "\\.exe$" || true' \
         .format(search)).rstrip().split('\n')
     if len(exes) == 1 and exes[0] == '':
-      err("Unable to find any executable (*.exe) files")
+      raise SetupException('Cannot setup {} because no executable (*.exe) files were found' \
+          .format(appid))
 
   if len(exes) == 1:
     return exes[0]
