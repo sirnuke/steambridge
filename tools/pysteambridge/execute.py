@@ -39,7 +39,7 @@ def do(appid):
   os.chdir(app.installdir)
   # TODO: wineprefix
   cmd = 'WINEDEBUG="+steambridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
-      .format(config.WINELIB_PATH, app.executable, appdb.directory(), appdb.directory())
+      .format(config.WINEDLLPATH, app.executable, app.directory(), app.directory())
 
   print "DEBUG: execute('{}')".format(cmd)
 
