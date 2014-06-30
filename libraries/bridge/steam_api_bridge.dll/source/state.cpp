@@ -48,6 +48,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(steambridge);
 
 static std::string _state_convert_path(const std::string &source)
 {
+  WINE_TRACE("(source=%s)\n", source.c_str());
   std::string result = source;
   if (!source.empty() && source.at(0) == '~')
   {
@@ -66,8 +67,9 @@ static std::string _state_convert_path(const std::string &source)
 
     if (home.empty()) __ABORT("Unable to find a valid home directory!");
 
-    result = home + result.substr(0);
+    result = home + result.substr(1);
   }
+  WINE_TRACE("converted path is '%s'\n", result.c_str());
   return result;
 }
 
