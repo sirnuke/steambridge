@@ -4,7 +4,7 @@
 #
 # See COPYING and license/LICENSE.steambridge for license information
 
-import argparse
+import argparse, os
 
 import utilities
 
@@ -28,6 +28,10 @@ print 'User directory: {}'.format(options.get('local'))
 print 'Win32 Proxy DLL location: {}'.format(options.get('proxy_dll'))
 print 'Steam root: {}'.format(options.get('steam_root'))
 print ''
+
+if not os.path.isfile(options.get('proxy_dll')):
+  print "No file located at '{}'.  Is the Win32 Proxy DLL compiled and copied to the right location?".format(options.get('proxy_dll'))
+  exit(1)
 
 options.save()
 print 'Saved configuration options'
