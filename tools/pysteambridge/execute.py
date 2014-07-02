@@ -38,10 +38,13 @@ def do(appid):
   # Change to the installation directory and execute using wine
   os.chdir(app.installdir)
   # TODO: wineprefix
-  cmd = 'WINEDEBUG="+steambridge" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
+  print "Executing {}".format(app.executable)
+  print "stderr output is stored in {}/stderr.txt (usually Wine side output)" \
+      .format(app.directory())
+  print "stdout output is stored in {}/stdout.txt (usually Application side output)" \
+      .format(app.directory())
+  cmd = 'WINEDEBUG="+steambridge,warn+all" WINEDLLPATH="{}" wine "{}" 2>"{}/stderr.txt" >"{}/stdout.txt"' \
       .format(config.WINEDLLPATH, app.executable, app.directory(), app.directory())
-
-  print "DEBUG: execute('{}')".format(cmd)
 
   filesystem.execute(cmd, ignore_results=True)
 
