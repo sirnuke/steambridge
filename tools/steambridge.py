@@ -18,7 +18,13 @@ def error(message):
   exit(1)
 
 try:
-  from pysteambridge import config, filesystem
+  from pysteambridge import filesystem
+except Exception as e:
+  error(e)
+  exit(1)
+
+try:
+  from pysteambridge import config
   from pysteambridge import download, execute, setup
   APP_NAME = config.APP_NAME
 except filesystem.FilesystemException, e:
