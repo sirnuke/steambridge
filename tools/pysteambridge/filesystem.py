@@ -5,8 +5,9 @@ import subprocess
 
 import config
 
-_STEAM_DIRS = [config.STEAM_ROOT, config.STEAM_APPMANIFESTS, config.STEAM_APPS]
-_BRIDGE_DIRS = [config.STEAM_BRIDGE_LOCAL, config.APPDB_ROOT] 
+_STEAM_DIRS = [config.STEAM_ROOT]
+_MAKE_DIRS = [config.STEAM_APPMANIFESTS, config.STEAM_APPS, config.STEAM_BRIDGE_LOCAL,
+    config.APPDB_ROOT]
 _BRIDGE_FILES = [config.PROXY_DLL, config.BRIDGE_LIB, config.STEAM_API_LIB]
 
 class FilesystemException(Exception):
@@ -27,7 +28,7 @@ def validate():
     if not os.path.isfile(i):
       raise FilesystemException(config.APP_NAME, i)
 
-  for i in _BRIDGE_DIRS:
+  for i in _MAKE_DIRS:
     if not os.path.isdir(i):
       os.makedirs(i)
 
