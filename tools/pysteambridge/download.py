@@ -25,7 +25,7 @@ def do(appid):
 
   with open(manifest.filename(), 'w') as f:
     f.write('"AppState"\n')
-    f.write('{\n"')
+    f.write('{\n')
     f.write('\t"AppID"\t"{}"\n'.format(manifest.appid()))
     f.write('\t"Universe"\t"1"\n')
     f.write('\t"StateFlags"\t"1026"\n')
