@@ -13,7 +13,7 @@ rebuild : clean
 	cd $(BRIDGE_DIR) && $(MAKE)
 
 winemaker :
-	cd $(BRIDGE_ROOT) && ./winemaker.sh
+	./buildhelper/winemaker.sh
 
 install :
 	./buildhelper/install.py
