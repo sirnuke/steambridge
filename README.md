@@ -1,5 +1,22 @@
 # SteamBridge
 
+**BUT FIRST**...
+
+SteamBridge never really got past the initial proof of concept stage.
+I haven't worked on it in a while, and don't anticipate doing anything
+beyond minor fixes.
+
+**ALL IS NOT LOST**.  I've started a second project, [SteamFootBridge][1],
+which is a Python tool that integrates into Linux Steam and silently
+manages a Steam client running in Wine.  It's still early, as of
+this writing, but I believe it'll end up much technically simpler and
+completely kosher.
+
+A moment of silence while I smolder my now redundant
+kinda-impressive-technical-achievement-baby.
+
+Thank you, be seated.
+
 ## What is SteamBridge?
 
 SteamBridge is a forbidden love story between two star-crossed lovers.
@@ -12,7 +29,7 @@ even speak of in public.  But will Steam's powerful father object?
 SteamBridge is a cover for a secret government investigation into the
 calling conventions on Windows and Linux.  The reports are classified;
 rumored to contain fierce arguments about how to return values, and
-complaints that masochism isn't covered by Work's Comp.
+complaints that masochism isn't covered by Worker's Comp.
 
 ### AND
 
@@ -114,3 +131,4 @@ the version of Visual Studio.
 Review the *documentation* directory for more detailed notes and
 information about SteamBridge.
 
+[1] https://github.com/sirnuke/steamfootbridge
